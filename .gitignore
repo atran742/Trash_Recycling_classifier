@@ -38,3 +38,34 @@ mlruns/
 branch_structure.json
 temp_auto_push.bat
 temp_interactive_push.bat
+
+# ---- Data pipeline (added by data-pipeline branch) ----
+# Never commit images or datasets. Everything under data/ is ignored,
+# EXCEPT the small README that explains how to collect personal battery photos.
+# (Written as data/* plus "!" exceptions instead of plain "data/", because git
+# cannot re-include a file once its whole parent folder is ignored.)
+data/*
+!data/raw/
+data/raw/*
+!data/raw/personal_battery/
+data/raw/personal_battery/*
+!data/raw/personal_battery/README.md
+
+# Belt and suspenders: image files are never allowed anywhere in the repo.
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.webp
+*.heic
+
+# Downloaded archives (download.py unzips and deletes these, but just in case).
+*.zip
+
+# Project virtualenv (already covered by .venv/ at the top; repeated so it is obvious).
+.venv
+
+# Model weights live in models/ but never in git. *.pt, *.pth, *.ckpt, *.h5,
+# *.keras, *.onnx and *.tflite are already ignored everywhere near the top.
+models/*.pth
