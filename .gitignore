@@ -41,7 +41,7 @@ temp_interactive_push.bat
 
 # ---- Data pipeline (added by data-pipeline branch) ----
 # Never commit images or datasets. Everything under data/ is ignored,
-# EXCEPT the small README that explains how to collect personal battery photos.
+# EXCEPT the personal battery README and the split CSV manifests (see below).
 # (Written as data/* plus "!" exceptions instead of plain "data/", because git
 # cannot re-include a file once its whole parent folder is ignored.)
 data/*
@@ -50,6 +50,11 @@ data/raw/*
 !data/raw/personal_battery/
 data/raw/personal_battery/*
 !data/raw/personal_battery/README.md
+# Split manifests (path,label CSVs, relative paths, well under 2 MB) are tracked
+# so everyone trains on the same split. Only the .csv files, nothing else.
+!data/splits/
+data/splits/*
+!data/splits/*.csv
 
 # Belt and suspenders: image files are never allowed anywhere in the repo.
 *.jpg

@@ -7,3 +7,5 @@
 kaggle>=1.8.0      # downloads datasets from Kaggle (needs a token in ~/.kaggle/)
 pyyaml>=6.0        # reads configs/label_map.yaml
 pillow>=10.0       # opens images to check they are not corrupted
+imagehash>=4.3     # perceptual hashes (pHash) to find near-duplicate images
+numpy>=2.0         # fast bit counting to compare hashes (np.bitwise_count needs 2.0+)

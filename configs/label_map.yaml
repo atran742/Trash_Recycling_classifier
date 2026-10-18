@@ -19,6 +19,13 @@ class_sets:
     classes: [recycling, compost, trash]
     exclude: [hazardous]
 
+# Near-duplicate removal (build_splits.py). Two images count as the same picture
+# when their 64-bit perceptual hashes differ in this many bits or fewer.
+# Measured on our data: distance 0-2 is almost always a true copy; at 4, about
+# half the pairs are different objects with a similar shape on a white
+# background (e.g. two different toothbrushes). Lower to 2 or 3 to keep more images.
+near_duplicate_max_distance: 5
+
 # How to split each class. Same seed -> same split every run.
 split:
   ratios: {train: 0.70, validation: 0.15, test: 0.15}
