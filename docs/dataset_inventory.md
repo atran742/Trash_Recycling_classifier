@@ -138,6 +138,67 @@ tightened it from 4 to 2 to cut look-alike removals. This cross-label check
 found no true copy that dHash ≤ 2 would miss, and every look-alike sits at
 dHash 8 or more, so 2 keeps all of them out of the review list.
 
+## Leakage check (`check_leakage.py`, 2026-10-18)
+
+**Why it matters:** if nearly the same photo is in train and in test, the model
+has already seen that test answer, so its test score looks better than it really is.
+
+`python src/data/check_leakage.py` is read-only. For every validation and test
+image it finds the closest train image, using the same pHash and dHash functions
+as `build_splits.py`. It flags the pair if **pHash ≤ 6 and dHash ≤ 8**, which is
+looser than the removal rule, so borderline copies that slipped through show
+up. Every flagged pair is in `results/leakage_pairs.csv`, and
+`results/leakage_review.png` shows them side by side (not committed).
+
+| Split | Images | Flagged | True copies | Look-alikes |
+|---|---:|---:|---:|---:|
+| validation | 1,276 | 10 | 5 | 5 |
+| test | 1,282 | 22 | 12 | 10 |
+| **both** | **2,558** | **32** | **17** | **15** |
+
+All 32 pairs were checked by eye, which covers every pair at dHash 3 to 5. A true
+copy is the same photograph, possibly resized, re-saved, watermarked or slightly
+cropped. A look-alike is a different photo: another toothbrush or laptop battery,
+a recolored can or yogurt cup, a different bottle, or the same crushed can shot again.
+
+| dHash distance | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | total |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Flagged | 1 | 3 | 4 | 7 | 4 | 3 | 4 | 5 | 1 | 32 |
+| True copies | 1 | 2 | 1 | 5 | 2 | 3 | 1 | 2 | 0 | 17 |
+| Look-alikes | 0 | 1 | 3 | 2 | 2 | 0 | 3 | 3 | 1 | 15 |
+
+The 17 true copies (numbers are the row order in `results/leakage_pairs.csv`):
+
+| # | Split | Image | Train copy | pHash | dHash |
+|---:|---|---|---|---:|---:|
+| 1 | test | paper__paper886.jpg | paper__paper755.jpg | 4 | 0 |
+| 2 | test | paper__paper551.jpg | paper__paper679.jpg | 4 | 1 |
+| 4 | validation | metal__metal439.jpg | metal__metal376.jpg | 6 | 1 |
+| 5 | test | metal__metal408.jpg | metal__metal40.jpg | 4 | 2 |
+| 9 | test | biological__biological369.jpg | biological__biological823.jpg | 2 | 3 |
+| 10 | test | battery__battery128.jpg | battery__battery777.jpg | 2 | 3 |
+| 13 | test | trash__trash8.jpg | trash__trash15.jpg | 2 | 3 |
+| 14 | validation | green-glass__green-glass210.jpg | green-glass__green-glass115.jpg | 2 | 3 |
+| 15 | validation | white-glass__white-glass343.jpg | white-glass__white-glass456.jpg | 4 | 3 |
+| 16 | test | paper__paper812.jpg | paper__paper517.jpg | 2 | 4 |
+| 17 | test | battery__battery104.jpg | battery__battery168.jpg | 4 | 4 |
+| 20 | test | green-glass__green-glass581.jpg | green-glass__green-glass595.jpg | 2 | 5 |
+| 21 | test | paper__paper982.jpg | paper__paper716.jpg | 2 | 5 |
+| 22 | validation | trash__trash20.jpg | trash__trash12.jpg | 2 | 5 |
+| 26 | validation | metal__metal164.jpg | metal__metal27.jpg | 6 | 6 |
+| 27 | test | biological__biological981.jpg | biological__biological723.jpg | 4 | 7 |
+| 28 | test | paper__paper1011.jpg | paper__paper892.jpg | 4 | 7 |
+
+The true copies that slipped through sit at pHash 2, 4 or 6. The 4 copies at
+dHash 0 to 2 have pHash 4 or 6, above `max_phash: 3`. The other 13 have dHash 3
+to 7, above `max_dhash: 2`. Catching all 17 would need pHash ≤ 6 and dHash ≤ 7.
+That breaks the pHash cap of 5, and at those cutoffs 14 of the look-alikes match too.
+
+**Decision: no change.** 17 true copies are 0.66% of validation plus test, under
+the 1% line (26 images), so the split rules stay as they are:
+**`max_phash: 3`, `max_dhash: 2`**. The cross-label conflicts file stays empty,
+and the counts and stamps below are unchanged by this check.
+
 ## Train / validation / test splits (seed 42, 70/15/15)
 
 Output of `python src/data/build_splits.py` on 2026-10-18, after duplicate removal.
