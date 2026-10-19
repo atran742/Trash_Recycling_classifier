@@ -1,4 +1,5 @@
 {
+  "split_version": "2a9c67d",
   "num_classes": 4,
   "class_order": [
     "compost",
@@ -50,5 +51,6 @@
         1.3121
       ]
     }
-  }
+  },
+  "manifest_sha256": "003abb987adb"
 }
