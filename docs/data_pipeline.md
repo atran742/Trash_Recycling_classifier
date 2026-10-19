@@ -62,7 +62,7 @@ Baseline 'always guess recycling' on validation (1276 images): accuracy 68.10%, 
 Overlap check passed: no exact or near duplicate appears in more than one split.
 Count check: 8578 found - 0 corrupted - 2 exact duplicates - 57 near duplicates - 0 held for review = 8519; 8519 in the splits; 59 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: 2a9c67d  manifest_sha256: 003abb987adb  (both saved in results/class_weights.json)
+Split version: 08b8dde  manifest_sha256: 003abb987adb  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
