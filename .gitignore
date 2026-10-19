@@ -74,3 +74,7 @@ data/splits/*
 # Model weights live in models/ but never in git. *.pt, *.pth, *.ckpt, *.h5,
 # *.keras, *.onnx and *.tflite are already ignored everywhere near the top.
 models/*.pth
+
+# Charts and contact sheets made by plot_counts.py and review_near_dups.py.
+# Already covered by *.png above; listed so it is obvious they stay local.
+results/*.png
