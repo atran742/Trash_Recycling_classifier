@@ -35,3 +35,52 @@ mlruns/
 
 # Local/editor/OS files
 .DS_Store
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+
+# Python environments and local configuration
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Python bytecode and tool caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Machine-learning model artifacts
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.keras
+*.onnx
+*.tflite
+
+# Training and experiment outputs
+runs/
+lightning_logs/
+wandb/
+mlruns/
+
+# Local/editor/OS files
+.DS_Store
+
+# data 
+
+*.jpg
+*.jpeg
+*.png
+*.svg
+*.webp
