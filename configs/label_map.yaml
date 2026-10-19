@@ -31,7 +31,7 @@ class_sets:
 # pHash distances are always even (each pHash has 32 one-bits), so 3 acts like 2.
 near_duplicates:
   max_phash: 3     # team decision Oct 18 (was 5)
-  max_dhash: 2     # tightened 4 -> 3 -> 2 after spot checks (docs/dataset_inventory.md)
+  max_dhash: 2     # tightened 4 -> 3 -> 2 after spot checks; cross-label review found 0 true copies (docs/dataset_inventory.md)
 
 # How to split each class. Same seed -> same split every run.
 split:

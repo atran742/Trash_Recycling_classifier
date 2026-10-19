@@ -25,6 +25,9 @@ What it does, in order:
  10. Write every removed file to results/removed_duplicates.csv.
  11. Print the always-guess-the-biggest-class baseline on the validation split.
  12. Check the arithmetic: images found - removed - held for review = images in the splits.
+ 13. Stamp the build with split_version (the git commit of the code and config used)
+     in results/class_weights.json, and print it. Compare it before comparing models:
+     two models only compare fairly if they trained on the same split_version.
 
 Run from the repo root:
     python src/data/build_splits.py                    # uses num_classes from label_map.yaml
@@ -42,6 +45,7 @@ import json
 import math
 import random
 import shutil
+import subprocess
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -112,6 +116,24 @@ def is_near_match(phash_dist, dhash_dist, rules):
     Both fingerprints must agree. Works on single numbers or on whole numpy arrays.
     """
     return (phash_dist <= rules["max_phash"]) & (dhash_dist <= rules["max_dhash"])
+
+
+def get_split_version():
+    """Short git commit hash of the code that built these splits, for example "fa59286".
+
+    Adds "-dirty" if src/ or configs/ have changes that are not committed yet,
+    because then the commit alone does not describe how the splits were made.
+    Returns "unknown" if git is not available.
+    """
+    def git(*args):
+        return subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=True).stdout.strip()
+
+    try:
+        commit = git("rev-parse", "--short=7", "HEAD")
+        dirty = git("status", "--porcelain", "--", "src", "configs")
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+    return commit + ("-dirty" if dirty else "")
 
 
 def is_valid_image(path):
@@ -527,6 +549,7 @@ def compute_class_weights(splits_by_class, num_classes):
         return {"formula": formula, "by_class": rounded, "in_class_order": [rounded[c] for c in class_order]}
 
     return {
+        "split_version": get_split_version(),
         "num_classes": num_classes,
         "class_order": class_order,
         "train_counts": train_counts,
@@ -672,7 +695,7 @@ def main():
 
     if args.dry_run:
         check_counts(n_found, out_counts, n_in_splits, len(removed_rows), len(review_rows))
-        print("\n(dry run: nothing was written)")
+        print(f"\nSplit version: {weights['split_version']}  (dry run: nothing was written)")
         return
 
     copy_splits_and_write_manifests(splits_by_class)
@@ -694,6 +717,7 @@ def main():
     check_counts(n_found, out_counts, n_on_disk, n_removed_rows, n_review_rows)
     print(f"Wrote data/train, data/validation, data/test, data/splits/*.csv, {rel(REMOVED_CSV)}, "
           f"{rel(CONFLICTS_CSV)}, {rel(WEIGHTS_JSON)}  (seed={seed}, {num_classes} classes)")
+    print(f"Split version: {weights['split_version']}  (saved in {rel(WEIGHTS_JSON)})")
 
 
 if __name__ == "__main__":
