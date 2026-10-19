@@ -33,12 +33,12 @@ Counted by `download.py` from `data/raw/garbage12_enhanced/garbage_classificatio
 | biological | compost | 1,035 |
 | brown-glass | recycling | 619 |
 | cardboard | recycling | 936 |
-| clothes | VERIFY (skipped) | 5,286 |
+| clothes | EXCLUDE (dropped Oct 18) | 5,286 |
 | green-glass | recycling | 641 |
 | metal | recycling | 837 |
 | paper | recycling | 1,108 |
 | plastic | recycling | 901 |
-| shoes | VERIFY (skipped) | 2,006 |
+| shoes | VERIFY (skipped, undecided) | 2,006 |
 | trash | trash | 726 |
 | white-glass | recycling | 796 |
 | **Total** | | **15,870** |
@@ -47,36 +47,42 @@ Counted by `download.py` from `data/raw/garbage12_enhanced/garbage_classificatio
 
 The script finds 8,578 images in 4-class mode. It removes exact copies by
 SHA-256, then near copies using two image fingerprints, pHash and dHash. Both
-must agree before a pair counts as the same picture. The cutoffs live under
-`near_duplicates:` in `configs/label_map.yaml`:
+must agree before a pair counts as the same picture: pHash distance ≤ 3
+(`max_phash`, team decision Oct 18) and dHash distance ≤ 2 (`max_dhash`), both
+under `near_duplicates:` in `configs/label_map.yaml`.
 
-| Pair | pHash distance | dHash distance | Result |
-|---|---|---|---|
-| Same class | ≤ 3 | ≤ 2 | near duplicate: keep the first, drop the other |
-| Different class | ≤ 2 | ≤ 2 | label conflict: drop the whole group |
+| Pair | Result |
+|---|---|
+| Same label | near duplicate: keep the first, drop the copy (`results/removed_duplicates.csv`) |
+| Different label | label conflict: **nothing is deleted**. The whole group goes to `results/conflicts_to_review.csv` (group, file, label, matches, distance, dhash_distance) and stays out of every split until a person checks it |
 
 There is no chaining. An image joins a group only if it matches the group's
-kept copy directly. Every removed file is listed in
-`results/removed_duplicates.csv`, with its pHash `distance` and `dhash_distance`.
+kept copy directly. A final pass also holds any kept image that directly matches
+an already removed or held image with a different label, so file order cannot
+hide a conflict.
 
-| Removed (4 classes) | Before (pHash ≤ 5, chained) | Now |
+| 4 classes, from 8,578 found | pHash ≤ 5, chained, conflicts deleted | Now |
 |---|---:|---:|
-| Exact duplicates | 2 | 2 |
-| Near duplicates (same label) | 125 | 57 |
-| Label-conflict images | 48 in 10 groups | 0 |
+| Exact duplicates removed | 2 | 2 |
+| Near duplicates removed | 125 | 57 |
+| Label-conflict images | 48 deleted (10 groups) | 0 held (0 groups) |
 | Corrupted | 0 | 0 |
-| **Remaining (from 8,578)** | **8,403** | **8,519** |
+| **In the splits** | **8,403** | **8,519** |
+
+The new rules keep **116 more images** than the old pHash ≤ 5 setting.
+`results/conflicts_to_review.csv` is header-only today because no cross-class
+pair passes both checks. Checking pHash ≤ 3 alone, without dHash, would have
+flagged 6 conflict groups with 15 images; requiring dHash agreement too clears all of them.
 
 In 3-class mode the script finds 7,599 images, removes 2 exact and 52 near duplicates with no conflicts, and keeps 7,545.
-Every run ends with a count check: images found minus every removal must equal
-the images in the splits and the rows in the CSV.
+Every run ends with a count check: images found minus removed minus held for
+review must equal the images in the splits, and each CSV must have one row per image.
 
 The 57 near duplicates are all within one folder: green-glass 13, metal 8,
 biological 8, trash 7, paper 7, cardboard 6, battery 5, white-glass 2, plastic 1.
 Their distances are pHash 0 or 2 and dHash 0 to 2. Every pHash from `imagehash`
 has exactly 32 one-bits, so the distance between two pHashes is always even.
-That means the same-class cutoff of 3 and the cross-class cutoff of 2 currently
-act the same; set the same-class cutoff to 4 if the team wants it looser.
+That means `max_phash: 3` acts like 2; set it to 4 if the team wants it looser.
 
 ### Spot check of the borderline pairs
 
@@ -98,9 +104,9 @@ At that cutoff, the 6 pairs that are not true copies are all same-class:
 - **Cardboard:** 1 pair is two shots of the same cardboard sheet.
 - **Wine glasses:** 1 pair is two similar wine glasses.
 
-The new rules no longer cross classes, so no image is dropped as a label conflict.
+No cross-class pair passes both checks, so no image is held as a label conflict.
 Toothbrushes are hard for both fingerprints because almost the whole picture is
-white background. A third fingerprint or a smaller same-class pHash cutoff would
+white background. A third fingerprint or a smaller pHash cutoff would
 be the next step if the team wants to keep those few images.
 
 ## Train / validation / test splits (seed 42, 70/15/15)
@@ -135,7 +141,7 @@ splits. Running 4, then 3, then 4 again gave byte-identical 4-class outputs.
 ## Class imbalance to watch
 
 - `recycling` is 68.09% of train with 4 classes and 76.88% with 3. Always guessing recycling scores 68.10% validation accuracy but only 0.2026 macro F1 (see `docs/data_pipeline.md`), so report macro F1.
-- `clothes` and `shoes` are 7,292 images, nearly half the download. They are skipped until the team decides.
+- `clothes` (5,286 images) is dropped by team decision. `shoes` (2,006) is skipped until the team decides.
 - `hazardous` comes from web photos only today. The 50 personal battery photos add real-world examples.
 
 ## License notes
@@ -153,5 +159,6 @@ splits. Running 4, then 3, then 4 again gave byte-identical 4-class outputs.
 
 ## Open questions for the team
 
-1. **3 vs 4 classes.** Batteries fit none of recycling, compost or trash, and San Diego says they never go in curbside bins. Proposal: add `hazardous`. Flip `num_classes` in `configs/label_map.yaml`.
-2. **Clothes and shoes.** San Diego curbside recycling does not accept them. Map to `trash`, drop them, or keep them as VERIFY?
+1. **Shoes.** San Diego curbside recycling does not accept them. Map the 2,006 shoe images to `trash`, or drop them like clothes? They stay VERIFY until decided.
+
+Decided on Oct 18: 4 classes including `hazardous`, and clothes dropped (`EXCLUDE`).

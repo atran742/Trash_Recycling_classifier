@@ -24,9 +24,13 @@ python src/data/download.py
 python src/data/build_splits.py
 ```
 
+Optional: `python src/data/plot_counts.py` draws `results/class_counts.png` and
+`results/split_counts.png` (bar charts of the counts, sized for a phone screen;
+not committed).
+
 | Command | What it does | Time |
 |---|---|---|
-| `pip install -r requirements.txt` | Installs kaggle, pyyaml, pillow, imagehash and numpy. | under 1 minute |
+| `pip install -r requirements.txt` | Installs kaggle, pyyaml, pillow, imagehash, numpy and matplotlib. | under 1 minute |
 | `python src/data/download.py` | Downloads `garbage12_enhanced` (about 557 MB unzipped) into `data/raw/`. Skips it if it is already there. Also fetches `garbage_v2` only if there are fewer than 500 battery images. | a few minutes |
 | `python src/data/build_splits.py` | Applies `configs/label_map.yaml`, drops broken files, exact duplicates and near duplicates, checks the counts add up, copies a 70/15/15 split into `data/train`, `data/validation` and `data/test`, and writes the CSV manifests and class weights. | about 20 seconds |
 
@@ -35,7 +39,7 @@ python src/data/build_splits.py
 With `num_classes: 4`, the last command prints:
 
 ```text
-Removed 2 exact duplicates, 57 near duplicates, and 0 images in label conflicts (0 near-duplicate groups). Dropped 0 corrupted files. 8519 images remain.
+Removed 2 exact duplicates and 57 near duplicates. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted files. 8519 images go into the splits.
 
 class          train  validation    test   total
 ------------------------------------------------
@@ -56,7 +60,7 @@ Train split share and class weights (results/class_weights.json):
 Baseline 'always guess recycling' on validation (1276 images): accuracy 68.10%, macro F1 0.2026
 
 Overlap check passed: no exact or near duplicate appears in more than one split.
-Count check: 8578 found - 0 corrupted - 2 exact duplicates - 57 near duplicates - 0 label-conflict images = 8519; 8519 in the splits; 59 rows in results/removed_duplicates.csv.
+Count check: 8578 found - 0 corrupted - 2 exact duplicates - 57 near duplicates - 0 held for review = 8519; 8519 in the splits; 59 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
 ```
 
@@ -69,7 +73,11 @@ The result is the same on every machine because the seed is fixed at 42.
 | `data/train/`, `data/validation/`, `data/test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. |
 | `data/splits/train.csv`, `validation.csv`, `test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. |
 | `results/class_weights.json` | Yes | Class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
-| `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate`, `label_conflict (...)` or `corrupted`. |
+| `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate` or `corrupted`. |
+| `results/conflicts_to_review.csv` | Yes | Label conflicts: look-alike images with different labels, as `group,file,label,matches,distance,dhash_distance`. These are **not deleted** but kept out of every split until a person checks them. Header only when there are none. |
+
+**After reviewing a conflict group:** if it is a real copy, delete the image with the wrong label from `data/raw/` and rerun, so the right one goes back into the splits. If it is a false match (two different objects), note the group and file paths for the team. There is no switch yet to let both images back in. If false matches show up, lower `max_phash` or `max_dhash`, or add an "allowed pairs" list to the script. Today there are no conflicts to review.
+| `results/class_counts.png`, `results/split_counts.png` | No | Written by `python src/data/plot_counts.py` from the manifests. |
 | `results/near_dup_review.png` | No | Written by `python src/data/review_near_dups.py`, not by this step. Shows the 20 most borderline removed pairs side by side, for checking the cutoffs by eye. |
 
 ### Using the class weights in PyTorch
@@ -101,19 +109,39 @@ beat 0.2026 by a wide margin.
 
 ## Near-duplicate cutoffs
 
-All three cutoffs live under `near_duplicates:` in `configs/label_map.yaml`:
+Both cutoffs live under `near_duplicates:` in `configs/label_map.yaml`:
 
 ```yaml
 near_duplicates:
-  same_class_max_phash: 3    # same class: pHash distance must be <= 3
-  cross_class_max_phash: 2   # different class: pHash <= 2, and the group is dropped as a label conflict
-  max_dhash: 2               # and the dHash distance must be <= 2 for any pair
+  max_phash: 3     # pHash distance must be <= 3 ...
+  max_dhash: 2     # ... AND dHash distance must be <= 2 for a pair to count as the same picture
 ```
 
-Lower numbers are stricter and remove fewer images. After changing them, run
+Same label: the copy is removed. Different label: the group goes to
+`results/conflicts_to_review.csv` and into no split. Lower numbers are stricter
+and treat fewer images as copies. After changing them, run
 `python src/data/review_near_dups.py` and look at `results/near_dup_review.png`
 to check the borderline pairs are real copies. The spot-check results are in
 `docs/dataset_inventory.md`.
+
+## Adding Amy's images (or any extra source) in 2 steps
+
+Every dataset listed under `datasets:` in `configs/label_map.yaml` goes through
+the same corrupted-file check, duplicate removal and split. An example entry for
+Amy's photos is already there, switched off with `#`.
+
+1. **Copy the photos** into one folder per class:
+   `data/raw/amy_images/trash/`, `recycling/`, `compost/` and `hazardous/`.
+   JPG, PNG, BMP and WEBP all work, and upper-case extensions are fine. Convert
+   iPhone HEIC photos to JPG first.
+2. **Switch the entry on**: in `configs/label_map.yaml`, delete the `# ` at the
+   start of the 7 lines from `# amy_images:` down to `#     hazardous: hazardous`.
+   Then rerun `python src/data/build_splits.py`.
+
+Her photos are checked against every other image, so a copy of a Kaggle photo is
+removed, and a look-alike with a different label shows up in
+`results/conflicts_to_review.csv`. The images never go into git. Share them through
+Drive or a zip.
 
 ## Switching between 3 and 4 classes
 
