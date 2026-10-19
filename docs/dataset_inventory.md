@@ -197,7 +197,9 @@ That breaks the pHash cap of 5, and at those cutoffs 14 of the look-alikes match
 **Decision: no change.** 17 true copies are 0.66% of validation plus test, under
 the 1% line (26 images), so the split rules stay as they are:
 **`max_phash: 3`, `max_dhash: 2`**. The cross-label conflicts file stays empty,
-and the counts and stamps below are unchanged by this check.
+and the counts below and `manifest_sha256` are unchanged. `split_version` moved
+from `08b8dde` to `9b565e5` only because that commit edited `build_splits.py`
+to scope the stamp; the splits themselves are byte-identical.
 
 ## Train / validation / test splits (seed 42, 70/15/15)
 

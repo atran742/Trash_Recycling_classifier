@@ -19,7 +19,8 @@ Options for the picture only (the CSV always lists every flagged pair):
     --sample 20                      show a random sample (seed 42) instead of the first 40
     --sheet results/some_name.png    save the picture under another name
 
-A clean result prints "0 flagged pairs".
+A clean result: no true copy beyond the 17 known ones listed in
+docs/dataset_inventory.md. Today that means the same 32 flagged pairs.
 """
 
 import argparse

@@ -77,11 +77,10 @@ data-cleanup branch (8,403 images, older duplicate rule) are stale: rebuild them
 before training.
 
 **After any rebuild, run `python src/data/check_leakage.py`.** It is read-only. A
-clean result is a count table with 0 true copies when you look at
-`results/leakage_review.png`. Today it flags 32 pairs, of which 17 are true
-copies (0.66% of validation plus test, under the 1% line, so no change), and
-those 17 are listed in `docs/dataset_inventory.md`. If a rebuild flags more,
-compare with that list.
+clean result means no true copy beyond the 17 known ones listed in
+`docs/dataset_inventory.md` (0.66% of validation plus test, under the 1% line).
+Today that is the same 32 flagged pairs. If more pairs show up, look at them in
+`results/leakage_review.png` and compare with that list.
 
 ## What else the split step writes
 
