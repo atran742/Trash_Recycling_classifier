@@ -38,6 +38,46 @@ split:
   ratios: {train: 0.70, validation: 0.15, test: 0.15}
   seed: 42
 
+# Validation/test images confirmed BY EYE to be copies of a train image
+# (leakage check, Oct 18; the 17 true copies listed in docs/dataset_inventory.md).
+# build_splits.py drops each `file` and keeps its `train_match`. Paths are
+# relative to the repo root and point at the original images in data/raw/.
+known_duplicates:
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper886.jpg        # pair #1 (test), pHash 4, dHash 0
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper755.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper551.jpg        # pair #2 (test), pHash 4, dHash 1
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper679.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/metal/metal439.jpg        # pair #4 (validation), pHash 6, dHash 1
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/metal/metal376.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/metal/metal408.jpg        # pair #5 (test), pHash 4, dHash 2
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/metal/metal40.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/biological/biological369.jpg        # pair #9 (test), pHash 2, dHash 3
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/biological/biological823.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/battery/battery128.jpg        # pair #10 (test), pHash 2, dHash 3
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/battery/battery777.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/trash/trash8.jpg        # pair #13 (test), pHash 2, dHash 3
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/trash/trash15.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/green-glass/green-glass210.jpg        # pair #14 (validation), pHash 2, dHash 3
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/green-glass/green-glass115.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/white-glass/white-glass343.jpg        # pair #15 (validation), pHash 4, dHash 3
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/white-glass/white-glass456.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper812.jpg        # pair #16 (test), pHash 2, dHash 4
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper517.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/battery/battery104.jpg        # pair #17 (test), pHash 4, dHash 4
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/battery/battery168.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/green-glass/green-glass581.jpg        # pair #20 (test), pHash 2, dHash 5
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/green-glass/green-glass595.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper982.jpg        # pair #21 (test), pHash 2, dHash 5
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper716.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/trash/trash20.jpg        # pair #22 (validation), pHash 2, dHash 5
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/trash/trash12.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/metal/metal164.jpg        # pair #26 (validation), pHash 6, dHash 6
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/metal/metal27.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/biological/biological981.jpg        # pair #27 (test), pHash 4, dHash 7
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/biological/biological723.jpg
+  - file: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper1011.jpg        # pair #28 (test), pHash 4, dHash 7
+    train_match: data/raw/garbage12_enhanced/garbage_classification_enhanced/paper/paper892.jpg
+
 # ------------------------------------------------------------------
 # Datasets. Each dataset key is a folder in data/raw/. Each key under `folders`
 # is a real folder inside data/raw/<dataset>/<root>/.
