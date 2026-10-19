@@ -39,16 +39,17 @@ not committed).
 With `num_classes: 4`, the last command prints:
 
 ```text
-Removed 2 exact duplicates and 57 near duplicates. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted files. 8519 images go into the splits.
+Removed 2 exact duplicates and 57 near duplicates. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted files. 8519 images are split.
+Dropped 17 known duplicates listed in configs/label_map.yaml (their train copies are kept).
 
 class          train  validation    test   total
 ------------------------------------------------
-compost          718         154     155    1027
-hazardous        681         146     147     974
-recycling       4059         869     871    5799
-trash            503         107     109     719
+compost          718         154     153    1025
+hazardous        681         146     145     972
+recycling       4059         865     864    5788
+trash            503         106     108     717
 ------------------------------------------------
-TOTAL           5961        1276    1282    8519
+TOTAL           5961        1271    1270    8502
 
 Train split share and class weights (results/class_weights.json):
   class         train   % train   inverse  sqrt inv
@@ -57,12 +58,12 @@ Train split share and class weights (results/class_weights.json):
   recycling      4059    68.09%    0.3671    0.4619
   trash           503     8.44%    2.9627    1.3121
 
-Baseline 'always guess recycling' on validation (1276 images): accuracy 68.10%, macro F1 0.2026
+Baseline 'always guess recycling' on validation (1271 images): accuracy 68.06%, macro F1 0.2025
 
 Overlap check passed: no exact or near duplicate appears in more than one split.
-Count check: 8578 found - 0 corrupted - 2 exact duplicates - 57 near duplicates - 0 held for review = 8519; 8519 in the splits; 59 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
+Count check: 8578 found - 0 corrupted - 2 exact duplicates - 57 near duplicates - 17 known duplicates - 0 held for review = 8502; 8502 in the splits; 76 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: 9b565e5  manifest_sha256: 003abb987adb  (both saved in results/class_weights.json)
+Split version: bc318eb  manifest_sha256: 4d578382b730  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
@@ -77,10 +78,11 @@ data-cleanup branch (8,403 images, older duplicate rule) are stale: rebuild them
 before training.
 
 **After any rebuild, run `python src/data/check_leakage.py`.** It is read-only. A
-clean result means no true copy beyond the 17 known ones listed in
-`docs/dataset_inventory.md` (0.66% of validation plus test, under the 1% line).
-Today that is the same 32 flagged pairs. If more pairs show up, look at them in
-`results/leakage_review.png` and compare with that list.
+clean result is the 15 flagged pairs already judged as look-alikes in
+`docs/dataset_inventory.md`, with 0 true copies. The 17 confirmed copies are
+dropped through `known_duplicates` in `configs/label_map.yaml`. If a new pair
+shows up, look at it in `results/leakage_review.png`. If it is a true copy, add it to
+`known_duplicates`.
 
 ## What else the split step writes
 
@@ -89,7 +91,7 @@ Today that is the same 32 flagged pairs. If more pairs show up, look at them in
 | `data/train/`, `data/validation/`, `data/test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. |
 | `data/splits/train.csv`, `validation.csv`, `test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. |
 | `results/class_weights.json` | Yes | `split_version` (the last commit that changed `build_splits.py` or `configs/`), `manifest_sha256` (fingerprint of the split CSVs), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
-| `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate` or `corrupted`. |
+| `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate`, `known_duplicate` (listed in `known_duplicates` in `configs/label_map.yaml`) or `corrupted`. |
 | `results/conflicts_to_review.csv` | Yes | Label conflicts: look-alike images with different labels, as `group,file,label,matches,distance,dhash_distance`. These are **not deleted** but kept out of every split until a person checks them. Header only when there are none. |
 | `results/class_counts.png`, `results/split_counts.png` | No | Written by `python src/data/plot_counts.py` from the manifests. |
 | `results/near_dup_review.png`, `results/cross_label_review.png` | No | Written by `python src/data/review_near_dups.py` (add `--cross-label` for the second), not by this step. Show the most borderline removed pairs, or every label-conflict group, side by side for checking the cutoffs by eye. |
@@ -115,13 +117,13 @@ validation split (printed by `build_splits.py` on every run):
 
 | Classes | Validation images | Accuracy | Macro F1 |
 |---|---:|---:|---:|
-| 4 | 1,276 | 68.10% | 0.2026 |
-| 3 | 1,130 | 76.90% | 0.2898 |
+| 4 | 1,271 | 68.06% | 0.2025 |
+| 3 | 1,125 | 76.89% | 0.2898 |
 
 Accuracy looks good only because recycling is most of the data. Macro F1
 averages the F1 score of every class equally, so ignoring compost, trash and
 hazardous drags it down. **Report macro F1, not accuracy.** A useful model must
-beat 0.2026 by a wide margin.
+beat 0.2025 by a wide margin.
 
 ## Near-duplicate cutoffs
 

@@ -19,8 +19,9 @@ Options for the picture only (the CSV always lists every flagged pair):
     --sample 20                      show a random sample (seed 42) instead of the first 40
     --sheet results/some_name.png    save the picture under another name
 
-A clean result: no true copy beyond the 17 known ones listed in
-docs/dataset_inventory.md. Today that means the same 32 flagged pairs.
+A clean result: only the 15 look-alike pairs already judged in
+docs/dataset_inventory.md, and 0 true copies. A new true copy goes into
+known_duplicates in configs/label_map.yaml.
 """
 
 import argparse

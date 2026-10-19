@@ -67,15 +67,17 @@ hide a conflict.
 | Near duplicates removed | 125 | 57 |
 | Label-conflict images | 48 deleted (10 groups) | 0 held (0 groups) |
 | Corrupted | 0 | 0 |
-| **In the splits** | **8,403** | **8,519** |
+| Known duplicates (leakage check, `known_duplicates`) | 0 | 17 |
+| **In the splits** | **8,403** | **8,502** |
 
-The new rules keep **116 more images** than the old pHash ≤ 5 setting.
+The new rules keep **99 more images** than the old pHash ≤ 5 setting: 116 more
+from the stricter duplicate rule, minus the 17 leaked copies dropped later.
 `results/conflicts_to_review.csv` is header-only today because no cross-class
 pair passes both checks. Checking pHash ≤ 3 alone, without dHash, would flag
 6 conflict groups with 16 images. All of them are look-alikes, not copies (see
 the cross-label review below), and requiring dHash agreement clears them all.
 
-In 3-class mode the script finds 7,599 images, removes 2 exact and 52 near duplicates with no conflicts, and keeps 7,545.
+In 3-class mode the script finds 7,599 images, removes 2 exact, 52 near and 15 known duplicates with no conflicts, and keeps 7,530. Two of the 17 known duplicates are batteries, which 3-class mode leaves out anyway.
 Every run ends with a count check: images found minus removed minus held for
 review must equal the images in the splits, and each CSV must have one row per image.
 Count gap fixed: the "175 removed but only 173 fewer" mismatch came from comparing 8,403 against 8,576, the split total from `f238069`, which had already dropped the same 2 exact duplicates. The true start was 8,578, and the count check added in `1421f23` now stops any run whose numbers do not add up.
@@ -150,6 +152,8 @@ looser than the removal rule, so borderline copies that slipped through show
 up. Every flagged pair is in `results/leakage_pairs.csv`, and
 `results/leakage_review.png` shows them side by side (not committed).
 
+Results on the splits **before** the 17 copies were removed:
+
 | Split | Images | Flagged | True copies | Look-alikes |
 |---|---:|---:|---:|---:|
 | validation | 1,276 | 10 | 5 | 5 |
@@ -194,16 +198,20 @@ dHash 0 to 2 have pHash 4 or 6, above `max_phash: 3`. The other 13 have dHash 3
 to 7, above `max_dhash: 2`. Catching all 17 would need pHash ≤ 6 and dHash ≤ 7.
 That breaks the pHash cap of 5, and at those cutoffs 14 of the look-alikes match too.
 
-**Decision: no change.** 17 true copies are 0.66% of validation plus test, under
-the 1% line (26 images), so the split rules stay as they are:
-**`max_phash: 3`, `max_dhash: 2`**. The cross-label conflicts file stays empty,
-and the counts below and `manifest_sha256` are unchanged. `split_version` moved
-from `08b8dde` to `9b565e5` only because that commit edited `build_splits.py`
-to scope the stamp; the splits themselves are byte-identical.
+**Decision: no rule change.** 17 true copies are 0.66% of validation plus test,
+under the 1% line (26 images), so the split rules stay as they are:
+**`max_phash: 3`, `max_dhash: 2`**. The cross-label conflicts file stays empty.
+
+**The 17 confirmed copies are now removed through `known_duplicates` in `configs/label_map.yaml`.**
+Each validation/test copy is dropped and its train copy kept. The drop happens
+right after the split is assigned, so no other image changes split. Train is
+unchanged (same 5,961 images, same class weights), and validation and test lose
+5 and 12 images. A rerun of `check_leakage.py` flags 15 pairs, all of them the
+look-alikes judged above, and 0 true copies.
 
 ## Train / validation / test splits (seed 42, 70/15/15)
 
-Output of `python src/data/build_splits.py` on 2026-10-18, after duplicate removal.
+Output of `python src/data/build_splits.py` on 2026-10-18, after duplicate removal and the 17 known duplicates.
 Weights come from the train split only. Inverse frequency is
 `total_train / (num_classes * class_count)`. Square-root inverse frequency takes
 the square root of that and divides by the mean, so the weights average 1.
@@ -212,27 +220,27 @@ the square root of that and divides by the mean, so the weights average 1.
 
 | Class | Train | Validation | Test | Total | % of train | Inverse weight | Sqrt-inverse weight |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| compost | 718 | 154 | 155 | 1,027 | 12.04% | 2.0756 | 1.0983 |
-| hazardous | 681 | 146 | 147 | 974 | 11.42% | 2.1883 | 1.1277 |
-| recycling | 4,059 | 869 | 871 | 5,799 | **68.09%** | 0.3671 | 0.4619 |
-| trash | 503 | 107 | 109 | 719 | 8.44% | 2.9627 | 1.3121 |
-| **Total** | **5,961** | **1,276** | **1,282** | **8,519** | 100% | | |
+| compost | 718 | 154 | 153 | 1,025 | 12.04% | 2.0756 | 1.0983 |
+| hazardous | 681 | 146 | 145 | 972 | 11.42% | 2.1883 | 1.1277 |
+| recycling | 4,059 | 865 | 864 | 5,788 | **68.09%** | 0.3671 | 0.4619 |
+| trash | 503 | 106 | 108 | 717 | 8.44% | 2.9627 | 1.3121 |
+| **Total** | **5,961** | **1,271** | **1,270** | **8,502** | 100% | | |
 
 **`num_classes: 3`** (hazardous excluded)
 
 | Class | Train | Validation | Test | Total | % of train | Inverse weight | Sqrt-inverse weight |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| compost | 718 | 154 | 155 | 1,027 | 13.60% | 2.4513 | 1.1471 |
-| recycling | 4,059 | 869 | 871 | 5,799 | **76.88%** | 0.4336 | 0.4824 |
-| trash | 503 | 107 | 109 | 719 | 9.53% | 3.4990 | 1.3705 |
-| **Total** | **5,280** | **1,130** | **1,135** | **7,545** | 100% | | |
+| compost | 718 | 154 | 153 | 1,025 | 13.60% | 2.4513 | 1.1471 |
+| recycling | 4,059 | 865 | 864 | 5,788 | **76.88%** | 0.4336 | 0.4824 |
+| trash | 503 | 106 | 108 | 717 | 9.53% | 3.4990 | 1.3705 |
+| **Total** | **5,280** | **1,125** | **1,125** | **7,530** | 100% | | |
 
 All runs passed the overlap check: no exact or near duplicate appears in two
 splits. Running 4, then 3, then 4 again gave byte-identical 4-class outputs.
 
 ## Class imbalance to watch
 
-- `recycling` is 68.09% of train with 4 classes and 76.88% with 3. Always guessing recycling scores 68.10% validation accuracy but only 0.2026 macro F1 (see `docs/data_pipeline.md`), so report macro F1.
+- `recycling` is 68.09% of train with 4 classes and 76.88% with 3. Always guessing recycling scores 68.06% validation accuracy but only 0.2025 macro F1 (see `docs/data_pipeline.md`), so report macro F1.
 - `clothes` (5,286 images) is dropped by team decision. `shoes` (2,006) is skipped until the team decides.
 - `hazardous` comes from web photos only today. The 50 personal battery photos add real-world examples.
 
