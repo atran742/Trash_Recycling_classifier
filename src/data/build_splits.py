@@ -26,7 +26,7 @@ What it does, in order:
  11. Print the always-guess-the-biggest-class baseline on the validation split.
  12. Check the arithmetic: images found - removed - held for review = images in the splits.
  13. Stamp the build in results/class_weights.json and print both stamps:
-     - split_version:   the last git commit that changed the code or config (src/, configs/).
+     - split_version:   the last git commit that changed this script or configs/.
      - manifest_sha256: a fingerprint of the three split CSVs, so it also changes
        when images are added to or removed from data/raw/ (which git ignores).
      Two models only compare fairly if both stamps match.
@@ -69,6 +69,8 @@ CONFLICTS_CSV = RESULTS_DIR / "conflicts_to_review.csv"
 WEIGHTS_JSON = RESULTS_DIR / "class_weights.json"
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
+# The files that decide how splits are made. split_version only changes when one of these changes.
+SPLIT_SOURCES = ["src/data/build_splits.py", "configs"]
 REMOVED_COLUMNS = ["file", "kept_copy", "reason", "distance", "dhash_distance"]
 CONFLICT_COLUMNS = ["group", "file", "label", "matches", "distance", "dhash_distance"]
 
@@ -135,18 +137,19 @@ def manifest_fingerprint():
 def get_split_version():
     """Short git commit hash of the code that built these splits, for example "fa59286".
 
-    It is the LAST commit that changed src/ or configs/, not simply the newest
-    commit. Docs-only or results-only commits do not change how splits are made,
-    so they do not change the version, and rebuilding on a later commit gives the
-    same stamp. Adds "-dirty" if src/ or configs/ have uncommitted changes.
+    It is the LAST commit that changed one of SPLIT_SOURCES (this script and
+    configs/), not simply the newest commit. Docs, results or helper scripts
+    (plot_counts.py, check_leakage.py, ...) do not change how splits are made,
+    so they do not change the version, and rebuilding on a later commit gives
+    the same stamp. Adds "-dirty" if those files have uncommitted changes.
     Returns "unknown" if git is not available.
     """
     def git(*args):
         return subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=True).stdout.strip()
 
     try:
-        commit = git("log", "-1", "--format=%h", "--abbrev=7", "--", "src", "configs")
-        dirty = git("status", "--porcelain", "--", "src", "configs")
+        commit = git("log", "-1", "--format=%h", "--abbrev=7", "--", *SPLIT_SOURCES)
+        dirty = git("status", "--porcelain", "--", *SPLIT_SOURCES)
     except (OSError, subprocess.CalledProcessError):
         return "unknown"
     return commit + ("-dirty" if dirty else "")
