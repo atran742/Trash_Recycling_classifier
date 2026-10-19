@@ -3,16 +3,19 @@ build_splits.py - turn the raw downloaded datasets into train / validation / tes
 
 What it does, in order:
   1. Read configs/label_map.yaml to learn which raw folder -> which training class.
-  2. Collect every image from those folders under data/raw/.
-     - Skip folders marked VERIFY (not decided yet).
+  2. Collect every image from the folders listed in label_map.yaml under data/raw/.
+     Any extra source (for example amy_images) is handled the same way once listed.
+     - Skip folders marked VERIFY (not decided yet) or EXCLUDE (dropped by the team).
      - Skip folders whose class is excluded (hazardous when num_classes is 3).
      - Drop corrupted files that Pillow cannot fully read.
   3. Remove EXACT duplicates (identical bytes -> identical SHA-256 hash).
-  4. Remove NEAR duplicates using two image fingerprints, pHash and dHash.
-     The cutoffs live under `near_duplicates:` in label_map.yaml.
-     - Same class:      pHash <= same_class_max_phash  AND dHash <= max_dhash -> near duplicate.
-     - Different class: pHash <= cross_class_max_phash AND dHash <= max_dhash -> label conflict,
-       and the whole group is dropped because we cannot trust its labels.
+  4. Find NEAR duplicates using two image fingerprints, pHash and dHash.
+     A pair matches only if pHash <= max_phash AND dHash <= max_dhash
+     (both under `near_duplicates:` in label_map.yaml).
+     - Same label:      keep the first image, drop the copy.
+     - Different label: a LABEL CONFLICT. Nothing is deleted: the whole group is
+       written to results/conflicts_to_review.csv and kept out of every split
+       until a person decides which label is right.
      An image only joins a group if it matches the group's kept copy directly.
   5. Shuffle with seed 42 and split each class 70 / 15 / 15.
   6. Copy files into data/train, data/validation, data/test (one sub-folder per class).
@@ -21,7 +24,7 @@ What it does, in order:
   9. Compute two sets of class weights from the TRAIN split only -> results/class_weights.json.
  10. Write every removed file to results/removed_duplicates.csv.
  11. Print the always-guess-the-biggest-class baseline on the validation split.
- 12. Check the arithmetic: images found - images removed = images in the splits.
+ 12. Check the arithmetic: images found - removed - held for review = images in the splits.
 
 Run from the repo root:
     python src/data/build_splits.py                    # uses num_classes from label_map.yaml
@@ -56,10 +59,12 @@ SPLIT_DIRS = {name: REPO_ROOT / "data" / name for name in SPLIT_NAMES}
 MANIFEST_DIR = REPO_ROOT / "data" / "splits"
 RESULTS_DIR = REPO_ROOT / "results"
 REMOVED_CSV = RESULTS_DIR / "removed_duplicates.csv"
+CONFLICTS_CSV = RESULTS_DIR / "conflicts_to_review.csv"
 WEIGHTS_JSON = RESULTS_DIR / "class_weights.json"
 
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 REMOVED_COLUMNS = ["file", "kept_copy", "reason", "distance", "dhash_distance"]
+CONFLICT_COLUMNS = ["group", "file", "label", "matches", "distance", "dhash_distance"]
 
 
 # ---------------------------------------------------------------------------
@@ -101,15 +106,12 @@ def hamming_distances(one_hash, all_hashes):
     return np.bitwise_count(np.uint64(one_hash) ^ all_hashes)
 
 
-def is_near_match(same_label, phash_dist, dhash_dist, rules):
+def is_near_match(phash_dist, dhash_dist, rules):
     """True if two images count as the same picture under the label_map.yaml rules.
 
-    Works on single numbers or on whole numpy arrays at once.
-    Same label uses the looser pHash cutoff; different labels use the stricter one,
-    because a cross-class match throws away every image in the group.
+    Both fingerprints must agree. Works on single numbers or on whole numpy arrays.
     """
-    phash_limit = np.where(same_label, rules["same_class_max_phash"], rules["cross_class_max_phash"])
-    return (phash_dist <= phash_limit) & (dhash_dist <= rules["max_dhash"])
+    return (phash_dist <= rules["max_phash"]) & (dhash_dist <= rules["max_dhash"])
 
 
 def is_valid_image(path):
@@ -183,6 +185,7 @@ def collect_images(config, active, removed_rows):
 
     Rules for each raw folder:
       - target VERIFY               -> skip (not decided yet)
+      - target EXCLUDE              -> skip (dropped by team decision)
       - target in active `exclude`  -> skip (e.g. hazardous in 3-class mode)
       - target not a known class    -> stop with an error (catches typos)
     Corrupted files count as found, are dropped, and are logged in removed_rows.
@@ -200,6 +203,9 @@ def collect_images(config, active, removed_rows):
         for folder, target in pairs:
             if target == "VERIFY":
                 stats["verify"] += 1
+                continue
+            if target == "EXCLUDE":
+                stats["team_excluded"] += 1
                 continue
             if target in active["exclude"]:
                 stats["excluded"] += 1
@@ -220,8 +226,9 @@ def collect_images(config, active, removed_rows):
                     continue
                 items.append({"path": path, "label": target})
 
-    print(f"\nFound {n_found} images. Skipped {stats['verify']} VERIFY folders "
-          f"and {stats['excluded']} excluded folders.")
+    print(f"\nFound {n_found} images. Skipped {stats['verify']} VERIFY folders, "
+          f"{stats['team_excluded']} EXCLUDE folders, and {stats['excluded']} folders "
+          f"outside the active classes.")
     return items, n_found
 
 
@@ -229,16 +236,16 @@ def collect_images(config, active, removed_rows):
 # Step 3-4: duplicate removal
 # ---------------------------------------------------------------------------
 
-def remove_exact_duplicates(items, removed_rows):
-    """Group images by SHA-256. Keep one per group; a mixed-label group is a conflict.
+def remove_exact_duplicates(items, removed_rows, review_rows):
+    """Group images by SHA-256. Keep one per group; a mixed-label group goes to review.
 
-    Returns (kept items, exact duplicates removed, images dropped in exact conflicts).
+    Returns (kept items, exact duplicates removed, held items).
     """
     groups = defaultdict(list)  # sha256 -> [items with those exact bytes]
     for item in items:
         groups[file_hash(item["path"])].append(item)
 
-    kept, n_dupes, n_conflict = [], 0, 0
+    kept, held, n_dupes = [], [], 0
     for group in groups.values():
         first = group[0]
         labels = {item["label"] for item in group}
@@ -253,86 +260,127 @@ def remove_exact_duplicates(items, removed_rows):
                                      "pair": dup["path"], "pair_with": first["path"]})
                 n_dupes += 1
         else:
-            # Same picture, different labels: we cannot trust either label, drop all.
-            conflict = "label_conflict (" + " vs ".join(sorted(labels)) + ")"
+            # Same picture, different labels: hold the whole group for a person to review.
+            group_id = next_group_id(review_rows)
             for item in group:
-                note = "none (first copy of conflict group)" if item is first else f"none (exact copy of {rel(first['path'])})"
-                removed_rows.append({"file": rel(item["path"]), "kept_copy": note, "reason": conflict,
-                                     "distance": 0, "dhash_distance": 0})
-                n_conflict += 1
+                other = next(o for o in group if o["label"] != item["label"])
+                review_rows.append({"group": group_id, "file": rel(item["path"]), "label": item["label"],
+                                    "matches": rel(other["path"]), "distance": 0, "dhash_distance": 0})
+                held.append(item)
 
     # Keep the original order so results do not depend on dictionary order.
     order = {id(item): i for i, item in enumerate(items)}
     kept.sort(key=lambda item: order[id(item)])
-    return kept, n_dupes, n_conflict
+    return kept, n_dupes, held
 
 
-def remove_near_duplicates(items, removed_rows, rules):
-    """Remove near duplicates across ALL classes, with no chaining.
+def next_group_id(review_rows):
+    """Next conflict group number, like G001, G002, ... (in the order groups are found)."""
+    return f"G{len({row['group'] for row in review_rows}) + 1:03d}"
 
-    Walks the images in file order. Each image that is still kept becomes an
-    anchor (a "kept copy") and is compared directly with every later image
-    that is still kept. A later image joins the anchor's group only if it
-    matches the ANCHOR itself (see is_near_match). If A matches B and B
-    matches C, C is not grouped with A unless C also matches A.
+
+def remove_near_duplicates(items, removed_rows, review_rows, rules, already_held=()):
+    """Remove same-label near duplicates and hold mixed-label groups for review.
+
+    Works across ALL classes, with no chaining. Walks the images in file order.
+    Each image still in play becomes an anchor (a "kept copy") and is compared
+    directly with every later image still in play. A later image joins the
+    anchor's group only if it matches the ANCHOR itself (see is_near_match).
+    If A matches B and B matches C, C is not grouped with A unless C also matches A.
       - Every match has the anchor's label -> keep the anchor, drop the matches (near_duplicate).
-      - Any match has a different label    -> drop the anchor and all its matches (label_conflict).
-    Returns (kept items, near duplicates removed, conflict groups, conflict images).
+      - Any match has a different label    -> label conflict: the anchor and all its
+        matches go to results/conflicts_to_review.csv and into no split. Nothing is deleted.
+    Follow-up pass: a kept image that directly matches an image already dropped or
+    held (including `already_held`, the exact-copy conflicts) with a DIFFERENT
+    label is held for review too, so file order cannot hide a conflict.
+    Returns (kept items, near duplicates removed, conflict groups, images held for review).
     """
     for item in items:
         item["phash"], item["dhash"] = image_hashes(item["path"])
     phashes = np.array([item["phash"] for item in items], dtype=np.uint64)
     dhashes = np.array([item["dhash"] for item in items], dtype=np.uint64)
-    labels = np.array([item["label"] for item in items])
 
-    removed = np.zeros(len(items), dtype=bool)  # True once an image is dropped
-    n_near, n_conflict_groups, n_conflict_images = 0, 0, 0
+    out = np.zeros(len(items), dtype=bool)  # True once an image is dropped or held for review
+    n_near, n_conflict_groups, n_held = 0, 0, 0
 
     for i, anchor in enumerate(items):
-        if removed[i]:
+        if out[i]:
             continue
         p_dist = hamming_distances(anchor["phash"], phashes)
         d_dist = hamming_distances(anchor["dhash"], dhashes)
-        same = labels == anchor["label"]
-        match = is_near_match(same, p_dist, d_dist, rules)
-        # Only later images that are still kept can join this anchor's group.
-        group = [j for j in np.nonzero(match)[0] if j > i and not removed[j]]
+        match = is_near_match(p_dist, d_dist, rules)
+        # Only later images still in play can join this anchor's group.
+        group = [j for j in np.nonzero(match)[0] if j > i and not out[j]]
         if not group:
             continue
 
-        if all(same[j] for j in group):
+        if all(items[j]["label"] == anchor["label"] for j in group):
             for j in group:
-                removed[j] = True
+                out[j] = True
                 removed_rows.append({"file": rel(items[j]["path"]), "kept_copy": rel(anchor["path"]),
                                      "reason": "near_duplicate", "distance": int(p_dist[j]),
                                      "dhash_distance": int(d_dist[j]),
                                      "pair": items[j]["path"], "pair_with": anchor["path"]})
                 n_near += 1
         else:
-            # Labels disagree: drop the anchor and every image in its group.
+            # Labels disagree: hold the anchor and its whole group for a person to check.
             n_conflict_groups += 1
-            group_labels = {anchor["label"]} | {items[j]["label"] for j in group}
-            conflict = "label_conflict (" + " vs ".join(sorted(group_labels)) + ")"
+            group_id = next_group_id(review_rows)
             # The anchor's row points at its closest match with a different label.
-            cross = [j for j in group if not same[j]]
+            cross = [j for j in group if items[j]["label"] != anchor["label"]]
             closest = min(cross, key=lambda j: (int(p_dist[j]), int(d_dist[j]), j))
-            removed[i] = True
-            removed_rows.append({"file": rel(anchor["path"]),
-                                 "kept_copy": f"none (anchor of conflict group, matches {rel(items[closest]['path'])})",
-                                 "reason": conflict, "distance": int(p_dist[closest]),
-                                 "dhash_distance": int(d_dist[closest]),
-                                 "pair": anchor["path"], "pair_with": items[closest]["path"]})
+            out[i] = True
+            review_rows.append({"group": group_id, "file": rel(anchor["path"]), "label": anchor["label"],
+                                "matches": rel(items[closest]["path"]),
+                                "distance": int(p_dist[closest]), "dhash_distance": int(d_dist[closest])})
             for j in group:
-                removed[j] = True
-                removed_rows.append({"file": rel(items[j]["path"]),
-                                     "kept_copy": f"none (matches {rel(anchor['path'])})",
-                                     "reason": conflict, "distance": int(p_dist[j]),
-                                     "dhash_distance": int(d_dist[j]),
-                                     "pair": items[j]["path"], "pair_with": anchor["path"]})
-            n_conflict_images += 1 + len(group)
+                out[j] = True
+                review_rows.append({"group": group_id, "file": rel(items[j]["path"]), "label": items[j]["label"],
+                                    "matches": rel(anchor["path"]),
+                                    "distance": int(p_dist[j]), "dhash_distance": int(d_dist[j])})
+            n_held += 1 + len(group)
 
-    kept = [item for i, item in enumerate(items) if not removed[i]]
-    return kept, n_near, n_conflict_groups, n_conflict_images
+    # Follow-up pass. Compare each kept image with every image that is out (dropped
+    # or held) plus the exact-copy conflicts. Repeat until nothing new is held,
+    # because a newly held image can itself match another kept image.
+    extra = list(already_held)
+    for item in extra:
+        item["phash"], item["dhash"] = image_hashes(item["path"])
+    others = [items[j] for j in np.nonzero(out)[0]] + extra
+    while others:
+        o_phash = np.array([o["phash"] for o in others], dtype=np.uint64)
+        o_dhash = np.array([o["dhash"] for o in others], dtype=np.uint64)
+        o_label = np.array([o["label"] for o in others])
+        newly_held = []
+        for i, item in enumerate(items):
+            if out[i]:
+                continue
+            p_dist = hamming_distances(item["phash"], o_phash)
+            d_dist = hamming_distances(item["dhash"], o_dhash)
+            hits = np.nonzero(is_near_match(p_dist, d_dist, rules) & (o_label != item["label"]))[0]
+            if len(hits) == 0:
+                continue
+            k = min(hits, key=lambda h: (int(p_dist[h]), int(d_dist[h]), int(h)))  # closest look-alike
+            out[i] = True
+            match_path = rel(others[k]["path"])
+            # Join the look-alike's group if it is already in the review list ...
+            group_id = next((r["group"] for r in review_rows if r["file"] == match_path), None)
+            if group_id is None:
+                # ... otherwise it was removed as a copy: start a new group and name its kept copy.
+                n_conflict_groups += 1
+                group_id = next_group_id(review_rows)
+                kept_copy = next((r["kept_copy"] for r in removed_rows if r["file"] == match_path), "")
+                if kept_copy:
+                    match_path = f"{match_path} (removed as a copy of {kept_copy})"
+            review_rows.append({"group": group_id, "file": rel(item["path"]),
+                                "label": item["label"], "matches": match_path,
+                                "distance": int(p_dist[k]), "dhash_distance": int(d_dist[k])})
+            n_held += 1
+            newly_held.append(item)
+        others = newly_held  # only the new ones can create further matches
+
+    kept = [item for i, item in enumerate(items) if not out[i]]
+    return kept, n_near, n_conflict_groups, n_held
 
 
 # ---------------------------------------------------------------------------
@@ -418,12 +466,10 @@ def check_no_overlap(rules):
     phashes = np.array([h[0] for h in hashes], dtype=np.uint64)
     dhashes = np.array([h[1] for h in hashes], dtype=np.uint64)
     splits = np.array([f[0] for f in files])
-    labels = np.array([f[1] for f in files])
     near_cross = 0
     for i in range(len(files)):
         later = slice(i + 1, None)
-        match = is_near_match(labels[later] == labels[i],
-                              hamming_distances(phashes[i], phashes[later]),
+        match = is_near_match(hamming_distances(phashes[i], phashes[later]),
                               hamming_distances(dhashes[i], dhashes[later]), rules)
         near_cross += int(np.sum(match & (splits[later] != splits[i])))
 
@@ -432,19 +478,23 @@ def check_no_overlap(rules):
     print("Overlap check passed: no exact or near duplicate appears in more than one split.")
 
 
-def check_counts(n_found, removed_counts, n_final, n_removed_rows):
-    """Stop with a clear message unless: images found - every removal = images in the splits.
+def check_counts(n_found, out_counts, n_final, n_removed_rows, n_review_rows):
+    """Stop with a clear message unless: images found - removed - held for review = images in the splits.
 
-    Also checks that results/removed_duplicates.csv has exactly one row per removed image.
+    Also checks that results/removed_duplicates.csv has one row per removed image
+    and results/conflicts_to_review.csv has one row per image held for review.
     (A plain `assert` would be skipped if Python runs with -O, so this uses SystemExit.)
     """
-    n_removed = sum(removed_counts.values())
-    parts = " - ".join(f"{n} {name}" for name, n in removed_counts.items())
-    print(f"\nCount check: {n_found} found - {parts} = {n_found - n_removed}; "
-          f"{n_final} in the splits; {n_removed_rows} rows in {rel(REMOVED_CSV)}.")
-    if n_found - n_removed != n_final or n_removed_rows != n_removed:
-        raise SystemExit(f"FAILED count check: {n_found} found - {n_removed} removed = {n_found - n_removed}, "
-                         f"but the splits hold {n_final} images and the removed list has {n_removed_rows} rows.")
+    n_out = sum(out_counts.values())
+    n_held = out_counts["held for review"]
+    parts = " - ".join(f"{n} {name}" for name, n in out_counts.items())
+    print(f"\nCount check: {n_found} found - {parts} = {n_found - n_out}; "
+          f"{n_final} in the splits; {n_removed_rows} rows in {rel(REMOVED_CSV)}; "
+          f"{n_review_rows} rows in {rel(CONFLICTS_CSV)}.")
+    if n_found - n_out != n_final or n_removed_rows != n_out - n_held or n_review_rows != n_held:
+        raise SystemExit(f"FAILED count check: {n_found} found - {n_out} out = {n_found - n_out}, but the splits "
+                         f"hold {n_final} images, the removed list has {n_removed_rows} rows (expected "
+                         f"{n_out - n_held}) and the review list has {n_review_rows} rows (expected {n_held}).")
     print("Count check passed.")
 
 
@@ -528,6 +578,15 @@ def write_removed_csv(removed_rows):
         writer.writerows(sorted(removed_rows, key=lambda row: row["file"]))
 
 
+def write_conflicts_csv(review_rows):
+    """Write every label-conflict group for a person to check. Header only if there are none."""
+    RESULTS_DIR.mkdir(exist_ok=True)
+    with open(CONFLICTS_CSV, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=CONFLICT_COLUMNS)
+        writer.writeheader()
+        writer.writerows(review_rows)  # already in group order
+
+
 def print_table(splits_by_class):
     """Print class counts per split as a small table. Returns the grand total."""
     print(f"\n{'class':<12}{'train':>8}{'validation':>12}{'test':>8}{'total':>8}")
@@ -549,33 +608,37 @@ def print_table(splits_by_class):
 # ---------------------------------------------------------------------------
 
 def find_duplicates(config, active):
-    """Steps 2-4. Returns (kept items, removed rows, images found, removal counts).
+    """Steps 2-4. Returns (kept items, removed rows, review rows, images found, counts of images taken out).
 
     Shared with src/data/review_near_dups.py so the spot check uses the exact same rules.
     """
     rules = config["near_duplicates"]
-    removed_rows = []  # one dict per dropped file, written to results/removed_duplicates.csv
+    removed_rows = []  # one dict per dropped file  -> results/removed_duplicates.csv
+    review_rows = []   # one dict per held-back file -> results/conflicts_to_review.csv
     items, n_found = collect_images(config, active, removed_rows)
     if not items:
         raise SystemExit("No images found. Run src/data/download.py first.")
     n_corrupted = len(removed_rows)
 
-    items, n_exact, n_exact_conflict = remove_exact_duplicates(items, removed_rows)
-    print(f"Checking near duplicates across all classes: same class pHash <= {rules['same_class_max_phash']}, "
-          f"cross class pHash <= {rules['cross_class_max_phash']}, and dHash <= {rules['max_dhash']}...")
-    items, n_near, n_groups, n_near_conflict = remove_near_duplicates(items, removed_rows, rules)
+    items, n_exact, exact_held = remove_exact_duplicates(items, removed_rows, review_rows)
+    n_exact_held = len(exact_held)
+    n_exact_groups = len({row["group"] for row in review_rows})
+    print(f"Checking near duplicates across all classes: pHash <= {rules['max_phash']} "
+          f"and dHash <= {rules['max_dhash']}...")
+    items, n_near, n_groups, n_near_held = remove_near_duplicates(items, removed_rows, review_rows, rules,
+                                                                  already_held=exact_held)
 
-    removed_counts = {
+    out_counts = {
         "corrupted": n_corrupted,
         "exact duplicates": n_exact,
         "near duplicates": n_near,
-        "label-conflict images": n_exact_conflict + n_near_conflict,
+        "held for review": n_exact_held + n_near_held,
     }
-    print(f"\nRemoved {n_exact} exact duplicates, {n_near} near duplicates, and "
-          f"{n_exact_conflict + n_near_conflict} images in label conflicts ({n_groups} near-duplicate groups"
-          + (f" + {n_exact_conflict} exact-duplicate images" if n_exact_conflict else "")
-          + f"). Dropped {n_corrupted} corrupted files. {len(items)} images remain.")
-    return items, removed_rows, n_found, removed_counts
+    print(f"\nRemoved {n_exact} exact duplicates and {n_near} near duplicates. "
+          f"Held {n_exact_held + n_near_held} images in {n_exact_groups + n_groups} label-conflict groups "
+          f"for review ({rel(CONFLICTS_CSV)}). Dropped {n_corrupted} corrupted files. "
+          f"{len(items)} images go into the splits.")
+    return items, removed_rows, review_rows, n_found, out_counts
 
 
 def main():
@@ -590,7 +653,7 @@ def main():
     if abs(sum(ratios.values()) - 1.0) > 1e-6:
         raise SystemExit("split ratios in label_map.yaml must add up to 1.0")
 
-    items, removed_rows, n_found, removed_counts = find_duplicates(config, active)
+    items, removed_rows, review_rows, n_found, out_counts = find_duplicates(config, active)
 
     by_class = defaultdict(list)
     for item in items:
@@ -608,12 +671,13 @@ def main():
     print_majority_baseline(splits_by_class)
 
     if args.dry_run:
-        check_counts(n_found, removed_counts, n_in_splits, len(removed_rows))
+        check_counts(n_found, out_counts, n_in_splits, len(removed_rows), len(review_rows))
         print("\n(dry run: nothing was written)")
         return
 
     copy_splits_and_write_manifests(splits_by_class)
     write_removed_csv(removed_rows)
+    write_conflicts_csv(review_rows)
     RESULTS_DIR.mkdir(exist_ok=True)
     with open(WEIGHTS_JSON, "w") as f:
         json.dump(weights, f, indent=2)
@@ -624,10 +688,12 @@ def main():
     # Final arithmetic check against what is really on disk.
     n_on_disk = len(split_files_on_disk())
     with open(REMOVED_CSV) as f:
-        n_csv_rows = sum(1 for _ in csv.DictReader(f))
-    check_counts(n_found, removed_counts, n_on_disk, n_csv_rows)
-    print(f"Wrote data/train, data/validation, data/test, data/splits/*.csv, "
-          f"{rel(REMOVED_CSV)}, {rel(WEIGHTS_JSON)}  (seed={seed}, {num_classes} classes)")
+        n_removed_rows = sum(1 for _ in csv.DictReader(f))
+    with open(CONFLICTS_CSV) as f:
+        n_review_rows = sum(1 for _ in csv.DictReader(f))
+    check_counts(n_found, out_counts, n_on_disk, n_removed_rows, n_review_rows)
+    print(f"Wrote data/train, data/validation, data/test, data/splits/*.csv, {rel(REMOVED_CSV)}, "
+          f"{rel(CONFLICTS_CSV)}, {rel(WEIGHTS_JSON)}  (seed={seed}, {num_classes} classes)")
 
 
 if __name__ == "__main__":

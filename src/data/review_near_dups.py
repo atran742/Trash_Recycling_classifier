@@ -33,9 +33,10 @@ def main():
     args = parser.parse_args()
 
     config, active, _ = load_config()
-    _, removed_rows, _, _ = find_duplicates(config, active)
+    _, removed_rows, _, _, _ = find_duplicates(config, active)
 
-    # Only rows that came from a pair comparison (not corrupted files), highest distance first.
+    # Only removed pairs (not corrupted files), highest distance first.
+    # Label conflicts are not removed; they are in results/conflicts_to_review.csv.
     pairs = [r for r in removed_rows if "pair" in r]
     pairs.sort(key=lambda r: (-r["distance"], -r["dhash_distance"], r["file"]))
     pairs = pairs[: args.pairs]
@@ -55,7 +56,7 @@ def main():
                 img = img.convert("RGB")
                 img.thumbnail((THUMB - 4, THUMB - 4))
                 sheet.paste(img, (x0 + m * THUMB + 2, y0 + 2))
-        reason = "conflict" if r["reason"].startswith("label_conflict") else r["reason"].replace("_duplicate", "")
+        reason = r["reason"].replace("_duplicate", "")  # "near" or "exact"
         draw.text((x0 + 4, y0 + THUMB + 2),
                   f"#{k + 1} {reason}  pHash {r['distance']}  dHash {r['dhash_distance']}", fill="black")
         draw.text((x0 + 4, y0 + THUMB + 16),

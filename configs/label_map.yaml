@@ -21,15 +21,16 @@ class_sets:
 
 # Near-duplicate removal (build_splits.py). Distances count how many of the 64
 # bits differ between two image fingerprints (0 = identical look).
-# A pair is a near duplicate only if BOTH fingerprints agree:
-#   same class:      pHash distance <= same_class_max_phash  AND dHash distance <= max_dhash
-#   different class: pHash distance <= cross_class_max_phash AND dHash distance <= max_dhash
-# A cross-class match is a label conflict and drops every image in that group,
-# so its pHash cutoff is stricter. Lower numbers = stricter = fewer images removed.
+# A pair counts as the same picture only if BOTH fingerprints agree:
+#   pHash distance <= max_phash  AND  dHash distance <= max_dhash
+# Same label      -> keep the first image, drop the copy.
+# Different label -> nothing is deleted. The group goes to
+#                    results/conflicts_to_review.csv and stays out of every
+#                    split until a person decides which label is right.
+# Lower numbers = stricter = fewer images treated as copies.
 # pHash distances are always even (each pHash has 32 one-bits), so 3 acts like 2.
 near_duplicates:
-  same_class_max_phash: 3
-  cross_class_max_phash: 2
+  max_phash: 3     # team decision Oct 18 (was 5)
   max_dhash: 2     # tightened 4 -> 3 -> 2 after spot checks (docs/dataset_inventory.md)
 
 # How to split each class. Same seed -> same split every run.
@@ -40,8 +41,12 @@ split:
 # ------------------------------------------------------------------
 # Datasets. Each dataset key is a folder in data/raw/. Each key under `folders`
 # is a real folder inside data/raw/<dataset>/<root>/.
-# Targets: recycling | compost | trash | hazardous | VERIFY
-# VERIFY = not decided yet. build_splits.py skips these folders.
+# Targets: recycling | compost | trash | hazardous | VERIFY | EXCLUDE
+# VERIFY  = not decided yet. build_splits.py skips these folders.
+# EXCLUDE = decided: never train on this folder. Also skipped.
+#
+# Extra sources: any folder you put in data/raw/ and list here goes through the
+# same corrupted-file check, duplicate removal and split as everything else.
 # ------------------------------------------------------------------
 datasets:
 
@@ -62,10 +67,22 @@ datasets:
       plastic: recycling
       white-glass: recycling
       trash: trash
-      clothes: VERIFY    # not accepted in SD curbside recycling. Donate, trash, or drop? Team to decide.
-      shoes: VERIFY      # same question as clothes
+      clothes: EXCLUDE   # Dropped by team decision Oct 18.
+      shoes: VERIFY      # not accepted in SD curbside recycling. Trash or drop? Team to decide.
 
   personal_battery:
     # Our own photos. All images sit directly in data/raw/personal_battery/.
     # See data/raw/personal_battery/README.md for naming and photo rules.
     label: hazardous
+
+  # Amy's own photos (about 1,000 each of trash, recycling, compost and 600 hazardous).
+  # DISABLED until her images arrive. To turn on (see docs/data_pipeline.md):
+  #   1. Put them in data/raw/amy_images/trash/, recycling/, compost/, hazardous/.
+  #   2. Delete the "# " in front of the 7 lines below, then rerun build_splits.py.
+  # amy_images:
+  #   root: ""          # the class folders sit directly in data/raw/amy_images/
+  #   folders:
+  #     trash: trash
+  #     recycling: recycling
+  #     compost: compost
+  #     hazardous: hazardous
