@@ -40,7 +40,7 @@ With `num_classes: 4`, the last command prints:
 
 ```text
 Removed 2 exact duplicates and 57 near duplicates. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted files. 8519 images are split.
-Dropped 17 known duplicates listed in configs/label_map.yaml (their train copies are kept).
+Dropped 17 known duplicates listed in configs/label_map.yaml (the copy outside train is dropped; see results/removed_duplicates.csv).
 
 class          train  validation    test   total
 ------------------------------------------------
@@ -63,7 +63,7 @@ Baseline 'always guess recycling' on validation (1271 images): accuracy 68.06%, 
 Overlap check passed: no exact or near duplicate appears in more than one split.
 Count check: 8578 found - 0 corrupted - 2 exact duplicates - 57 near duplicates - 17 known duplicates - 0 held for review = 8502; 8502 in the splits; 76 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: bc318eb  manifest_sha256: 4d578382b730  (both saved in results/class_weights.json)
+Split version: 403a2d4  manifest_sha256: 4d578382b730  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
