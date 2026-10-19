@@ -39,48 +39,38 @@ branch_structure.json
 temp_auto_push.bat
 temp_interactive_push.bat
 
-# Python environments and local configuration
-.venv/
-venv/
-env/
-.env
-.env.*
-!.env.example
+# ---- Data pipeline (added by data-pipeline branch) ----
+# Never commit images or datasets. Everything under data/ is ignored,
+# EXCEPT the personal battery README and the split CSV manifests (see below).
+# (Written as data/* plus "!" exceptions instead of plain "data/", because git
+# cannot re-include a file once its whole parent folder is ignored.)
+data/*
+!data/raw/
+data/raw/*
+!data/raw/personal_battery/
+data/raw/personal_battery/*
+!data/raw/personal_battery/README.md
+# Split manifests (path,label CSVs, relative paths, well under 2 MB) are tracked
+# so everyone trains on the same split. Only the .csv files, nothing else.
+!data/splits/
+data/splits/*
+!data/splits/*.csv
 
-# Python bytecode and tool caches
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# Machine-learning model artifacts
-*.pt
-*.pth
-*.ckpt
-*.h5
-*.keras
-*.onnx
-*.tflite
-
-# Training and experiment outputs
-runs/
-lightning_logs/
-wandb/
-mlruns/
-
-# Local/editor/OS files
-.DS_Store
-
-# data 
-
+# Belt and suspenders: image files are never allowed anywhere in the repo.
 *.jpg
 *.jpeg
 *.png
-*.svg
+*.gif
+*.bmp
 *.webp
+*.heic
+
+# Downloaded archives (download.py unzips and deletes these, but just in case).
+*.zip
+
+# Project virtualenv (already covered by .venv/ at the top; repeated so it is obvious).
+.venv
+
+# Model weights live in models/ but never in git. *.pt, *.pth, *.ckpt, *.h5,
+# *.keras, *.onnx and *.tflite are already ignored everywhere near the top.
+models/*.pth

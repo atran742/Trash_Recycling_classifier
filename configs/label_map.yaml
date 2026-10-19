@@ -1,0 +1,65 @@
+# label_map.yaml - maps raw dataset folders to the classes we train on.
+# Read by src/data/build_splits.py.
+#
+# ------------------------------------------------------------------
+# THE ONE-LINE SWITCH: set to 4 (with hazardous) or 3 (plan's original classes).
+# ------------------------------------------------------------------
+num_classes: 4
+
+# What each setting means.
+class_sets:
+  4:
+    classes: [recycling, compost, trash, hazardous]
+    exclude: []
+  3:
+    # Fallback if the team keeps the plan's 3 classes. Every folder mapped to
+    # hazardous is dropped from training. On the Pi, a battery would then most
+    # likely land in "I'm not sure", which is safe: batteries never go in a
+    # San Diego curbside bin.
+    classes: [recycling, compost, trash]
+    exclude: [hazardous]
+
+# Near-duplicate removal (build_splits.py). Two images count as the same picture
+# when their 64-bit perceptual hashes differ in this many bits or fewer.
+# Measured on our data: distance 0-2 is almost always a true copy; at 4, about
+# half the pairs are different objects with a similar shape on a white
+# background (e.g. two different toothbrushes). Lower to 2 or 3 to keep more images.
+near_duplicate_max_distance: 5
+
+# How to split each class. Same seed -> same split every run.
+split:
+  ratios: {train: 0.70, validation: 0.15, test: 0.15}
+  seed: 42
+
+# ------------------------------------------------------------------
+# Datasets. Each dataset key is a folder in data/raw/. Each key under `folders`
+# is a real folder inside data/raw/<dataset>/<root>/.
+# Targets: recycling | compost | trash | hazardous | VERIFY
+# VERIFY = not decided yet. build_splits.py skips these folders.
+# ------------------------------------------------------------------
+datasets:
+
+  garbage12_enhanced:
+    # Folder inside data/raw/garbage12_enhanced/ that holds the class folders.
+    # The download also has garbage_classification_corrected/, an older copy
+    # that shares 15,459 images with the enhanced one. We use the enhanced one
+    # only, to avoid duplicates.
+    root: garbage_classification_enhanced
+    folders:
+      battery: hazardous
+      biological: compost
+      brown-glass: recycling
+      cardboard: recycling
+      green-glass: recycling
+      metal: recycling
+      paper: recycling
+      plastic: recycling
+      white-glass: recycling
+      trash: trash
+      clothes: VERIFY    # not accepted in SD curbside recycling. Donate, trash, or drop? Team to decide.
+      shoes: VERIFY      # same question as clothes
+
+  personal_battery:
+    # Our own photos. All images sit directly in data/raw/personal_battery/.
+    # See data/raw/personal_battery/README.md for naming and photo rules.
+    label: hazardous

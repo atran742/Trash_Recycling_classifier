@@ -1,0 +1,35 @@
+{
+  "num_classes": 4,
+  "class_order": [
+    "compost",
+    "hazardous",
+    "recycling",
+    "trash"
+  ],
+  "train_counts": {
+    "compost": 715,
+    "hazardous": 674,
+    "recycling": 4009,
+    "trash": 482
+  },
+  "train_total": 5880,
+  "train_percent": {
+    "compost": 12.16,
+    "hazardous": 11.46,
+    "recycling": 68.18,
+    "trash": 8.2
+  },
+  "weights": {
+    "compost": 2.0559,
+    "hazardous": 2.181,
+    "recycling": 0.3667,
+    "trash": 3.0498
+  },
+  "weights_in_class_order": [
+    2.0559,
+    2.181,
+    0.3667,
+    3.0498
+  ],
+  "formula": "total_train / (num_classes * class_train_count)"
+}
