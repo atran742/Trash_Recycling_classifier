@@ -1,5 +1,5 @@
 {
-  "split_version": "9b565e5",
+  "split_version": "bc318eb",
   "num_classes": 4,
   "class_order": [
     "compost",
@@ -52,5 +52,5 @@
       ]
     }
   },
-  "manifest_sha256": "003abb987adb"
+  "manifest_sha256": "4d578382b730"
 }

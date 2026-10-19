@@ -52,7 +52,6 @@ data/test/compost/garbage12_enhanced__biological__biological335.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological339.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological36.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological360.jpg,compost
-data/test/compost/garbage12_enhanced__biological__biological369.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological38.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological383.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological387.jpg,compost
@@ -147,18 +146,15 @@ data/test/compost/garbage12_enhanced__biological__biological96.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological969.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological974.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological978.jpg,compost
-data/test/compost/garbage12_enhanced__biological__biological981.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological985.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological986.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological989.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological992.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological994.jpg,compost
 data/test/compost/garbage12_enhanced__biological__biological999.jpg,compost
-data/test/hazardous/garbage12_enhanced__battery__battery104.jpg,hazardous
 data/test/hazardous/garbage12_enhanced__battery__battery121.jpg,hazardous
 data/test/hazardous/garbage12_enhanced__battery__battery123.jpg,hazardous
 data/test/hazardous/garbage12_enhanced__battery__battery126.jpg,hazardous
-data/test/hazardous/garbage12_enhanced__battery__battery128.jpg,hazardous
 data/test/hazardous/garbage12_enhanced__battery__battery139.jpg,hazardous
 data/test/hazardous/garbage12_enhanced__battery__battery140.jpg,hazardous
 data/test/hazardous/garbage12_enhanced__battery__battery150.jpg,hazardous
@@ -621,7 +617,6 @@ data/test/recycling/garbage12_enhanced__green-glass__green-glass562.jpg,recyclin
 data/test/recycling/garbage12_enhanced__green-glass__green-glass568.jpg,recycling
 data/test/recycling/garbage12_enhanced__green-glass__green-glass57.jpg,recycling
 data/test/recycling/garbage12_enhanced__green-glass__green-glass58.jpg,recycling
-data/test/recycling/garbage12_enhanced__green-glass__green-glass581.jpg,recycling
 data/test/recycling/garbage12_enhanced__green-glass__green-glass588.jpg,recycling
 data/test/recycling/garbage12_enhanced__green-glass__green-glass59.jpg,recycling
 data/test/recycling/garbage12_enhanced__green-glass__green-glass607.jpg,recycling
@@ -696,7 +691,6 @@ data/test/recycling/garbage12_enhanced__metal__metal381.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal391.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal399.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal400.jpg,recycling
-data/test/recycling/garbage12_enhanced__metal__metal408.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal413.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal420.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal429.jpg,recycling
@@ -766,7 +760,6 @@ data/test/recycling/garbage12_enhanced__metal__metal825.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal834.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal839.jpg,recycling
 data/test/recycling/garbage12_enhanced__metal__metal84.jpg,recycling
-data/test/recycling/garbage12_enhanced__paper__paper1011.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper1013.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper1014.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper1017.jpg,recycling
@@ -854,7 +847,6 @@ data/test/recycling/garbage12_enhanced__paper__paper521.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper534.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper539.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper549.jpg,recycling
-data/test/recycling/garbage12_enhanced__paper__paper551.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper554.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper559.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper58.jpg,recycling
@@ -899,7 +891,6 @@ data/test/recycling/garbage12_enhanced__paper__paper796.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper80.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper800.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper807.jpg,recycling
-data/test/recycling/garbage12_enhanced__paper__paper812.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper814.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper82.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper827.jpg,recycling
@@ -910,7 +901,6 @@ data/test/recycling/garbage12_enhanced__paper__paper870.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper877.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper879.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper881.jpg,recycling
-data/test/recycling/garbage12_enhanced__paper__paper886.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper893.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper898.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper900.jpg,recycling
@@ -920,7 +910,6 @@ data/test/recycling/garbage12_enhanced__paper__paper92.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper926.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper939.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper945.jpg,recycling
-data/test/recycling/garbage12_enhanced__paper__paper982.jpg,recycling
 data/test/recycling/garbage12_enhanced__paper__paper993.jpg,recycling
 data/test/recycling/garbage12_enhanced__plastic__plastic108.jpg,recycling
 data/test/recycling/garbage12_enhanced__plastic__plastic122.jpg,recycling
@@ -1273,7 +1262,6 @@ data/test/trash/garbage12_enhanced__trash__trash718.jpg,trash
 data/test/trash/garbage12_enhanced__trash__trash723.jpg,trash
 data/test/trash/garbage12_enhanced__trash__trash728.jpg,trash
 data/test/trash/garbage12_enhanced__trash__trash75.jpg,trash
-data/test/trash/garbage12_enhanced__trash__trash8.jpg,trash
 data/test/trash/garbage12_enhanced__trash__trash83.jpg,trash
 data/test/trash/garbage12_enhanced__trash__trash87.jpg,trash
 data/test/trash/garbage12_enhanced__trash__trash88.jpg,trash
