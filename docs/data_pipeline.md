@@ -62,15 +62,19 @@ Baseline 'always guess recycling' on validation (1276 images): accuracy 68.10%, 
 Overlap check passed: no exact or near duplicate appears in more than one split.
 Count check: 8578 found - 0 corrupted - 2 exact duplicates - 57 near duplicates - 0 held for review = 8519; 8519 in the splits; 59 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
+Split version: b3d0c9c  (saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
 
-**Check `split_version` before comparing models.** It is printed at the end of
-`build_splits.py` and saved in `results/class_weights.json`. Two models only
-compare fairly if they trained on the same `split_version`. Splits from before
+**Check `split_version` and `manifest_sha256` before comparing models.** Both are
+printed at the end of `build_splits.py` and saved in `results/class_weights.json`.
+`split_version` is the code commit and `manifest_sha256` fingerprints the split
+lists themselves, so it also changes when images are added to `data/raw/`. Two
+models only compare fairly if both match. Splits from before
 the data-cleanup branch (8,403 images, older duplicate rule) are stale: rebuild
-them before training.
+them before training. The version is the commit the build ran on, so a rebuild on a
+later commit gets a new version even if the splits come out the same.
 
 ## What else the split step writes
 
@@ -78,13 +82,13 @@ them before training.
 |---|---|---|
 | `data/train/`, `data/validation/`, `data/test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. |
 | `data/splits/train.csv`, `validation.csv`, `test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. |
-| `results/class_weights.json` | Yes | `split_version` (the git commit the splits were built from), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
+| `results/class_weights.json` | Yes | `split_version` (the git commit the splits were built from), `manifest_sha256` (fingerprint of the split CSVs), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
 | `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate` or `corrupted`. |
 | `results/conflicts_to_review.csv` | Yes | Label conflicts: look-alike images with different labels, as `group,file,label,matches,distance,dhash_distance`. These are **not deleted** but kept out of every split until a person checks them. Header only when there are none. |
-
-**After reviewing a conflict group:** if it is a real copy, delete the image with the wrong label from `data/raw/` and rerun, so the right one goes back into the splits. If it is a false match (two different objects), note the group and file paths for the team. There is no switch yet to let both images back in. If false matches show up, lower `max_phash` or `max_dhash`, or add an "allowed pairs" list to the script. Today there are no conflicts to review.
 | `results/class_counts.png`, `results/split_counts.png` | No | Written by `python src/data/plot_counts.py` from the manifests. |
 | `results/near_dup_review.png`, `results/cross_label_review.png` | No | Written by `python src/data/review_near_dups.py` (add `--cross-label` for the second), not by this step. Show the most borderline removed pairs, or every label-conflict group, side by side for checking the cutoffs by eye. |
+
+**After reviewing a conflict group:** if it is a real copy, delete the image with the wrong label from `data/raw/` and rerun, so the right one goes back into the splits. If it is a false match (two different objects), note the group and file paths for the team. There is no switch yet to let both images back in. If false matches show up, lower `max_phash` or `max_dhash`, or add an "allowed pairs" list to the script. Today there are no conflicts to review.
 
 ### Using the class weights in PyTorch
 

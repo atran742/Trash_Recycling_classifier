@@ -25,9 +25,11 @@ What it does, in order:
  10. Write every removed file to results/removed_duplicates.csv.
  11. Print the always-guess-the-biggest-class baseline on the validation split.
  12. Check the arithmetic: images found - removed - held for review = images in the splits.
- 13. Stamp the build with split_version (the git commit of the code and config used)
-     in results/class_weights.json, and print it. Compare it before comparing models:
-     two models only compare fairly if they trained on the same split_version.
+ 13. Stamp the build in results/class_weights.json and print both stamps:
+     - split_version:   the git commit of the code and config used.
+     - manifest_sha256: a fingerprint of the three split CSVs, so it also changes
+       when images are added to or removed from data/raw/ (which git ignores).
+     Two models only compare fairly if both stamps match.
 
 Run from the repo root:
     python src/data/build_splits.py                    # uses num_classes from label_map.yaml
@@ -116,6 +118,18 @@ def is_near_match(phash_dist, dhash_dist, rules):
     Both fingerprints must agree. Works on single numbers or on whole numpy arrays.
     """
     return (phash_dist <= rules["max_phash"]) & (dhash_dist <= rules["max_dhash"])
+
+
+def manifest_fingerprint():
+    """First 12 characters of a SHA-256 over data/splits/train.csv, validation.csv and test.csv.
+
+    The manifests list every image path and label in every split, so any change
+    to the splits changes this fingerprint, even when the git commit stays the same.
+    """
+    h = hashlib.sha256()
+    for split_name in SPLIT_NAMES:
+        h.update((MANIFEST_DIR / f"{split_name}.csv").read_bytes())
+    return h.hexdigest()[:12]
 
 
 def get_split_version():
@@ -699,6 +713,7 @@ def main():
         return
 
     copy_splits_and_write_manifests(splits_by_class)
+    weights["manifest_sha256"] = manifest_fingerprint()
     write_removed_csv(removed_rows)
     write_conflicts_csv(review_rows)
     RESULTS_DIR.mkdir(exist_ok=True)
@@ -717,7 +732,8 @@ def main():
     check_counts(n_found, out_counts, n_on_disk, n_removed_rows, n_review_rows)
     print(f"Wrote data/train, data/validation, data/test, data/splits/*.csv, {rel(REMOVED_CSV)}, "
           f"{rel(CONFLICTS_CSV)}, {rel(WEIGHTS_JSON)}  (seed={seed}, {num_classes} classes)")
-    print(f"Split version: {weights['split_version']}  (saved in {rel(WEIGHTS_JSON)})")
+    print(f"Split version: {weights['split_version']}  manifest_sha256: {weights['manifest_sha256']}  "
+          f"(both saved in {rel(WEIGHTS_JSON)})")
 
 
 if __name__ == "__main__":

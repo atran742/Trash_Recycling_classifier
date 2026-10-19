@@ -127,8 +127,9 @@ dHash check off and draws every label-conflict group in
 | G005 | recycling vs trash | green olive-oil bottle vs two electric toothbrushes | 14 |
 | G006 | recycling vs trash | brown pump bottle vs two toothbrushes | 8-18 |
 
-**0 of the 16 images are true cross-label copies.** Every group is a thin,
-upright object on a white background matched to a toothbrush. Since none are
+**0 of the 16 images are true cross-label copies.** Every group pairs a
+toothbrush with a different object of a similar outline on a plain background:
+batteries, bottles, and in one case a cardboard edge. Since none are
 real copies, there was nothing to loosen for. The smallest cross-label dHash
 distance is 8, far above the cutoff.
 
