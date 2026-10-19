@@ -66,19 +66,25 @@ Count check passed.
 
 The result is the same on every machine because the seed is fixed at 42.
 
+**Check `split_version` before comparing models.** It is printed at the end of
+`build_splits.py` and saved in `results/class_weights.json`. Two models only
+compare fairly if they trained on the same `split_version`. Splits from before
+the data-cleanup branch (8,403 images, older duplicate rule) are stale: rebuild
+them before training.
+
 ## What else the split step writes
 
 | File | In git? | What it is |
 |---|---|---|
 | `data/train/`, `data/validation/`, `data/test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. |
 | `data/splits/train.csv`, `validation.csv`, `test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. |
-| `results/class_weights.json` | Yes | Class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
+| `results/class_weights.json` | Yes | `split_version` (the git commit the splits were built from), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
 | `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate` or `corrupted`. |
 | `results/conflicts_to_review.csv` | Yes | Label conflicts: look-alike images with different labels, as `group,file,label,matches,distance,dhash_distance`. These are **not deleted** but kept out of every split until a person checks them. Header only when there are none. |
 
 **After reviewing a conflict group:** if it is a real copy, delete the image with the wrong label from `data/raw/` and rerun, so the right one goes back into the splits. If it is a false match (two different objects), note the group and file paths for the team. There is no switch yet to let both images back in. If false matches show up, lower `max_phash` or `max_dhash`, or add an "allowed pairs" list to the script. Today there are no conflicts to review.
 | `results/class_counts.png`, `results/split_counts.png` | No | Written by `python src/data/plot_counts.py` from the manifests. |
-| `results/near_dup_review.png` | No | Written by `python src/data/review_near_dups.py`, not by this step. Shows the 20 most borderline removed pairs side by side, for checking the cutoffs by eye. |
+| `results/near_dup_review.png`, `results/cross_label_review.png` | No | Written by `python src/data/review_near_dups.py` (add `--cross-label` for the second), not by this step. Show the most borderline removed pairs, or every label-conflict group, side by side for checking the cutoffs by eye. |
 
 ### Using the class weights in PyTorch
 

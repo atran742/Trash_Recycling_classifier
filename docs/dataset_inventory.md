@@ -71,12 +71,14 @@ hide a conflict.
 
 The new rules keep **116 more images** than the old pHash ≤ 5 setting.
 `results/conflicts_to_review.csv` is header-only today because no cross-class
-pair passes both checks. Checking pHash ≤ 3 alone, without dHash, would have
-flagged 6 conflict groups with 15 images; requiring dHash agreement too clears all of them.
+pair passes both checks. Checking pHash ≤ 3 alone, without dHash, would flag
+6 conflict groups with 16 images. All of them are look-alikes, not copies (see
+the cross-label review below), and requiring dHash agreement clears them all.
 
 In 3-class mode the script finds 7,599 images, removes 2 exact and 52 near duplicates with no conflicts, and keeps 7,545.
 Every run ends with a count check: images found minus removed minus held for
 review must equal the images in the splits, and each CSV must have one row per image.
+Count gap fixed: the "175 removed but only 173 fewer" mismatch came from comparing 8,403 against 8,576, the split total from `f238069`, which had already dropped the same 2 exact duplicates. The true start was 8,578, and the count check added in `1421f23` now stops any run whose numbers do not add up.
 
 The 57 near duplicates are all within one folder: green-glass 13, metal 8,
 biological 8, trash 7, paper 7, cardboard 6, battery 5, white-glass 2, plastic 1.
@@ -108,6 +110,32 @@ No cross-class pair passes both checks, so no image is held as a label conflict.
 Toothbrushes are hard for both fingerprints because almost the whole picture is
 white background. A third fingerprint or a smaller pHash cutoff would
 be the next step if the team wants to keep those few images.
+
+### Cross-label review and the final `max_dhash`
+
+`python src/data/review_near_dups.py --cross-label --max-dhash 64` turns the
+dHash check off and draws every label-conflict group in
+`results/cross_label_review.png` (not committed). With pHash ≤ 3 alone there are
+6 groups with 16 images:
+
+| Group | Labels | What it really is | dHash distance across labels |
+|---|---|---|---:|
+| G001 | hazardous vs trash | Duracell battery vs blue electric toothbrush | 15 |
+| G002 | hazardous vs trash | Duracell AA on beige vs black toothbrush | 20 |
+| G003 | recycling vs trash | two different brown beer bottles vs a toothbrush head and a white toothbrush | 12-14 |
+| G004 | recycling vs trash | cardboard edge vs bamboo toothbrush | 17 |
+| G005 | recycling vs trash | green olive-oil bottle vs two electric toothbrushes | 14 |
+| G006 | recycling vs trash | brown pump bottle vs two toothbrushes | 8-18 |
+
+**0 of the 16 images are true cross-label copies.** Every group is a thin,
+upright object on a white background matched to a toothbrush. Since none are
+real copies, there was nothing to loosen for. The smallest cross-label dHash
+distance is 8, far above the cutoff.
+
+**Final `max_dhash: 2`, and why:** the borderline same-label spot check above
+tightened it from 4 to 2 to cut look-alike removals. This cross-label check
+found no true copy that dHash ≤ 2 would miss, and every look-alike sits at
+dHash 8 or more, so 2 keeps all of them out of the review list.
 
 ## Train / validation / test splits (seed 42, 70/15/15)
 
