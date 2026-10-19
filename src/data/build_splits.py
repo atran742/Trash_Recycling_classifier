@@ -427,14 +427,21 @@ def remove_near_duplicates(items, removed_rows, review_rows, rules, already_held
     return kept, n_near, n_conflict_groups, n_held
 
 
-def drop_known_duplicates(splits_by_class, config, removed_rows):
-    """Drop the images listed under `known_duplicates:` in label_map.yaml.
+# ---------------------------------------------------------------------------
+# Step 5b: known duplicates (runs right after the split, see main())
+# ---------------------------------------------------------------------------
 
-    Each entry names a `file` (a validation/test image) and its `train_match`
-    (the train image it copies). A person confirmed these by eye, because they
-    are too different for the automatic pHash/dHash cutoffs to catch.
-    We drop the `file` and keep the `train_match`, and log the drop in
-    results/removed_duplicates.csv with reason "known_duplicate".
+def drop_known_duplicates(splits_by_class, config, removed_rows):
+    """Drop the copies listed under `known_duplicates:` in label_map.yaml.
+
+    Each entry names a `file` and its `train_match`: two images a person
+    confirmed by eye are the same photo, too different for the automatic
+    pHash/dHash cutoffs to catch. A copy only leaks if the two images end up in
+    DIFFERENT splits, so we first look up where each one landed:
+      - same split            -> no leak, keep both (a note is printed)
+      - one of them in train  -> drop the one that is NOT in train, keep the train copy
+      - validation vs test    -> drop `file`, keep `train_match`
+    Every drop is logged in results/removed_duplicates.csv as "known_duplicate".
 
     Why AFTER the split: removing images before the shuffle changes every
     class's list, so seed 42 would move thousands of OTHER images to a
@@ -443,9 +450,10 @@ def drop_known_duplicates(splits_by_class, config, removed_rows):
     Returns (splits_by_class without the dropped files, number dropped).
     """
     entries = config.get("known_duplicates") or []
-    # Every image in any split, by path, so we can look up both sides of an entry.
-    in_play = {rel(item["path"]): item
-               for splits in splits_by_class.values() for items in splits.values() for item in items}
+    # Where every image landed: path -> (split name, item).
+    where = {rel(item["path"]): (split_name, item)
+             for splits in splits_by_class.values()
+             for split_name, items in splits.items() for item in items}
     to_drop = set()
 
     for entry in entries:
@@ -455,17 +463,18 @@ def drop_known_duplicates(splits_by_class, config, removed_rows):
             if not (REPO_ROOT / path).is_file():
                 raise SystemExit(f"known_duplicates: {path} does not exist. Check configs/label_map.yaml.")
         # Not in play: its class is not active (e.g. hazardous with 3 classes)
-        # or it was already removed as a duplicate. Nothing to do.
-        if file not in in_play:
+        # or it was already removed as a duplicate. Nothing can leak.
+        if file not in where or train_match not in where:
             continue
-        # Only drop the copy if the image it duplicates is still in the
-        # dataset; otherwise we would lose the picture completely.
-        if train_match not in in_play:
-            print(f"  [keep] {file}: its train_match is not in the dataset, so it is kept.")
+        file_split, train_split = where[file][0], where[train_match][0]
+        if file_split == train_split:
+            print(f"  [keep both] {file} and its match are both in {file_split}: no leak.")
             continue
-        to_drop.add(file)
-        a, b = in_play[file], in_play[train_match]  # both already have pHash/dHash from the near-duplicate step
-        removed_rows.append({"file": file, "kept_copy": train_match, "reason": "known_duplicate",
+        # Keep the copy in train if there is one; otherwise keep train_match.
+        drop, keep = (train_match, file) if file_split == "train" else (file, train_match)
+        to_drop.add(drop)
+        a, b = where[drop][1], where[keep][1]  # both already have pHash/dHash from the near-duplicate step
+        removed_rows.append({"file": drop, "kept_copy": keep, "reason": "known_duplicate",
                              "distance": int(np.bitwise_count(np.uint64(a["phash"] ^ b["phash"]))),
                              "dhash_distance": int(np.bitwise_count(np.uint64(a["dhash"] ^ b["dhash"])))})
 
@@ -728,6 +737,7 @@ def find_duplicates(config, active):
         "known duplicates": 0,  # filled in by main() after the split
         "held for review": n_exact_held + n_near_held,
     }
+
     print(f"\nRemoved {n_exact} exact duplicates and {n_near} near duplicates. "
           f"Held {n_exact_held + n_near_held} images in {n_exact_groups + n_groups} label-conflict groups "
           f"for review ({rel(CONFLICTS_CSV)}). Dropped {n_corrupted} corrupted files. "
@@ -760,7 +770,8 @@ def main():
     splits_by_class = {cls: split_list(by_class[cls], ratios, seed) for cls in sorted(by_class)}
     splits_by_class, n_known = drop_known_duplicates(splits_by_class, config, removed_rows)
     out_counts["known duplicates"] = n_known
-    print(f"Dropped {n_known} known duplicates listed in {rel(CONFIG_PATH)} (their train copies are kept).")
+    print(f"Dropped {n_known} known duplicates listed in {rel(CONFIG_PATH)} "
+          f"(the copy outside train is dropped; see {rel(REMOVED_CSV)}).")
     n_in_splits = print_table(splits_by_class)
 
     weights = compute_class_weights(splits_by_class, num_classes)
