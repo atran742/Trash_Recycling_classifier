@@ -26,7 +26,7 @@ What it does, in order:
  11. Print the always-guess-the-biggest-class baseline on the validation split.
  12. Check the arithmetic: images found - removed - held for review = images in the splits.
  13. Stamp the build in results/class_weights.json and print both stamps:
-     - split_version:   the git commit of the code and config used.
+     - split_version:   the last git commit that changed the code or config (src/, configs/).
      - manifest_sha256: a fingerprint of the three split CSVs, so it also changes
        when images are added to or removed from data/raw/ (which git ignores).
      Two models only compare fairly if both stamps match.
@@ -135,15 +135,17 @@ def manifest_fingerprint():
 def get_split_version():
     """Short git commit hash of the code that built these splits, for example "fa59286".
 
-    Adds "-dirty" if src/ or configs/ have changes that are not committed yet,
-    because then the commit alone does not describe how the splits were made.
+    It is the LAST commit that changed src/ or configs/, not simply the newest
+    commit. Docs-only or results-only commits do not change how splits are made,
+    so they do not change the version, and rebuilding on a later commit gives the
+    same stamp. Adds "-dirty" if src/ or configs/ have uncommitted changes.
     Returns "unknown" if git is not available.
     """
     def git(*args):
         return subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True, check=True).stdout.strip()
 
     try:
-        commit = git("rev-parse", "--short=7", "HEAD")
+        commit = git("log", "-1", "--format=%h", "--abbrev=7", "--", "src", "configs")
         dirty = git("status", "--porcelain", "--", "src", "configs")
     except (OSError, subprocess.CalledProcessError):
         return "unknown"

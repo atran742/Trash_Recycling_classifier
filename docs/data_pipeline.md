@@ -69,12 +69,12 @@ The result is the same on every machine because the seed is fixed at 42.
 
 **Check `split_version` and `manifest_sha256` before comparing models.** Both are
 printed at the end of `build_splits.py` and saved in `results/class_weights.json`.
-`split_version` is the code commit and `manifest_sha256` fingerprints the split
-lists themselves, so it also changes when images are added to `data/raw/`. Two
-models only compare fairly if both match. Splits from before
-the data-cleanup branch (8,403 images, older duplicate rule) are stale: rebuild
-them before training. The version is the commit the build ran on, so a rebuild on a
-later commit gets a new version even if the splits come out the same.
+`split_version` is the last commit that changed the code or config (`src/`,
+`configs/`), so docs-only commits do not change it. `manifest_sha256` fingerprints
+the split lists themselves, so it also changes when images are added to
+`data/raw/`. Two models only compare fairly if both match. Splits from before the
+data-cleanup branch (8,403 images, older duplicate rule) are stale: rebuild them
+before training.
 
 ## What else the split step writes
 
@@ -82,7 +82,7 @@ later commit gets a new version even if the splits come out the same.
 |---|---|---|
 | `data/train/`, `data/validation/`, `data/test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. |
 | `data/splits/train.csv`, `validation.csv`, `test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. |
-| `results/class_weights.json` | Yes | `split_version` (the git commit the splits were built from), `manifest_sha256` (fingerprint of the split CSVs), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
+| `results/class_weights.json` | Yes | `split_version` (the last commit that changed `src/` or `configs/`), `manifest_sha256` (fingerprint of the split CSVs), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
 | `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate` or `corrupted`. |
 | `results/conflicts_to_review.csv` | Yes | Label conflicts: look-alike images with different labels, as `group,file,label,matches,distance,dhash_distance`. These are **not deleted** but kept out of every split until a person checks them. Header only when there are none. |
 | `results/class_counts.png`, `results/split_counts.png` | No | Written by `python src/data/plot_counts.py` from the manifests. |
