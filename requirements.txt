@@ -11,3 +11,5 @@ pillow-heif>=1.0   # lets Pillow open iPhone HEIC/HEIF photos (Amy's images)
 imagehash>=4.3     # image fingerprints (pHash and dHash) to find near-duplicate images
 numpy>=2.0         # fast bit counting to compare hashes (np.bitwise_count needs 2.0+)
 matplotlib>=3.8     # bar charts of class counts (src/data/plot_counts.py)
+scikit-learn>=1.3   # accuracy, F1, confusion matrix (src/eval/evaluate.py)
+opencv-python>=4.8  # USB webcam fallback for raspberry_pi/camera_test.py (the Pi camera uses picamera2 from apt)
