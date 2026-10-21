@@ -48,11 +48,16 @@ def check_requirements():
     example pillow-heif for iPhone photos) learns it right away, not halfway
     through build_splits.py.
     """
-    import importlib.util
+    import importlib
 
     needed = {"kaggle": "kaggle", "yaml": "pyyaml", "PIL": "pillow", "pillow_heif": "pillow-heif",
               "imagehash": "imagehash", "numpy": "numpy", "matplotlib": "matplotlib"}
-    missing = [pip_name for module, pip_name in needed.items() if importlib.util.find_spec(module) is None]
+    missing = []
+    for module, pip_name in needed.items():
+        try:
+            importlib.import_module(module)
+        except ImportError:  # not installed, or installed but broken
+            missing.append(pip_name)
     if missing:
         print(f"ERROR: missing Python packages: {', '.join(missing)}\n"
               f"Run:  pip install -r requirements.txt   and then run this script again.", file=sys.stderr)

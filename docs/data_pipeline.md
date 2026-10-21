@@ -67,7 +67,7 @@ Baseline 'always guess recycling' on validation (1271 images): accuracy 68.06%, 
 Overlap check passed: no exact or near duplicate appears in more than one split.
 Count check: 8578 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 17 known duplicates - 0 held for review = 8502; 8502 in the splits; 76 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: 4b5cacf  manifest_sha256: 4d578382b730  (both saved in results/class_weights.json)
+Split version: 07a0572  manifest_sha256: 4d578382b730  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
@@ -154,8 +154,8 @@ split CSVs and the battery README. Share the photos through Drive or a zip.
 **Before step 3, once:** a Kaggle token in `~/.kaggle/` (setup step 3 above),
 because `download.py` fetches the Kaggle images the first time. Also run
 `pip install -r requirements.txt`, which installs `pillow-heif` for iPhone
-HEIC photos. Without it, HEIC photos are skipped and reported as "unsupported
-format", never silently.
+HEIC photos. If a package is missing, `download.py` stops right away and
+prints that command, and `build_splits.py` stops rather than drop HEIC photos.
 
 1. **Put her folders in `data/raw/amy_images/`,** named `trash`, `recycling`,
    `compost` and `hazardous`. Upper or lower case both work, and so do common
@@ -177,29 +177,33 @@ format", never silently.
 
 ### What a good run prints
 
-These lines come from a test run with a fake `amy_images` folder. Her numbers will differ.
+These lines come from a test run in a git clone with a fake `amy_images` folder (every tricky case included). Her numbers will differ.
 
 ```text
+  Ignored folders in data/raw/amy_images/ (system or zip metadata): __MACOSX
   data/raw/amy_images/Trash/ -> trash (trash)
   data/raw/amy_images/Recycle/ -> recycling (recycling)
+  data/raw/amy_images/recyclables/ -> recycling (recycling)
+  data/raw/amy_images/compost/ -> compost (compost)
   data/raw/amy_images/Batteries/ -> hazardous (hazardous)
-Files skipped: 6 not an image, 1 outside a class folder, 1 unsupported format, 1 corrupted
-  not an image: data/raw/personal_battery/README.md, data/raw/amy_images/.DS_Store, data/raw/amy_images/Trash/IMG_0300.MOV (+3 more)
+Files skipped: 5 not an image, 1 outside a class folder, 1 unsupported format, 1 corrupted
+  not an image: data/raw/personal_battery/README.md, data/raw/amy_images/.DS_Store, data/raw/amy_images/Trash/IMG_0300.MOV (+2 more)
   outside a class folder: data/raw/amy_images/IMG_9999.jpg
   unsupported format: data/raw/amy_images/Batteries/IMG_0400.DNG
   corrupted: data/raw/amy_images/Trash/broken.jpg
-Removed 7 exact duplicates and 60 near duplicates. Held 4 images in 2 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 1 corrupted and 1 unsupported files. 8649 images are split (8517 base, 132 new).
-Placed 132 new images: 0 look-alike groups kept together, 1 groups followed a base look-alike.
+Removed 7 exact duplicates and 60 near duplicates. Held 6 images in 3 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 1 corrupted and 1 unsupported files. 8653 images are split (8516 base, 137 new).
+Placed 137 new images: 0 look-alike groups kept together, 1 groups followed a base look-alike.
 Overlap check passed: no exact or near duplicate appears in more than one split.
 Count check passed.
-Split version: 4b5cacf-dirty  manifest_sha256: 6a142fb8f8a0  (both saved in results/class_weights.json)
+Split version: 07a0572-dirty  manifest_sha256: d45367601158  (both saved in results/class_weights.json)
 ```
 
-- **The `-> recycling` lines** show how each of her folder names was read.
+- **The `-> trash`, `-> recycling`, ... lines** show how each of her folders was read, one line per folder. `__MACOSX` and hidden folders are ignored with a note.
 - **`Files skipped`** lists every file that did not become a training image, and why. Check the examples if a number looks high.
 - **`(N base, M new)`** shows how many Kaggle and how many of her photos made it into the splits.
 - **`Count check passed`** means every file is accounted for.
 - **`-dirty` after the split version** is expected, because step 2 edited `label_map.yaml`. `manifest_sha256` is what identifies her split.
+- **A `__2/__3 suffix` line** can appear if two of her files would get the same copied name. Both are kept.
 
 After the build, run `python src/data/check_leakage.py` and open
 `results/conflicts_to_review.csv`.
@@ -209,7 +213,7 @@ After the build, run `python src/data/check_leakage.py` and open
 - **A copy of a Kaggle photo with the same label** is removed, and the Kaggle photo is kept.
 - **A copy with a different label** holds both images out of every split and lists them in `results/conflicts_to_review.csv` for a person to check.
 - **Adding her photos never moves a Kaggle image to another split.** `base_datasets:` in `configs/label_map.yaml` is split first, on its own, exactly as before.
-- **Look-alike photos stay in one split.** Her photos that look alike (pHash ≤ 6 and dHash ≤ 8, the leakage check's rule) go to the same split, and so do near-copies of a Kaggle train photo. Burst shots of one object taken with a bigger camera shift than that can still land in different splits.
+- **Look-alike photos stay in one split.** Her photos that look alike (pHash ≤ 6 and dHash ≤ 8, the leakage check's rule) go to the same split, and so do near-copies of a Kaggle train photo. Burst shots of one object taken with a bigger camera shift than that can still land in different splits. A photo that looks like Kaggle validation or test images joins the split holding most of them.
 
 ### What each error means
 
@@ -221,8 +225,8 @@ After the build, run `python src/data/check_leakage.py` and open
 | `... has folder(s) that match no class: X` | A folder name is not a class name or a known variant. The message lists the folders found and the names accepted. | Rename the folder, or add the name under `folder_aliases:`. |
 | `label_map.yaml folder(s) ... have no folder` | One class has no folder at all. | Add that class folder. |
 | `configs/label_map.yaml could not be read` | Step 2 changed the spacing, for example by deleting only `#`. | Delete exactly `# ` (hash and one space) on each of the 7 lines. |
-| `Two images would get the same copied name` | Two files would overwrite each other in a split folder. The run stopped before copying. | Rename one of the two files listed. |
-| `Tip: HEIC/HEIF iPhone photos need pillow-heif` | HEIC photos were skipped as unsupported. | Run `pip install -r requirements.txt` and rerun. |
+| `Found N iPhone HEIC/HEIF photos ... pillow-heif ... is not installed` | Her photos are HEIC but the package that opens them is missing. Nothing was built. | Run `pip install -r requirements.txt` and rerun. |
+| `ERROR: missing Python packages` (from `download.py`) | A package from `requirements.txt` is not installed. | Run `pip install -r requirements.txt` and rerun. |
 
 ## Switching between 3 and 4 classes
 
