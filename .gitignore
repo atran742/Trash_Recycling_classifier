@@ -96,3 +96,7 @@ results/*.png
 
 # Test photos from raspberry_pi/camera_test.py (images never go in git).
 raspberry_pi/test_photos/
+
+# Output of src/eval/evaluate.py. It depends on which predictions CSV was scored
+# (the fake sample gives fake numbers), so it stays local like the charts.
+results/threshold_sweep.csv
