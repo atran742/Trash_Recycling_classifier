@@ -10,6 +10,8 @@ What it does, in order:
      - Skip folders marked VERIFY (not decided yet) or EXCLUDE (dropped by the team).
      - Skip folders whose class is excluded (hazardous when num_classes is 3).
      - iPhone HEIC/HEIF photos are read with pillow-heif and copied as JPEG.
+     - New-source photos are turned upright by their EXIF orientation tag before
+       hashing and copying, and saved without the tag. Base images are copied byte for byte.
      - Files that are not images (.DS_Store, videos, README...) are skipped and counted.
      - Drop corrupted files, and image formats we cannot read, and log them.
   3. Remove EXACT duplicates (identical bytes -> identical SHA-256 hash).
@@ -124,7 +126,7 @@ def file_hash(path):
     return h.hexdigest()
 
 
-def image_hashes(path):
+def image_hashes(path, upright=False):
     """Return (pHash, dHash) of an image, each a 64-bit number.
 
     Both shrink the image to a tiny grayscale version:
@@ -132,8 +134,14 @@ def image_hashes(path):
       - dHash keeps which way brightness changes from pixel to pixel (edges).
     Requiring BOTH to be close cuts false matches, like two different bottles
     that happen to have the same outline on a white background.
+
+    upright=True first turns the photo the way its EXIF orientation tag says
+    (phones store sideways pixels plus a "rotate me" tag). Used for new photo
+    sources, so a sideways copy and an upright copy of one photo still match.
     """
     with Image.open(path) as img:
+        if upright:
+            img = ImageOps.exif_transpose(img)
         phash = int(str(imagehash.phash(img)), 16)  # hex string -> integer
         dhash = int(str(imagehash.dhash(img)), 16)
     return phash, dhash
@@ -358,8 +366,8 @@ def collect_images(config, active, removed_rows):
 
     for dataset_name, dataset_cfg in config["datasets"].items():
         found_here = 0
-        pairs = folders_for_dataset(dataset_name, dataset_cfg, aliases,
-                                    show_mapping=dataset_name not in (config.get("base_datasets") or []))
+        is_new_source = dataset_name not in (config.get("base_datasets") or [])
+        pairs = folders_for_dataset(dataset_name, dataset_cfg, aliases, show_mapping=is_new_source)
         # Files lying loose next to the class folders belong to no class: report them.
         if "folders" in dataset_cfg:
             for path in sorted(p for p in (RAW_DIR / dataset_name / (dataset_cfg.get("root") or "")).iterdir()
@@ -403,7 +411,9 @@ def collect_images(config, active, removed_rows):
                     removed_rows.append({"file": rel(path), "kept_copy": "", "reason": "corrupted",
                                          "distance": "", "dhash_distance": ""})
                     continue
-                items.append({"path": path, "label": target, "folder": folder})
+                # New photo sources (not in base_datasets) are turned upright by their
+                # EXIF tag before hashing and copying. Base (Kaggle) images are left as they are.
+                items.append({"path": path, "label": target, "folder": folder, "upright": is_new_source})
 
         # An enabled photo folder with nothing usable in it is almost always a mistake.
         if "folders" in dataset_cfg and found_here == 0 and any(
@@ -523,7 +533,7 @@ def remove_near_duplicates(items, removed_rows, review_rows, rules, already_held
     """
     for item in items:
         if "phash" not in item:  # already known if this image was checked in an earlier stage
-            item["phash"], item["dhash"] = image_hashes(item["path"])
+            item["phash"], item["dhash"] = image_hashes(item["path"], item.get("upright", False))
     phashes = np.array([item["phash"] for item in items], dtype=np.uint64)
     dhashes = np.array([item["dhash"] for item in items], dtype=np.uint64)
 
@@ -574,7 +584,7 @@ def remove_near_duplicates(items, removed_rows, review_rows, rules, already_held
     extra = list(already_held)
     for item in extra:
         if "phash" not in item:
-            item["phash"], item["dhash"] = image_hashes(item["path"])
+            item["phash"], item["dhash"] = image_hashes(item["path"], item.get("upright", False))
     others = [items[j] for j in np.nonzero(out)[0]] + extra
     while others:
         o_phash = np.array([o["phash"] for o in others], dtype=np.uint64)
@@ -843,13 +853,24 @@ def unique_copy_names(splits_by_class):
     return names
 
 
-def copy_one(src, dst):
-    """Copy an image. HEIC/HEIF/AVIF are saved as JPEG, turned upright first."""
-    if src.suffix.lower() in CONVERT_TO_JPEG:
-        with Image.open(src) as img:
-            ImageOps.exif_transpose(img).convert("RGB").save(dst, "JPEG", quality=95)
-    else:
+def copy_one(src, dst, upright=False):
+    """Copy one image into a split folder.
+
+    Base (Kaggle) images are copied byte for byte. New photo sources
+    (upright=True) are turned the way their EXIF orientation tag says and
+    saved again WITHOUT that tag, so every viewer and training loader shows
+    them upright with no extra step. JPG stays JPG, PNG stays PNG, and
+    HEIC/HEIF/AVIF become JPG.
+    """
+    if not upright and src.suffix.lower() not in CONVERT_TO_JPEG:
         shutil.copy2(src, dst)
+        return
+    with Image.open(src) as img:
+        img = ImageOps.exif_transpose(img)  # pixels turned upright; the new image carries no EXIF
+        if src.suffix.lower() in CONVERT_TO_JPEG or dst.suffix.lower() in {".jpg", ".jpeg"}:
+            img.convert("RGB").save(dst, "JPEG", quality=95)
+        else:
+            img.save(dst)  # PNG, WEBP, BMP, TIFF keep their own format
 
 
 def copy_splits_and_write_manifests(splits_by_class):
@@ -873,7 +894,7 @@ def copy_splits_and_write_manifests(splits_by_class):
             out_dir.mkdir(parents=True, exist_ok=True)
             for item in splits_by_class[class_name][split_name]:
                 dst = out_dir / names[id(item)]
-                copy_one(item["path"], dst)
+                copy_one(item["path"], dst, item.get("upright", False))
                 rows.append({"path": rel(dst), "label": class_name})
 
         rows.sort(key=lambda row: row["path"])
