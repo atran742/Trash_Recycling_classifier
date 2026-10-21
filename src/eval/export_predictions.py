@@ -92,7 +92,7 @@ def load_model(path, arch, num_classes, device):
         loaded = torch.load(str(path), map_location=device, weights_only=False)
     except Exception:
         loaded = None  # not a torch.save file; maybe TorchScript, tried below
-    if isinstance(loaded, torch.nn.Module):  # 2. whole model (also how a TorchScript file usually loads)
+    if isinstance(loaded, torch.nn.Module):  # 2. whole model
         model = loaded
         print(f"Loaded {path} as a whole PyTorch model.")
     elif isinstance(loaded, dict):  # 1. state_dict
