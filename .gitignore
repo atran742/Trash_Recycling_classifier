@@ -93,3 +93,6 @@ models/*.pth
 # Charts and contact sheets made by plot_counts.py and review_near_dups.py.
 # Already covered by *.png above; listed so it is obvious they stay local.
 results/*.png
+
+# Test photos from raspberry_pi/camera_test.py (images never go in git).
+raspberry_pi/test_photos/
