@@ -196,6 +196,10 @@ def main():
     parser.add_argument("--target", type=float, default=0.90,
                         help="accuracy on answered items the cutoff must reach (default 0.90)")
     args = parser.parse_args()
+    if not 0 < args.target <= 1:
+        parser.error("--target must be between 0 and 1, for example 0.90")
+    if args.csv and (args.tune or args.report):
+        parser.error("give either one CSV, or --tune and --report, not both")
 
     # Work out which file does which job. One file means it does both, with a warning.
     tune_file = args.tune or args.csv or args.report
@@ -204,7 +208,7 @@ def main():
         parser.error("give --tune validation.csv and --report test.csv")
     same_file = tune_file.resolve() == report_file.resolve()
     if same_file:
-        print("WARNING: only one file given, so the cutoff is tuned and reported on the SAME items.\n"
+        print("WARNING: the cutoff is tuned and reported on the SAME file, so on the same items.\n"
               "         That inflates the score: the cutoff was chosen to look good on exactly these items.\n"
               "         For honest numbers run:  --tune validation_predictions.csv --report test_predictions.csv\n")
 
@@ -220,15 +224,15 @@ def main():
     save_sweep(rows, sweep_csv, sweep_png)
 
     good = [r for r in rows if r["accuracy_answered"] is not None and r["accuracy_answered"] >= args.target]
-    if not good:
+    cutoff = None  # decided here, from the tune file only; never changed after this point
+    if good:
+        chosen = good[0]  # rows are in rising cutoff order, so this is the lowest cutoff that works
+        cutoff = chosen["cutoff"]
+        print(f"\nChosen cutoff: {cutoff:.2f} (lowest cutoff reaching {args.target:.0%} accuracy on answered tune items: "
+              f"answers {chosen['share_answered']:.0%} at {chosen['accuracy_answered']:.1%}).")
+    else:
         print(f"\nNo cutoff between {CUTOFFS[0]:.2f} and {CUTOFFS[-1]:.2f} reaches {args.target:.0%} accuracy on "
               f"answered items of the tune file. The model needs to improve, or lower --target.")
-        print(f"\nSaved {sweep_csv.relative_to(REPO_ROOT)}, {sweep_png.relative_to(REPO_ROOT)}")
-        return
-    chosen = good[0]  # rows are in rising cutoff order, so this is the lowest cutoff that works
-    cutoff = chosen["cutoff"]
-    print(f"\nChosen cutoff: {cutoff:.2f} (lowest cutoff reaching {args.target:.0%} accuracy on answered tune items: "
-          f"answers {chosen['share_answered']:.0%} at {chosen['accuracy_answered']:.1%}).")
 
     # ---- 2. Report file: read it only now, apply the cutoff once. ----
     r_true, r_pred, r_conf = read_predictions(report_file)
@@ -240,6 +244,10 @@ def main():
     cm_path = RESULTS_DIR / "confusion_matrix.png"
     save_confusion_matrix(r_true, r_pred, classes, cm_path)
 
+    if cutoff is None:
+        print("\nNo cutoff was chosen, so the report file is shown without one.")
+        print(f"\nSaved {sweep_csv.relative_to(REPO_ROOT)}, {sweep_png.relative_to(REPO_ROOT)}, {cm_path.relative_to(REPO_ROOT)}")
+        return
     res = at_cutoff(r_true, r_pred, r_conf, cutoff, classes)
     print(f"\nReport file with cutoff {cutoff:.2f} applied (below it the system says \"I'm not sure\"):")
     print(f"  answered           {res['answered']} of {len(r_true)} items ({res['share_answered']:.1%})")
