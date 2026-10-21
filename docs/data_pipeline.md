@@ -157,6 +157,8 @@ because `download.py` fetches the Kaggle images the first time. Also run
 HEIC photos. If a package is missing, `download.py` stops right away and
 prints that command, and `build_splits.py` stops rather than drop HEIC photos.
 
+**Run `pip install -r requirements.txt` before step 3.**
+
 1. **Put her folders in `data/raw/amy_images/`,** named `trash`, `recycling`,
    `compost` and `hazardous`. Upper or lower case both work, and so do common
    variants such as `Recycle`, `recyclables`, `garbage`, `hazard` and
@@ -210,6 +212,7 @@ After the build, run `python src/data/check_leakage.py` and open
 
 ### How her photos are treated
 
+- **iPhone rotation is fixed in the pipeline.** Phones often store a photo sideways plus an EXIF "rotate me" tag. Her photos are turned upright before the duplicate checks and before copying, and the copies are saved without the tag, so the training loader needs no extra step. A sideways copy and an upright copy of one photo count as duplicates. Kaggle images are copied byte for byte, exactly as before.
 - **A copy of a Kaggle photo with the same label** is removed, and the Kaggle photo is kept.
 - **A copy with a different label** holds both images out of every split and lists them in `results/conflicts_to_review.csv` for a person to check.
 - **Adding her photos never moves a Kaggle image to another split.** `base_datasets:` in `configs/label_map.yaml` is split first, on its own, exactly as before.
