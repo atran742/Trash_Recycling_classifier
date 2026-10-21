@@ -64,6 +64,21 @@ data/splits/*
 *.bmp
 *.webp
 *.heic
+*.heif
+*.avif
+*.tif
+*.tiff
+*.dng
+*.mov
+*.mp4
+# Upper-case versions (iPhones write IMG_0001.HEIC, IMG_0001.JPG).
+*.HEIC
+*.HEIF
+*.JPG
+*.JPEG
+*.PNG
+*.MOV
+*.DNG
 
 # Downloaded archives (download.py unzips and deletes these, but just in case).
 *.zip

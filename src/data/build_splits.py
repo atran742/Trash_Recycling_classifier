@@ -255,7 +255,7 @@ def missing_dataset_message(name, dataset_cfg):
             f"To leave it out, put \"# \" back in front of its lines in configs/label_map.yaml.")
 
 
-def folders_for_dataset(name, dataset_cfg, aliases):
+def folders_for_dataset(name, dataset_cfg, aliases, show_mapping=False):
     """Return a list of (folder_path, target_class) pairs for one dataset.
 
     Two shapes are allowed in the yaml:
@@ -265,6 +265,8 @@ def folders_for_dataset(name, dataset_cfg, aliases):
     in label_map.yaml also count ("Recycle" or "recyclables" -> the recycling
     folder). Several real folders may match the same entry.
     The order follows label_map.yaml, so the result never depends on folder names.
+    Hidden folders and __MACOSX (zip leftovers) are ignored, and named in a note.
+    With show_mapping=True every folder is printed with the class it was read as.
     Stops with a clear message if the dataset folder is missing, if a real folder
     matches nothing, or if a listed folder has no match.
     """
@@ -280,8 +282,12 @@ def folders_for_dataset(name, dataset_cfg, aliases):
     if not dataset_root.is_dir():
         raise SystemExit(f"label_map.yaml root '{dataset_cfg.get('root')}' has no folder at {rel(dataset_root)}")
 
-    # Real sub-folders, ignoring hidden ones like .Trashes.
-    real = sorted(p for p in dataset_root.iterdir() if p.is_dir() and not p.name.startswith("."))
+    # Real sub-folders. Hidden ones (.Trashes) and __MACOSX (left by unzipping on a Mac) are not photos.
+    folders = sorted(p for p in dataset_root.iterdir() if p.is_dir())
+    ignored = [p for p in folders if p.name.startswith(".") or p.name == "__MACOSX"]
+    real = [p for p in folders if p not in ignored]
+    if ignored:
+        print(f"  Ignored folders in {rel(dataset_root)}/ (system or zip metadata): {', '.join(p.name for p in ignored)}")
     if not real:
         raise SystemExit(f"{rel(dataset_root)}/ has no folders inside. {missing_dataset_message(name, dataset_cfg)}")
 
@@ -315,7 +321,7 @@ def folders_for_dataset(name, dataset_cfg, aliases):
     pairs = []
     for key, target in dataset_cfg["folders"].items():  # label_map.yaml order
         for folder in matches[key]:
-            if folder.name != key:
+            if show_mapping or folder.name != key:
                 print(f"  {rel(folder)}/ -> {key} ({target})")
             pairs.append((folder, target))
     return pairs
@@ -343,6 +349,7 @@ def collect_images(config, active, removed_rows):
     skipped = Counter()            # reason -> how many files
     examples = defaultdict(list)   # reason -> a few file paths to show
     aliases = config.get("folder_aliases") or {}
+    heif_missing = []              # HEIC/HEIF photos found while pillow-heif is not installed
 
     def note(reason, path):
         skipped[reason] += 1
@@ -351,7 +358,8 @@ def collect_images(config, active, removed_rows):
 
     for dataset_name, dataset_cfg in config["datasets"].items():
         found_here = 0
-        pairs = folders_for_dataset(dataset_name, dataset_cfg, aliases)
+        pairs = folders_for_dataset(dataset_name, dataset_cfg, aliases,
+                                    show_mapping=dataset_name not in (config.get("base_datasets") or []))
         # Files lying loose next to the class folders belong to no class: report them.
         if "folders" in dataset_cfg:
             for path in sorted(p for p in (RAW_DIR / dataset_name / (dataset_cfg.get("root") or "")).iterdir()
@@ -382,6 +390,9 @@ def collect_images(config, active, removed_rows):
                     continue
                 n_found += 1
                 found_here += 1
+                if suffix in {".heic", ".heif"} and not HEIF_AVAILABLE:
+                    heif_missing.append(path)
+                    continue
                 if not can_read_format(suffix):
                     note("unsupported format", path)
                     removed_rows.append({"file": rel(path), "kept_copy": "", "reason": "unsupported_format",
@@ -408,8 +419,11 @@ def collect_images(config, active, removed_rows):
         if skipped[reason]:
             more = f" (+{skipped[reason] - len(examples[reason])} more)" if skipped[reason] > len(examples[reason]) else ""
             print(f"  {reason}: {', '.join(examples[reason])}{more}")
-    if skipped["unsupported format"] and not HEIF_AVAILABLE:
-        print("  Tip: HEIC/HEIF iPhone photos need pillow-heif. Run: pip install -r requirements.txt")
+    # Dropping every iPhone photo would quietly ruin the dataset, so stop instead.
+    if heif_missing:
+        raise SystemExit(f"Found {len(heif_missing)} iPhone HEIC/HEIF photos (for example {rel(heif_missing[0])}), "
+                         f"but the pillow-heif package that opens them is not installed.\n"
+                         f"Run:  pip install -r requirements.txt   and then run this script again.")
     return items, n_found, skipped
 
 
@@ -457,6 +471,35 @@ def remove_exact_duplicates(items, removed_rows, review_rows):
     return kept, n_dupes, held
 
 
+def hold_copies_of_held(new_items, held_items, review_rows, rules):
+    """Hold new images that are exact or near copies of base images already held for review.
+
+    Each one joins the review group of the image it copies.
+    Returns (new images still kept, new images now held).
+    """
+    if not new_items or not held_items:
+        return new_items, []
+    held_p = np.array([h["phash"] for h in held_items], dtype=np.uint64)
+    held_d = np.array([h["dhash"] for h in held_items], dtype=np.uint64)
+    kept, now_held = [], []
+    for item in new_items:
+        p_dist = hamming_distances(item["phash"], held_p)
+        d_dist = hamming_distances(item["dhash"], held_d)
+        exact = [k for k, h in enumerate(held_items) if h["sha256"] == item["sha256"]]
+        near = list(np.nonzero(is_near_match(p_dist, d_dist, rules))[0])
+        hits = exact or near
+        if not hits:
+            kept.append(item)
+            continue
+        k = int(min(hits, key=lambda h: (int(p_dist[h]), int(d_dist[h]), int(h))))
+        match = rel(held_items[k]["path"])
+        group_id = next((r["group"] for r in review_rows if r["file"] == match), None) or next_group_id(review_rows)
+        review_rows.append({"group": group_id, "file": rel(item["path"]), "label": item["label"],
+                            "matches": match, "distance": int(p_dist[k]), "dhash_distance": int(d_dist[k])})
+        now_held.append(item)
+    return kept, now_held
+
+
 def next_group_id(review_rows):
     """Next conflict group number, like G001, G002, ... (in the order groups are found)."""
     return f"G{len({row['group'] for row in review_rows}) + 1:03d}"
@@ -476,7 +519,7 @@ def remove_near_duplicates(items, removed_rows, review_rows, rules, already_held
     Follow-up pass: a kept image that directly matches an image already dropped or
     held (including `already_held`, the exact-copy conflicts) with a DIFFERENT
     label is held for review too, so file order cannot hide a conflict.
-    Returns (kept items, near duplicates removed, conflict groups, images held for review).
+    Returns (kept items, near duplicates removed, conflict groups, list of images held for review).
     """
     for item in items:
         if "phash" not in item:  # already known if this image was checked in an earlier stage
@@ -485,7 +528,8 @@ def remove_near_duplicates(items, removed_rows, review_rows, rules, already_held
     dhashes = np.array([item["dhash"] for item in items], dtype=np.uint64)
 
     out = np.zeros(len(items), dtype=bool)  # True once an image is dropped or held for review
-    n_near, n_conflict_groups, n_held = 0, 0, 0
+    n_near, n_conflict_groups = 0, 0
+    held = []  # images held for review, in the order they were held
 
     for i, anchor in enumerate(items):
         if out[i]:
@@ -522,7 +566,7 @@ def remove_near_duplicates(items, removed_rows, review_rows, rules, already_held
                 review_rows.append({"group": group_id, "file": rel(items[j]["path"]), "label": items[j]["label"],
                                     "matches": rel(anchor["path"]),
                                     "distance": int(p_dist[j]), "dhash_distance": int(d_dist[j])})
-            n_held += 1 + len(group)
+            held += [anchor] + [items[j] for j in group]
 
     # Follow-up pass. Compare each kept image with every image that is out (dropped
     # or held) plus the exact-copy conflicts. Repeat until nothing new is held,
@@ -560,12 +604,12 @@ def remove_near_duplicates(items, removed_rows, review_rows, rules, already_held
             review_rows.append({"group": group_id, "file": rel(item["path"]),
                                 "label": item["label"], "matches": match_path,
                                 "distance": int(p_dist[k]), "dhash_distance": int(d_dist[k])})
-            n_held += 1
+            held.append(item)
             newly_held.append(item)
         others = newly_held  # only the new ones can create further matches
 
     kept = [item for i, item in enumerate(items) if not out[i]]
-    return kept, n_near, n_conflict_groups, n_held
+    return kept, n_near, n_conflict_groups, held
 
 
 # ---------------------------------------------------------------------------
@@ -673,7 +717,7 @@ def place_new_images(new_items, splits_by_class, ratios, seed, rules):
       1. Look-alike new images are grouped, chains included (A~B and B~C -> one group),
          so a group can never be split across train / validation / test.
       2. A group that looks like any base TRAIN image goes to train. A group that
-         only looks like base validation/test images follows the first of those.
+         only looks like base validation/test images joins the split with most of them.
       3. Every other group is shuffled with the seed and handed out per class
          (by its most common label) to the split furthest below its 70/15/15 share.
     Returns splits_by_class with the new images added.
@@ -721,8 +765,9 @@ def place_new_images(new_items, splits_by_class, ratios, seed, rules):
             hits += list(base_split[np.nonzero(close)[0]])
         if "train" in hits:
             placed[gid] = "train"
-        elif hits:
-            placed[gid] = hits[0]
+        elif hits:  # follow the split holding most of its look-alikes (ties: validation before test)
+            votes = Counter(hits)
+            placed[gid] = max(SPLIT_NAMES, key=lambda name: (votes[name], -SPLIT_NAMES.index(name)))
 
     # 3. The other groups: seeded shuffle, then fill each class toward 70/15/15.
     free = [gid for gid in groups if gid not in placed]
@@ -753,14 +798,15 @@ def place_new_images(new_items, splits_by_class, ratios, seed, rules):
 
 
 def copy_name(item):
-    """File name for the copy in data/<split>/<class>/.
+    """Base file name for the copy in data/<split>/<class>/.
 
     dataset + the class folder + any sub-folders + the file name, joined with "__":
       data/raw/garbage12_enhanced/.../battery/battery7.jpg -> garbage12_enhanced__battery__battery7.jpg
       data/raw/amy_images/Recycle/2024/IMG_0001.HEIC     -> amy_images__Recycle__2024__IMG_0001.HEIC.jpg
-    Two images can only get the same name if they have the same path, so nothing
-    is overwritten (copy_splits_and_write_manifests also double-checks).
     HEIC/HEIF/AVIF photos get ".jpg" added because they are saved as JPEG.
+    In rare cases two different files still get the same name (for example
+    "a__b.jpg" next to a sub-folder "a" holding "b.jpg"); unique_copy_names()
+    then adds "__2", "__3", ... so no file is ever overwritten.
     """
     src, folder = item["path"], item["folder"]
     dataset = src.relative_to(RAW_DIR).parts[0]
@@ -769,6 +815,32 @@ def copy_name(item):
     if src.suffix.lower() in CONVERT_TO_JPEG:
         name += ".jpg"
     return name
+
+
+def unique_copy_names(splits_by_class):
+    """Give every image a copy name that is unique in its split/class folder.
+
+    Names are compared ignoring upper/lower case, because macOS treats "A.jpg" and
+    "a.jpg" as the same file. A clash gets "__2", "__3", ... before the extension.
+    Returns {id(item): name}.
+    """
+    names, used, renamed = {}, set(), 0
+    for class_name in sorted(splits_by_class):
+        for split_name in SPLIT_NAMES:
+            for item in splits_by_class[class_name][split_name]:
+                name = copy_name(item)
+                stem, ext = name.rsplit(".", 1)
+                n = 1
+                while (split_name, class_name, name.lower()) in used:
+                    n += 1
+                    name = f"{stem}__{n}.{ext}"
+                if n > 1:
+                    renamed += 1
+                used.add((split_name, class_name, name.lower()))
+                names[id(item)] = name
+    if renamed:
+        print(f"  {renamed} copies got a __2/__3 suffix because their names would have clashed.")
+    return names
 
 
 def copy_one(src, dst):
@@ -783,21 +855,11 @@ def copy_one(src, dst):
 def copy_splits_and_write_manifests(splits_by_class):
     """Copy images into data/<split>/<class>/ and write data/splits/<split>.csv.
 
-    Every copy gets a unique name from copy_name(). Before anything is copied,
-    the names are checked: if two images would get the same name (ignoring
-    upper/lower case, as macOS does), the run stops instead of overwriting.
-    The CSV paths point at the copied files and are relative to the repo root.
+    Every copy gets a unique name from unique_copy_names(), so no file is ever
+    overwritten. The CSV paths point at the copied files and are relative to the
+    repo root.
     """
-    # Check every destination name first, so a clash can never overwrite a file.
-    planned = {}  # (split, class, lower-case name) -> source path
-    for class_name, splits in splits_by_class.items():
-        for split_name, items in splits.items():
-            for item in items:
-                key = (split_name, class_name, copy_name(item).lower())
-                if key in planned:
-                    raise SystemExit(f"Two images would get the same copied name in data/{split_name}/{class_name}/:\n"
-                                     f"  {rel(planned[key])}\n  {rel(item['path'])}\nRename one of them and rerun.")
-                planned[key] = item["path"]
+    names = unique_copy_names(splits_by_class)
 
     for d in list(SPLIT_DIRS.values()) + [MANIFEST_DIR]:
         if d.exists():
@@ -810,7 +872,7 @@ def copy_splits_and_write_manifests(splits_by_class):
             out_dir = SPLIT_DIRS[split_name] / class_name
             out_dir.mkdir(parents=True, exist_ok=True)
             for item in splits_by_class[class_name][split_name]:
-                dst = out_dir / copy_name(item)
+                dst = out_dir / names[id(item)]
                 copy_one(item["path"], dst)
                 rows.append({"path": rel(dst), "label": class_name})
 
@@ -1020,23 +1082,26 @@ def find_duplicates(config, active):
     print(f"Checking duplicates: pHash <= {rules['max_phash']} and dHash <= {rules['max_dhash']}...")
     # Stage A: the base on its own (this is what keeps its split identical).
     base_kept, n_exact, held_a = remove_exact_duplicates(base_items, removed_rows, review_rows)
-    base_kept, n_near, _, n_held_near = remove_near_duplicates(base_kept, removed_rows, review_rows, rules,
+    base_kept, n_near, _, near_held_a = remove_near_duplicates(base_kept, removed_rows, review_rows, rules,
                                                                already_held=held_a)
-    n_held = len(held_a) + n_held_near
+    n_held = len(held_a) + len(near_held_a)
 
     # Stage B: new images against the base and each other. Base images come
     # first, so a copy always loses to the base image it copies.
     new_kept, base_held = [], []
     if new_items:
         both, n_exact_b, held_b = remove_exact_duplicates(base_kept + new_items, removed_rows, review_rows)
-        both, n_near_b, _, n_held_near_b = remove_near_duplicates(both, removed_rows, review_rows, rules,
-                                                                  already_held=held_b)
+        both, n_near_b, _, near_held_b = remove_near_duplicates(both, removed_rows, review_rows, rules,
+                                                                already_held=held_b)
         still = {id(item) for item in both}
         base_held = [item for item in base_kept if id(item) not in still]
         new_kept = [item for item in both if not is_base(item)]
+        # Base images already held in stage A were not part of stage B, so check
+        # new images against them too: a copy of a held image is held with it.
+        new_kept, held_c = hold_copies_of_held(new_kept, held_a + near_held_a, review_rows, rules)
         n_exact += n_exact_b
         n_near += n_near_b
-        n_held += len(held_b) + n_held_near_b
+        n_held += len(held_b) + len(near_held_b) + len(held_c)
 
     n_groups = len({row["group"] for row in review_rows})
     out_counts = {
