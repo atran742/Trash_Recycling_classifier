@@ -30,7 +30,7 @@ not committed).
 
 | Command | What it does | Time |
 |---|---|---|
-| `pip install -r requirements.txt` | Installs kaggle, pyyaml, pillow, imagehash, numpy and matplotlib. | under 1 minute |
+| `pip install -r requirements.txt` | Installs kaggle, pyyaml, pillow, pillow-heif, imagehash, numpy, matplotlib, scikit-learn and opencv-python. | under 1 minute |
 | `python src/data/download.py` | Downloads `garbage12_enhanced` (about 557 MB unzipped) into `data/raw/`. Skips it if it is already there. Also fetches `garbage_v2` only if there are fewer than 500 battery images. | a few minutes |
 | `python src/data/build_splits.py` | Applies `configs/label_map.yaml`, drops broken files, exact duplicates and near duplicates, checks the counts add up, copies a 70/15/15 split into `data/train`, `data/validation` and `data/test`, and writes the CSV manifests and class weights. | about 20 seconds |
 
@@ -67,7 +67,7 @@ Baseline 'always guess recycling' on validation (1271 images): accuracy 68.06%, 
 Overlap check passed: no exact or near duplicate appears in more than one split.
 Count check: 8578 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 17 known duplicates - 0 held for review = 8502; 8502 in the splits; 76 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: 07a0572  manifest_sha256: 4d578382b730  (both saved in results/class_weights.json)
+Split version: d010b6a  manifest_sha256: 4d578382b730  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.

@@ -114,11 +114,13 @@ def confidence_sweep(true, pred, conf):
     for cutoff in CUTOFFS:
         answered = conf >= cutoff
         n_answered = int(answered.sum())
+        exact_accuracy = float(correct[answered].mean()) if n_answered else None
         rows.append({
             "cutoff": cutoff,
             "answered": n_answered,
             "share_answered": round(n_answered / len(conf), 4),
-            "accuracy_answered": round(float(correct[answered].mean()), 4) if n_answered else "",
+            "accuracy_answered": round(exact_accuracy, 4) if n_answered else "",
+            "_exact_accuracy": exact_accuracy,  # unrounded, used for the --target test; not written to the CSV
             "wrong_avoided": int((~correct & ~answered).sum()),
             "wrong_remaining": int((~correct & answered).sum()),
         })
@@ -127,8 +129,9 @@ def confidence_sweep(true, pred, conf):
 
 def save_sweep(rows, csv_path, png_path):
     """Write the sweep table and draw share-answered and accuracy-on-answered against the cutoff."""
+    columns = [c for c in rows[0] if not c.startswith("_")]  # skip helper fields
     with open(csv_path, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(f, fieldnames=columns, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -175,7 +178,7 @@ def main():
     sweep_csv, sweep_png = RESULTS_DIR / "threshold_sweep.csv", RESULTS_DIR / "threshold_sweep.png"
     save_sweep(rows, sweep_csv, sweep_png)
 
-    good = [r for r in rows if r["accuracy_answered"] != "" and r["accuracy_answered"] >= args.target]
+    good = [r for r in rows if r["_exact_accuracy"] is not None and r["_exact_accuracy"] >= args.target]
     if good:
         best = good[0]  # rows are in rising cutoff order, so this is the lowest cutoff that works
         print(f"\nRecommended cutoff: {best['cutoff']:.2f}. It answers {best['share_answered']:.0%} of items "

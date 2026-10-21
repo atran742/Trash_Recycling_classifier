@@ -22,7 +22,7 @@ python src/data/build_splits.py
 python src/data/check_leakage.py
 ```
 
-This downloads the Kaggle images, removes duplicates, builds `data/train`, `data/validation` and `data/test`, and checks that no near-copy of a training image sits in validation or test. Images never go into git. After training, score a predictions CSV with `python src/eval/evaluate.py docs/sample_predictions.csv`.
+This downloads the Kaggle images, removes duplicates, builds `data/train`, `data/validation` and `data/test`, and checks that no near-copy of a training image sits in validation or test. Images never go into git. After training, score a predictions CSV with `python src/eval/evaluate.py results/my_predictions.csv` (`docs/sample_predictions.csv` is a fake example to try it on).
 
 ## The data right now
 
