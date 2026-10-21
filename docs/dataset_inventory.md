@@ -212,6 +212,7 @@ look-alikes judged above, and 0 true copies.
 ## Train / validation / test splits (seed 42, 70/15/15)
 
 Output of `python src/data/build_splits.py` on 2026-10-18, after duplicate removal and the 17 known duplicates.
+The Kaggle set is split on its own (`base_datasets:` in `configs/label_map.yaml`), so adding Amy's or personal photos never moves a Kaggle image to another split; new photos are placed around it, look-alikes together (see `docs/data_pipeline.md`).
 Weights come from the train split only. Inverse frequency is
 `total_train / (num_classes * class_count)`. Square-root inverse frequency takes
 the square root of that and divides by the mean, so the weights average 1.
