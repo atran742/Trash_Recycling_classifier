@@ -31,12 +31,32 @@ class_sets:
 # pHash distances are always even (each pHash has 32 one-bits), so 3 acts like 2.
 near_duplicates:
   max_phash: 3     # team decision Oct 18 (was 5)
+  # New photo sources only (amy_images, personal_battery): photos that look alike
+  # under this looser rule are always kept in the SAME split, so near-identical
+  # shots never end up in both train and test. Same rule as check_leakage.py.
+  keep_together_max_phash: 6
+  keep_together_max_dhash: 8
   max_dhash: 2     # tightened 4 -> 3 -> 2 after spot checks; cross-label review found 0 true copies (docs/dataset_inventory.md)
+
+# The BASE datasets are split first, on their own, exactly as if no other
+# source existed. Every other dataset (amy_images, personal_battery, ...) is
+# placed around them, so adding new photos never moves a base image to another split.
+base_datasets: [garbage12_enhanced]
 
 # How to split each class. Same seed -> same split every run.
 split:
   ratios: {train: 0.70, validation: 0.15, test: 0.15}
   seed: 42
+
+# Other names accepted for a class folder, for example in data/raw/amy_images/.
+# Matching ignores upper/lower case, spaces, dashes and underscores, so
+# "Recycle", "RECYCLABLES" and "hazardous_waste" all work. A folder that matches
+# nothing stops build_splits.py with a message listing what it found.
+folder_aliases:
+  recycling: [recycle, recycles, recycled, recyclable, recyclables]
+  compost: [compostable, composting, organic, organics, food, food waste, biological]
+  trash: [garbage, landfill, waste, rubbish, general waste]
+  hazardous: [hazard, hazards, hazardous waste, hhw, battery, batteries, e-waste, ewaste]
 
 # Validation/test images confirmed BY EYE to be copies of a train image
 # (leakage check, Oct 18; the 17 true copies listed in docs/dataset_inventory.md).
