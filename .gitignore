@@ -19,8 +19,6 @@ htmlcov/
 .ipynb_checkpoints/
 
 # Machine-learning model artifacts
-*.pt
-*.pth
 *.ckpt
 *.h5
 *.keras
