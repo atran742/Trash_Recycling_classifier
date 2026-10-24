@@ -97,12 +97,13 @@ def match_model_classes(model_classes, classes):
     not match, or the counts differ, listing both lists.
     """
     by_lower = {c.lower(): c for c in classes}
-    unmatched = [m for m in model_classes if str(m).strip().lower() not in by_lower]
-    if unmatched or len(model_classes) != len(classes):
+    lowered = [str(m).strip().lower() for m in model_classes]
+    unmatched = [m for m, l in zip(model_classes, lowered) if l not in by_lower]
+    if unmatched or len(model_classes) != len(classes) or len(set(lowered)) != len(lowered):
         raise SystemExit(f"The model's classes do not match the label map.\n"
                          f"  model classes:     {list(model_classes)}\n"
                          f"  label map classes: {classes}\n"
-                         f"  unmatched:         {unmatched or 'none, but the counts differ'}\n"
+                         f"  unmatched:         {unmatched or 'none, but the counts differ or a name repeats'}\n"
                          f"Check configs/label_map.yaml (num_classes) or retrain with these classes.")
     return [by_lower[str(m).strip().lower()] for m in model_classes]
 
