@@ -44,10 +44,12 @@ import matplotlib
 matplotlib.use("Agg")  # draw straight to files; no window needed
 import matplotlib.pyplot as plt
 import numpy as np
+import yaml
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_recall_fscore_support
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RESULTS_DIR = REPO_ROOT / "results"
+CONFIG_PATH = REPO_ROOT / "configs" / "label_map.yaml"
 BASELINE_LABEL = "recycling"  # the biggest class; see docs/dataset_inventory.md
 CUTOFFS = [round(0.50 + 0.05 * k, 2) for k in range(10)]  # 0.50, 0.55, ... 0.95
 
@@ -63,8 +65,9 @@ def read_predictions(csv_path):
         rows = list(reader)
     if not rows:
         raise SystemExit(f"{csv_path} has no rows.")
-    true = [r["true_label"].strip() for r in rows]
-    pred = [r["predicted_label"].strip() for r in rows]
+    # Labels are compared ignoring capital letters: "Compost" and "compost" are one class.
+    true = [r["true_label"].strip().lower() for r in rows]
+    pred = [r["predicted_label"].strip().lower() for r in rows]
     conf = []
     for r in rows:
         try:
@@ -75,6 +78,23 @@ def read_predictions(csv_path):
             raise SystemExit(f"Confidence {c} for {r['path']} is not between 0 and 1")
         conf.append(c)
     return true, pred, np.array(conf)
+
+
+def label_map_classes():
+    """The active classes from configs/label_map.yaml, lowercase and alphabetical."""
+    with open(CONFIG_PATH) as f:
+        config = yaml.safe_load(f)
+    return sorted(c.lower() for c in config["class_sets"][config["num_classes"]]["classes"])
+
+
+def check_labels(csv_path, labels, classes):
+    """Stop if a label in the CSV matches no class in the label map (ignoring case)."""
+    unknown = sorted(set(labels) - set(classes))
+    if unknown:
+        raise SystemExit(f"{csv_path} has labels that match no class in configs/label_map.yaml.\n"
+                         f"  labels in the CSV:  {sorted(set(labels))}\n"
+                         f"  label map classes:  {classes}\n"
+                         f"  unmatched:          {unknown}")
 
 
 def macro_f1(true, pred, classes):
@@ -214,7 +234,8 @@ def main():
 
     # ---- 1. Tune file: sweep and pick the cutoff. The report file is not read yet. ----
     t_true, t_pred, t_conf = read_predictions(tune_file)
-    classes = sorted(set(t_true) | set(t_pred))  # alphabetical, like the split folders
+    classes = label_map_classes()  # alphabetical, like the split folders and class_weights.json
+    check_labels(tune_file, t_true + t_pred, classes)
     print(f"TUNE file:   {tune_file} ({len(t_true)} items, classes {classes})")
     print_scores("Tune file, all items", t_true, t_pred, classes, per_class=False)
     rows = confidence_sweep(t_true, t_pred, t_conf, classes)
@@ -236,7 +257,7 @@ def main():
 
     # ---- 2. Report file: read it only now, apply the cutoff once. ----
     r_true, r_pred, r_conf = read_predictions(report_file)
-    classes = sorted(set(classes) | set(r_true) | set(r_pred))
+    check_labels(report_file, r_true + r_pred, classes)
     print(f"\nREPORT file: {report_file} ({len(r_true)} items)")
     print_scores("Report file, all items (no cutoff)", r_true, r_pred, classes)
     print_scores(f"Baseline on the report file: always answer '{BASELINE_LABEL}'",

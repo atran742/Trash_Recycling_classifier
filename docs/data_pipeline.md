@@ -166,9 +166,10 @@ prints that command, and `build_splits.py` stops rather than drop HEIC photos.
    `configs/label_map.yaml`). Sub-folders inside a class folder are fine. JPG,
    PNG, WEBP, TIFF and iPhone HEIC/HEIF all work, and HEIC is saved as JPG in the
    splits.
-2. **Switch the entry on:** in `configs/label_map.yaml`, delete the two
-   characters `# ` at the start of the 7 lines from `# amy_images:` down to
-   `#     hazardous: hazardous`.
+2. **The entry is already switched on** in `configs/label_map.yaml` (Amy did
+   this on Oct 23) and marked `optional: true`. On a machine without the
+   folder, `build_splits.py` prints a warning and builds from the other
+   datasets. Any dataset without that flag still stops when its folder is missing.
 3. **Run:**
    ```bash
    python src/data/download.py
@@ -222,7 +223,8 @@ After the build, run `python src/data/check_leakage.py` and open
 
 | Message starts with | What happened | What to do |
 |---|---|---|
-| `data/raw/amy_images/ not found` | The entry is switched on, but the folder is not there. | Create the folder with the 4 class folders, or put `# ` back on the 7 lines. |
+| `WARNING: data/raw/amy_images/ not found ... marked optional` | The folder is not on this machine. The build goes on without her photos. | Nothing, unless you expected her photos: then copy the folder in and rerun. |
+| `data/raw/<dataset>/ not found, but "<dataset>" is switched on` | A dataset without `optional: true` has no folder. | Create the folder, or comment the entry out. |
 | `data/raw/amy_images/ has no folders inside` | The folder is empty. | Put the 4 class folders inside it. |
 | `data/raw/amy_images/ has no images` | The class folders hold no photos (only things like `.DS_Store`). | Copy the photos in. |
 | `... has folder(s) that match no class: X` | A folder name is not a class name or a known variant. The message lists the folders found and the names accepted. | Rename the folder, or add the name under `folder_aliases:`. |

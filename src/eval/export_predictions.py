@@ -12,10 +12,12 @@ The images and their true labels come from data/splits/validation.csv and
 data/splits/test.csv, the manifests that build_splits.py writes, so this script
 always scores exactly the stamped split (see results/class_weights.json).
 
-Class order: the model's output number i means class_order[i], where
-class_order is the active class list from configs/label_map.yaml sorted
-alphabetically. That is the order torchvision's ImageFolder uses when training
-on data/train, and the order in results/class_weights.json.
+Class order: if the model file stores a class list (Amy's train.py saves one as
+"classes"), output number i means that list's entry i, matched to the label-map
+names ignoring capital letters ("Compost" = "compost"). A name that matches no
+label-map class stops the run and prints both lists. Without a stored list, the
+active classes from configs/label_map.yaml sorted alphabetically are assumed,
+which is the ImageFolder order and the order in results/class_weights.json.
 
 Model file: any of these works for --model
     1. a state_dict (torch.save(model.state_dict(), path)) - the usual form;
@@ -86,8 +88,32 @@ def build_architecture(arch, num_classes):
     return net
 
 
+def match_model_classes(model_classes, classes):
+    """Map the model's own class names onto the label-map names, ignoring capital letters.
+
+    Amy's checkpoint stores ['Compost', 'Hazardous', 'Recycling', 'Trash'] while the
+    label map and the split folders use lowercase. Returns the label-map names in
+    the MODEL's output order, so output i -> returned[i]. Stops if any name does
+    not match, or the counts differ, listing both lists.
+    """
+    by_lower = {c.lower(): c for c in classes}
+    unmatched = [m for m in model_classes if str(m).strip().lower() not in by_lower]
+    if unmatched or len(model_classes) != len(classes):
+        raise SystemExit(f"The model's classes do not match the label map.\n"
+                         f"  model classes:     {list(model_classes)}\n"
+                         f"  label map classes: {classes}\n"
+                         f"  unmatched:         {unmatched or 'none, but the counts differ'}\n"
+                         f"Check configs/label_map.yaml (num_classes) or retrain with these classes.")
+    return [by_lower[str(m).strip().lower()] for m in model_classes]
+
+
 def load_model(path, arch, num_classes, device):
-    """Load the model file, whichever of the three forms it is."""
+    """Load the model file, whichever of the three forms it is.
+
+    Returns (model, model_classes): model_classes is the class list stored in the
+    checkpoint (Amy's train.py saves one under "classes"), or None if the file has none.
+    """
+    model_classes = None
     try:
         loaded = torch.load(str(path), map_location=device, weights_only=False)
     except Exception:
@@ -96,6 +122,7 @@ def load_model(path, arch, num_classes, device):
         model = loaded
         print(f"Loaded {path} as a whole PyTorch model.")
     elif isinstance(loaded, dict):  # 1. state_dict
+        model_classes = loaded.get("classes")
         if arch is None:
             raise SystemExit(f"{path} is a state_dict (weights only), so the network must be rebuilt: "
                              f"add --arch, one of {', '.join(ARCHITECTURES)}.")
@@ -118,7 +145,7 @@ def load_model(path, arch, num_classes, device):
         raise SystemExit(f"{path} is not a model I know how to load ({type(loaded).__name__}).")
     model.to(device)
     model.eval()  # switch off training-only behaviour such as dropout
-    return model
+    return model, model_classes
 
 
 def read_manifest(split_name):
@@ -168,7 +195,14 @@ def main():
     classes = class_order()
     print(f"Classes (model output 0..{len(classes) - 1}): {classes}   device: {device}")
 
-    model = load_model(args.model, args.arch, len(classes), device)
+    model, model_classes = load_model(args.model, args.arch, len(classes), device)
+    if model_classes is not None:
+        # The checkpoint says which class each output stands for: use that order,
+        # translated to the label-map spelling (case does not matter).
+        classes = match_model_classes(model_classes, classes)
+        print(f"Model classes {list(model_classes)} -> label map order used for outputs: {classes}")
+    else:
+        print("The model file has no class list; assuming outputs follow the alphabetical label-map order.")
     # TODO(Amy): make this match your training transforms exactly (size, crop, normalization).
     preprocess = transforms.Compose([
         transforms.Resize((args.image_size, args.image_size)),
@@ -180,7 +214,7 @@ def main():
     for split_name in args.splits:
         rows = read_manifest(split_name)
         print(f"\n{split_name}: {len(rows)} images from data/splits/{split_name}.csv")
-        unknown = sorted({r["label"] for r in rows} - set(classes))
+        unknown = sorted({r["label"] for r in rows} - set(classes))  # manifests are lowercase already
         if unknown:
             raise SystemExit(f"Labels {unknown} in the manifest are not in the class order {classes}. "
                              f"Was the split built with a different num_classes?")

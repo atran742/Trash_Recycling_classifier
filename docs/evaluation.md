@@ -43,7 +43,7 @@ These are guesses until the training code is in the repo:
 | Network | `mobilenet_v3_small` | `--arch` (only for a state_dict) |
 | Image size | 224 x 224, resized without cropping | `--image-size` |
 | Normalization | ImageNet mean and std | edit `NORMALIZE_MEAN` / `NORMALIZE_STD` |
-| Class order | active classes from `configs/label_map.yaml`, alphabetical: compost, hazardous, recycling, trash | matches `ImageFolder` and `results/class_weights.json` |
+| Class order | the `classes` list stored in the checkpoint (Amy's `train.py` saves one), matched to the label map ignoring capital letters, so `Compost` = `compost`; without a stored list, the label-map classes alphabetical | a name that matches no label-map class stops the run and prints both lists |
 
 If the training used different transforms, the predictions will be worse than
 the model really is, so match them exactly.
