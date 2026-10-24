@@ -62,6 +62,21 @@ data/splits/*
 *.bmp
 *.webp
 *.heic
+*.heif
+*.avif
+*.tif
+*.tiff
+*.dng
+*.mov
+*.mp4
+# Upper-case versions (iPhones write IMG_0001.HEIC, IMG_0001.JPG).
+*.HEIC
+*.HEIF
+*.JPG
+*.JPEG
+*.PNG
+*.MOV
+*.DNG
 
 # Downloaded archives (download.py unzips and deletes these, but just in case).
 *.zip
@@ -69,10 +84,20 @@ data/splits/*
 # Project virtualenv (already covered by .venv/ at the top; repeated so it is obvious).
 .venv
 
-# Model weights live in models/ but never in git. *.pt, *.pth, *.ckpt, *.h5,
-# *.keras, *.onnx and *.tflite are already ignored everywhere near the top.
-models/*.pth
+# The trained model models/waste_classifier.pth IS tracked (Amy's commit). Other
+# weight formats (*.ckpt, *.h5, *.keras, *.onnx, *.tflite) are ignored near the top.
 
 # Charts and contact sheets made by plot_counts.py and review_near_dups.py.
 # Already covered by *.png above; listed so it is obvious they stay local.
 results/*.png
+
+# Test photos from raspberry_pi/camera_test.py (images never go in git).
+raspberry_pi/test_photos/
+
+# Output of src/eval/evaluate.py. It depends on which predictions CSV was scored
+# (the fake sample gives fake numbers), so it stays local like the charts.
+results/threshold_sweep.csv
+
+# Prediction CSVs from src/eval/export_predictions.py: they belong to one
+# model file, so they are shared in the PR or Discord, not committed.
+results/*_predictions.csv

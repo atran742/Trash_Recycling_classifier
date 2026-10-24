@@ -41,6 +41,29 @@ DATASETS = {
 MIN_BATTERY_IMAGES = 500
 
 
+def check_requirements():
+    """Stop with one clear instruction if a package from requirements.txt is missing.
+
+    This runs first, so a computer set up before a new package was added (for
+    example pillow-heif for iPhone photos) learns it right away, not halfway
+    through build_splits.py.
+    """
+    import importlib
+
+    needed = {"kaggle": "kaggle", "yaml": "pyyaml", "PIL": "pillow", "pillow_heif": "pillow-heif",
+              "imagehash": "imagehash", "numpy": "numpy", "matplotlib": "matplotlib"}
+    missing = []
+    for module, pip_name in needed.items():
+        try:
+            importlib.import_module(module)
+        except ImportError:  # not installed, or installed but broken
+            missing.append(pip_name)
+    if missing:
+        print(f"ERROR: missing Python packages: {', '.join(missing)}\n"
+              f"Run:  pip install -r requirements.txt   and then run this script again.", file=sys.stderr)
+        sys.exit(1)
+
+
 def check_kaggle_token():
     """Stop early with clear instructions if no Kaggle credentials are set up.
 
@@ -136,6 +159,7 @@ def main():
     parser.add_argument("--force", action="store_true", help="re-download even if already present")
     args = parser.parse_args()
 
+    check_requirements()
     if args.list:
         for key, slug in DATASETS.items():
             print(f"{key:<20} https://www.kaggle.com/datasets/{slug}")
