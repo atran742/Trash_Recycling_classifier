@@ -7,6 +7,8 @@ What it does, in order:
      Any extra source (for example amy_images) is handled the same way once listed.
      - Folder names match case-insensitively, and common variants also count
        (for example "Recycle" -> recycling), see `folder_aliases:` in label_map.yaml.
+     - A dataset marked `optional: true` whose folder is missing is skipped with a
+       warning; any other missing dataset folder stops the run.
      - Skip folders marked VERIFY (not decided yet) or EXCLUDE (dropped by the team).
      - Skip folders whose class is excluded (hazardous when num_classes is 3).
      - iPhone HEIC/HEIF photos are read with pillow-heif and copied as JPEG.
@@ -276,7 +278,9 @@ def folders_for_dataset(name, dataset_cfg, aliases, show_mapping=False):
     Hidden folders and __MACOSX (zip leftovers) are ignored, and named in a note.
     With show_mapping=True every folder is printed with the class it was read as.
     Stops with a clear message if the dataset folder is missing, if a real folder
-    matches nothing, or if a listed folder has no match.
+    matches nothing, or if a listed folder has no match. (A dataset marked
+    `optional: true` with a missing folder is skipped by collect_images() before
+    this function is called, so here a missing folder is always an error.)
     """
     dataset_dir = RAW_DIR / name
     if not dataset_dir.is_dir():
@@ -367,6 +371,13 @@ def collect_images(config, active, removed_rows):
     for dataset_name, dataset_cfg in config["datasets"].items():
         found_here = 0
         is_new_source = dataset_name not in (config.get("base_datasets") or [])
+        # `optional: true` in label_map.yaml: a machine without this folder warns
+        # and builds from the other datasets. Without it, a missing folder stops the run.
+        if dataset_cfg.get("optional") and not (RAW_DIR / dataset_name).is_dir():
+            print(f"  WARNING: data/raw/{dataset_name}/ not found. It is marked optional in "
+                  f"configs/label_map.yaml, so the build continues WITHOUT it. "
+                  f"The splits will not contain its images.")
+            continue
         pairs = folders_for_dataset(dataset_name, dataset_cfg, aliases, show_mapping=is_new_source)
         # Files lying loose next to the class folders belong to no class: report them.
         if "folders" in dataset_cfg:

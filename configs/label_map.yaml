@@ -136,13 +136,14 @@ datasets:
     label: hazardous
 
   # Amy's own photos (about 1,000 each of trash, recycling, compost and 600 hazardous).
-  # DISABLED until her images arrive. To turn on (see docs/data_pipeline.md):
-  #   1. Put them in data/raw/amy_images/trash/, recycling/, compost/, hazardous/.
-  #   2. Delete the "# " in front of the 7 lines below, then rerun build_splits.py.
+  # Switched ON (Amy, Oct 23). Her photos live in data/raw/amy_images/<class>/ on her
+  # laptop. `optional: true` means a machine without that folder prints a warning
+  # and builds from the other datasets instead of stopping (see docs/data_pipeline.md).
   amy_images:
-     root: ""          # the class folders sit directly in data/raw/amy_images/
-     folders:
-       trash: trash
-       recycling: recycling
-       compost: compost
-       hazardous: hazardous
+    optional: true
+    root: ""          # the class folders sit directly in data/raw/amy_images/
+    folders:
+      trash: trash
+      recycling: recycling
+      compost: compost
+      hazardous: hazardous
