@@ -26,15 +26,17 @@ Model file: any of these works for --model
     2. a whole model (torch.save(model, path))  - loaded as is
     3. TorchScript (torch.jit.save)             - loaded as is (older format)
 
-# TODO(Amy): confirm these against your training code; they are guesses until then.
-#   framework    PyTorch + torchvision            (no training code is in the repo yet)
-#   image size   224 x 224                        (--image-size)
-#   preprocessing resize to the size, ImageNet mean/std normalization, no crop
-#   model file   models/best_model.pth (state_dict) + --arch mobilenet_v3_small
+Preprocessing: the same as training. Amy's train.py evaluates with
+MobileNet_V3_Small_Weights.DEFAULT.transforms() (resize the short side to 256,
+center-crop 224, ImageNet mean/std), so --arch picks that network's own
+torchvision transforms. Without --arch (a whole model or TorchScript file) the
+standard ImageNet 256/224 transforms are used, which are the same numbers.
+A plain resize to 224 instead of resize + crop cost about 0.03 macro F1 on
+Amy's model, so do not change this without retraining.
 
 Run from the repo root:
-    python src/eval/export_predictions.py --model models/best_model.pth --arch mobilenet_v3_small
-    python src/eval/export_predictions.py --model models/model.pt --image-size 224
+    python src/eval/export_predictions.py --model models/waste_classifier.pth --arch mobilenet_v3_small
+    python src/eval/export_predictions.py --model models/model.pt
 """
 
 import argparse
@@ -45,6 +47,8 @@ import torch
 import yaml
 from PIL import Image
 from torchvision import models, transforms
+from torchvision.models import (EfficientNet_B0_Weights, MobileNet_V3_Large_Weights, MobileNet_V3_Small_Weights,
+                                ResNet18_Weights)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = REPO_ROOT / "configs" / "label_map.yaml"
@@ -52,16 +56,31 @@ MANIFEST_DIR = REPO_ROOT / "data" / "splits"
 RESULTS_DIR = REPO_ROOT / "results"
 OUTPUT_NAMES = {"validation": "val_predictions.csv", "test": "test_predictions.csv"}
 
-# TODO(Amy): ImageNet statistics, right for torchvision models pretrained on ImageNet.
-NORMALIZE_MEAN = [0.485, 0.456, 0.406]
-NORMALIZE_STD = [0.229, 0.224, 0.225]
-
+# Each network with the pretrained weights it was fine-tuned from; the weights
+# carry the exact eval preprocessing (resize, crop, normalization) to reuse.
 ARCHITECTURES = {
-    "mobilenet_v3_small": models.mobilenet_v3_small,
-    "mobilenet_v3_large": models.mobilenet_v3_large,
-    "efficientnet_b0": models.efficientnet_b0,
-    "resnet18": models.resnet18,
+    "mobilenet_v3_small": (models.mobilenet_v3_small, MobileNet_V3_Small_Weights.DEFAULT),
+    "mobilenet_v3_large": (models.mobilenet_v3_large, MobileNet_V3_Large_Weights.DEFAULT),
+    "efficientnet_b0": (models.efficientnet_b0, EfficientNet_B0_Weights.DEFAULT),
+    "resnet18": (models.resnet18, ResNet18_Weights.DEFAULT),
 }
+
+
+def preprocessing_for(arch):
+    """The eval transforms the network was pretrained with (what Amy's train.py uses).
+
+    For mobilenet_v3_small this is: resize the short side to 256, center-crop
+    224x224, scale to 0-1, normalize with the ImageNet mean and std.
+    Without --arch we fall back to the same standard ImageNet steps.
+    """
+    if arch is not None:
+        return ARCHITECTURES[arch][1].transforms()
+    return transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ])
 
 
 def class_order():
@@ -78,7 +97,7 @@ def build_architecture(arch, num_classes):
     No pretrained weights are downloaded here (weights=None): the trained
     weights come from --model.
     """
-    net = ARCHITECTURES[arch](weights=None)
+    net = ARCHITECTURES[arch][0](weights=None)
     # Each family keeps its final layer in a different place.
     if arch.startswith("mobilenet_v3") or arch.startswith("efficientnet"):
         last = net.classifier[-1]
@@ -187,7 +206,6 @@ def main():
     parser = argparse.ArgumentParser(description="Write validation and test prediction CSVs from a trained model.")
     parser.add_argument("--model", type=Path, required=True, help="model file: TorchScript, whole model, or state_dict")
     parser.add_argument("--arch", choices=sorted(ARCHITECTURES), help="network to rebuild when --model is a state_dict")
-    parser.add_argument("--image-size", type=int, default=224, help="TODO(Amy): the size you trained at (default 224)")
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--splits", nargs="+", default=["validation", "test"], choices=list(OUTPUT_NAMES))
     args = parser.parse_args()
@@ -204,12 +222,9 @@ def main():
         print(f"Model classes {list(model_classes)} -> label map order used for outputs: {classes}")
     else:
         print("The model file has no class list; assuming outputs follow the alphabetical label-map order.")
-    # TODO(Amy): make this match your training transforms exactly (size, crop, normalization).
-    preprocess = transforms.Compose([
-        transforms.Resize((args.image_size, args.image_size)),
-        transforms.ToTensor(),
-        transforms.Normalize(NORMALIZE_MEAN, NORMALIZE_STD),
-    ])
+    preprocess = preprocessing_for(args.arch)  # same steps as training (see the docstring)
+    print(f"Preprocessing ({'from the pretrained weights of ' + args.arch if args.arch else 'standard ImageNet'}):")
+    print("  " + str(preprocess).replace("\n", "\n  "))  # torchvision prints its own resize / crop / mean / std
 
     RESULTS_DIR.mkdir(exist_ok=True)
     for split_name in args.splits:

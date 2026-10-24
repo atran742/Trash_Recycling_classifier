@@ -24,6 +24,10 @@ What it prints:
      items, the "always say recycling" baseline for comparison, and then the
      numbers WITH the cutoff applied: answered share, accuracy and macro F1 on the
      answered items, wrong answers left, wrong answers avoided.
+  4. With --balanced: the report file scored with EQUAL counts per class (the smallest
+     class's count drawn from every class, 1000 random draws, seed 42) with 95%
+     intervals. This separates "how good is the model" from "how much does the
+     68% recycling class mix hurt the small classes".
 
 What it saves (git-ignored, never committed):
     results/threshold_sweep.csv / .png   the sweep on the tune file
@@ -33,10 +37,12 @@ Run from the repo root:
     python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv
     python src/eval/evaluate.py --tune docs/sample_validation_predictions.csv --report docs/sample_test_predictions.csv
     python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv --target 0.85
+    python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv --balanced
 """
 
 import argparse
 import csv
+import random
 from pathlib import Path
 
 import matplotlib
@@ -52,6 +58,8 @@ RESULTS_DIR = REPO_ROOT / "results"
 CONFIG_PATH = REPO_ROOT / "configs" / "label_map.yaml"
 BASELINE_LABEL = "recycling"  # the biggest class; see docs/dataset_inventory.md
 CUTOFFS = [round(0.50 + 0.05 * k, 2) for k in range(10)]  # 0.50, 0.55, ... 0.95
+BALANCED_DRAWS = 1000  # --balanced: how many equal-count resamples of the report file
+BALANCED_SEED = 42     # --balanced: fixed seed, so the numbers are the same on every run
 
 
 def read_predictions(csv_path):
@@ -208,6 +216,51 @@ def print_sweep(rows, n_items):
         print(f"  {r['cutoff']:>6.2f}{r['answered']:>10}{r['share_answered']:>8.2f}{acc:>10}{r['wrong_avoided']:>15}{r['wrong_remaining']:>12}")
 
 
+def balanced_resample(true, pred, classes, n_resamples=1000, seed=42):
+    """Score the report file as if every class had the same number of images.
+
+    Our test set is 68% recycling, so plain macro F1 mixes two things: how good the
+    model is, and how the class mix punishes the small classes (a few percent of
+    wrong recycling guesses can outnumber the whole trash class). This draws
+    n images from EVERY class, where n is the smallest class's count, scores that
+    balanced set, and repeats n_resamples times with a fixed seed.
+    Returns n and lists of macro F1, and precision / recall per class, one per resample.
+    """
+    rng = random.Random(seed)
+    by_class = {c: [i for i, t in enumerate(true) if t == c] for c in classes}
+    n = min(len(idx) for idx in by_class.values())
+    out = {"n_per_class": n, "macro_f1": [], "precision": {c: [] for c in classes}, "recall": {c: [] for c in classes}}
+    for _ in range(n_resamples):
+        idx = [i for c in classes for i in rng.sample(by_class[c], n)]  # n per class, no repeats within one draw
+        t = [true[i] for i in idx]
+        p = [pred[i] for i in idx]
+        out["macro_f1"].append(macro_f1(t, p, classes))
+        prec, rec, _, _ = precision_recall_fscore_support(t, p, labels=classes, zero_division=0)
+        for c, pr, rc in zip(classes, prec, rec):
+            out["precision"][c].append(pr)
+            out["recall"][c].append(rc)
+    return out
+
+
+def mean_and_interval(values):
+    """Mean and the 2.5th / 97.5th percentiles: the middle 95% of the resamples."""
+    arr = np.array(values)
+    return arr.mean(), np.percentile(arr, 2.5), np.percentile(arr, 97.5)
+
+
+def print_balanced(res, classes, n_resamples, seed):
+    """The balanced scores as a small table with 95% intervals."""
+    m, lo, hi = mean_and_interval(res["macro_f1"])
+    print(f"\nReport file, balanced: {res['n_per_class']} images per class (the smallest class), "
+          f"{n_resamples} random draws, seed {seed}")
+    print(f"  macro F1   mean {m:.4f}   95% interval [{lo:.4f}, {hi:.4f}]")
+    print(f"  {'class':<12}{'precision':>10}{'95% interval':>18}{'recall':>9}{'95% interval':>18}")
+    for c in classes:
+        pm, plo, phi = mean_and_interval(res["precision"][c])
+        rm, rlo, rhi = mean_and_interval(res["recall"][c])
+        print(f"  {c:<12}{pm:>10.3f}{f'[{plo:.3f}, {phi:.3f}]':>18}{rm:>9.3f}{f'[{rlo:.3f}, {rhi:.3f}]':>18}")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Pick the confidence cutoff on one file, report on another.")
     parser.add_argument("--tune", type=Path, help="validation predictions CSV: the cutoff is chosen here")
@@ -215,6 +268,8 @@ def main():
     parser.add_argument("csv", nargs="?", type=Path, help="(old form) one CSV used for both; prints a warning")
     parser.add_argument("--target", type=float, default=0.90,
                         help="accuracy on answered items the cutoff must reach (default 0.90)")
+    parser.add_argument("--balanced", action="store_true",
+                        help="also score the report file with equal counts per class (1000 draws, seed 42)")
     args = parser.parse_args()
     if not 0 < args.target <= 1:
         parser.error("--target must be between 0 and 1, for example 0.90")
@@ -264,6 +319,9 @@ def main():
                  r_true, [BASELINE_LABEL] * len(r_true), classes, per_class=False)
     cm_path = RESULTS_DIR / "confusion_matrix.png"
     save_confusion_matrix(r_true, r_pred, classes, cm_path)
+    if args.balanced:
+        print_balanced(balanced_resample(r_true, r_pred, classes, BALANCED_DRAWS, BALANCED_SEED),
+                       classes, BALANCED_DRAWS, BALANCED_SEED)
 
     if cutoff is None:
         print("\nNo cutoff was chosen, so the report file is shown without one.")
