@@ -19,8 +19,6 @@ htmlcov/
 .ipynb_checkpoints/
 
 # Machine-learning model artifacts
-*.pt
-*.pth
 *.ckpt
 *.h5
 *.keras
@@ -86,9 +84,8 @@ data/splits/*
 # Project virtualenv (already covered by .venv/ at the top; repeated so it is obvious).
 .venv
 
-# Model weights live in models/ but never in git. *.pt, *.pth, *.ckpt, *.h5,
-# *.keras, *.onnx and *.tflite are already ignored everywhere near the top.
-models/*.pth
+# The trained model models/waste_classifier.pth IS tracked (Amy's commit). Other
+# weight formats (*.ckpt, *.h5, *.keras, *.onnx, *.tflite) are ignored near the top.
 
 # Charts and contact sheets made by plot_counts.py and review_near_dups.py.
 # Already covered by *.png above; listed so it is obvious they stay local.
