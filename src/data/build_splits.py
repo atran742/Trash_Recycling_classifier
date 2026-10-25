@@ -92,6 +92,11 @@ SPLIT_NAMES = ["train", "validation", "test"]
 SPLIT_DIRS = {name: REPO_ROOT / "data" / name for name in SPLIT_NAMES}
 MANIFEST_DIR = REPO_ROOT / "data" / "splits"
 RESULTS_DIR = REPO_ROOT / "results"
+# Demo-room photos (webcam / Pi camera). Held out for src/eval/score_camera_test.py
+# and NEVER split or trained on: a dataset reading from it stops the build, and so
+# does any manifest path that mentions it (check_no_camera_test()).
+CAMERA_TEST_NAME = "camera_test"
+CAMERA_TEST_DIR = RAW_DIR / CAMERA_TEST_NAME
 REMOVED_CSV = RESULTS_DIR / "removed_duplicates.csv"
 CONFLICTS_CSV = RESULTS_DIR / "conflicts_to_review.csv"
 WEIGHTS_JSON = RESULTS_DIR / "class_weights.json"
@@ -371,6 +376,14 @@ def collect_images(config, active, removed_rows):
     for dataset_name, dataset_cfg in config["datasets"].items():
         found_here = 0
         is_new_source = dataset_name not in (config.get("base_datasets") or [])
+        # The camera test set is held out. Nothing may read from it, not even a
+        # dataset under another name whose root or symlink points inside it.
+        dataset_root = (RAW_DIR / dataset_name / (dataset_cfg.get("root") or "")).resolve()
+        held_out = CAMERA_TEST_DIR.resolve()
+        if dataset_name == CAMERA_TEST_NAME or dataset_root == held_out or held_out in dataset_root.parents:
+            raise SystemExit(f"STOP: \"{dataset_name}\" in configs/label_map.yaml reads data/raw/{CAMERA_TEST_NAME}/. "
+                             f"Those are the held-out demo-room photos and must never be split or trained on. "
+                             f"Remove that entry. Score them with: python src/eval/score_camera_test.py ...")
         # `optional: true` in label_map.yaml: a machine without this folder warns
         # and builds from the other datasets. Without it, a missing folder stops the run.
         if dataset_cfg.get("optional") and not (RAW_DIR / dataset_name).is_dir():
@@ -426,9 +439,15 @@ def collect_images(config, active, removed_rows):
                 # EXIF tag before hashing and copying. Base (Kaggle) images are left as they are.
                 items.append({"path": path, "label": target, "folder": folder, "upright": is_new_source})
 
-        # An enabled photo folder with nothing usable in it is almost always a mistake.
+        # An enabled photo folder with nothing usable in it is almost always a mistake...
         if "folders" in dataset_cfg and found_here == 0 and any(
                 t in active["classes"] for t in dataset_cfg["folders"].values()):
+            # ...except for an optional one: its empty class folders are tracked in git
+            # (team_photos), so most machines have the folders and no photos yet.
+            if dataset_cfg.get("optional"):
+                print(f"  WARNING: data/raw/{dataset_name}/ has no images yet. It is marked optional in "
+                      f"configs/label_map.yaml, so the build continues WITHOUT it.")
+                continue
             raise SystemExit(f"data/raw/{dataset_name}/ has no images. {missing_dataset_message(dataset_name, dataset_cfg)}")
 
     print(f"\nFound {n_found} images. Skipped {stats['verify']} VERIFY folders, "
@@ -959,6 +978,31 @@ def check_no_overlap(rules):
     print("Overlap check passed: no exact or near duplicate appears in more than one split.")
 
 
+def check_no_camera_test(manifest_dir=MANIFEST_DIR):
+    """Stop if any manifest path mentions the held-out camera test folder.
+
+    data/raw/camera_test/ holds the demo-room photos that score_camera_test.py
+    uses as a final, never-trained-on check. A copy of one of them in train,
+    validation or test would make that check meaningless, so the build stops here
+    with a FAILED message (the manifests are already on disk at this point; fix
+    the config and build again). The copy names keep the source folder
+    (camera_test__<class>__<file>), so a plain text match is enough.
+    Shared with the tests, which plant a camera_test path in a scratch manifest.
+    """
+    bad = []
+    for split_name in SPLIT_NAMES:
+        with open(manifest_dir / f"{split_name}.csv", newline="") as f:
+            bad += [f"{split_name}: {row['path']}" for row in csv.DictReader(f)
+                    if CAMERA_TEST_NAME in row["path"].lower()]
+    if bad:
+        shown = "\n  ".join(bad[:5]) + (f"\n  (+{len(bad) - 5} more)" if len(bad) > 5 else "")
+        raise SystemExit(f"FAILED: {len(bad)} manifest path(s) come from data/raw/{CAMERA_TEST_NAME}/, "
+                         f"the held-out demo-room photos that must never be split or trained on:\n  {shown}\n"
+                         f"Remove {CAMERA_TEST_NAME} from configs/label_map.yaml (or move the photos out of any "
+                         f"other source) and run this script again.")
+    print(f"Camera test check passed: no data/raw/{CAMERA_TEST_NAME}/ photo is in any split.")
+
+
 def check_counts(n_found, out_counts, n_final, n_removed_rows, n_review_rows):
     """Stop with a clear message unless: images found - removed - held for review = images in the splits.
 
@@ -1211,6 +1255,7 @@ def main():
         json.dump(weights, f, indent=2)
         f.write("\n")
     print()
+    check_no_camera_test()
     check_no_overlap(config["near_duplicates"])
 
     # Final arithmetic check against what is really on disk.

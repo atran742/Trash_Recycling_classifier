@@ -45,7 +45,7 @@ from pathlib import Path
 
 import torch
 import yaml
-from PIL import Image
+from PIL import Image, ImageOps
 from torchvision import models, transforms
 from torchvision.models import (EfficientNet_B0_Weights, MobileNet_V3_Large_Weights, MobileNet_V3_Small_Weights,
                                 ResNet18_Weights)
@@ -177,8 +177,13 @@ def read_manifest(split_name):
         return list(csv.DictReader(f))
 
 
-def predict_split(model, rows, classes, preprocess, device, batch_size):
-    """Run the model over every image in the rows. Returns a list of output dicts."""
+def predict_split(model, rows, classes, preprocess, device, batch_size, upright=False):
+    """Run the model over every image in the rows. Returns a list of output dicts.
+
+    upright=True first turns each photo the way its EXIF orientation tag says.
+    The split copies are saved upright already, so the export leaves it off;
+    score_camera_test.py turns it on for raw phone / webcam photos.
+    """
     out = []
     with torch.no_grad():  # no gradients needed, saves memory and time
         for start in range(0, len(rows), batch_size):
@@ -186,6 +191,8 @@ def predict_split(model, rows, classes, preprocess, device, batch_size):
             images = []
             for r in batch_rows:
                 with Image.open(REPO_ROOT / r["path"]) as img:
+                    if upright:
+                        img = ImageOps.exif_transpose(img)
                     images.append(preprocess(img.convert("RGB")))
             logits = model(torch.stack(images).to(device))
             if logits.shape[1] != len(classes):

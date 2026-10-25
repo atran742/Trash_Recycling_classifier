@@ -31,7 +31,7 @@ class_sets:
 # pHash distances are always even (each pHash has 32 one-bits), so 3 acts like 2.
 near_duplicates:
   max_phash: 3     # team decision Oct 18 (was 5)
-  # New photo sources only (amy_images, personal_battery): photos that look alike
+  # New photo sources only (amy_images, personal_battery, team_photos): photos that look alike
   # under this looser rule are always kept in the SAME split, so near-identical
   # shots never end up in both train and test. Same rule as check_leakage.py.
   keep_together_max_phash: 6
@@ -142,6 +142,21 @@ datasets:
   amy_images:
     optional: true
     root: ""          # the class folders sit directly in data/raw/amy_images/
+    folders:
+      trash: trash
+      recycling: recycling
+      compost: compost
+      hazardous: hazardous
+
+  # Photos the team takes with phones. Drop them in data/raw/team_photos/<class>/
+  # (see the README there). Optional: a machine with no photos in it warns and
+  # builds without them. Treated like every other new source: duplicates removed,
+  # EXIF rotation applied, HEIC converted, placed around the fixed base split.
+  # NOTE: data/raw/camera_test/ (demo-room photos) is deliberately NOT listed
+  # here. It is held out; build_splits.py stops if it is ever added.
+  team_photos:
+    optional: true
+    root: ""
     folders:
       trash: trash
       recycling: recycling

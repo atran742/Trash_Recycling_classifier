@@ -39,7 +39,8 @@ temp_interactive_push.bat
 
 # ---- Data pipeline (added by data-pipeline branch) ----
 # Never commit images or datasets. Everything under data/ is ignored,
-# EXCEPT the personal battery README and the split CSV manifests (see below).
+# EXCEPT the READMEs and empty class folders of our photo folders, and the split
+# CSV manifests (see below).
 # (Written as data/* plus "!" exceptions instead of plain "data/", because git
 # cannot re-include a file once its whole parent folder is ignored.)
 data/*
@@ -48,6 +49,20 @@ data/raw/*
 !data/raw/personal_battery/
 data/raw/personal_battery/*
 !data/raw/personal_battery/README.md
+# Team photos and the held-out camera test set: the README and the four empty
+# class folders (.gitkeep) are tracked, every image inside stays local.
+!data/raw/team_photos/
+data/raw/team_photos/*
+!data/raw/team_photos/README.md
+!data/raw/team_photos/*/
+data/raw/team_photos/*/*
+!data/raw/team_photos/*/.gitkeep
+!data/raw/camera_test/
+data/raw/camera_test/*
+!data/raw/camera_test/README.md
+!data/raw/camera_test/*/
+data/raw/camera_test/*/*
+!data/raw/camera_test/*/.gitkeep
 # Split manifests (path,label CSVs, relative paths, well under 2 MB) are tracked
 # so everyone trains on the same split. Only the .csv files, nothing else.
 !data/splits/

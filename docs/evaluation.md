@@ -58,6 +58,20 @@ middle 95% of the draws. On Amy's first model this gives 0.846 macro F1
 says how good the model is per class; the real-mix number is what the test set
 scores. Report both.
 
+## The camera test set
+
+`data/raw/camera_test/<class>/` holds demo-room photos from the webcam or Pi
+camera that are never split or trained on. After the two commands above:
+
+```bash
+python src/eval/score_camera_test.py --model models/waste_classifier.pth --arch mobilenet_v3_small
+```
+
+It warns about any photo that is a near copy of a train image (same pHash /
+dHash rules as the pipeline), writes `results/camera_test_predictions.csv` and
+runs `evaluate.py` with `results/val_predictions.csv` as the tune file, so the
+cutoff still comes from validation. This is the number closest to the demo.
+
 ## Reading the result
 
 - **Macro F1 on the test file** is the headline number. Accuracy is inflated

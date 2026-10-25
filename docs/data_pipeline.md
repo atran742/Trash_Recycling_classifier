@@ -251,6 +251,36 @@ in that folder's `README.md`. Rerun `build_splits.py`, and they join the
 `hazardous` class automatically. Like Amy's photos, they are placed around the
 Kaggle split without moving it, and look-alike shots stay in one split.
 
+## Team photos: `data/raw/team_photos/`
+
+Phone photos the team takes go in `data/raw/team_photos/<class>/` (`trash`,
+`recycling`, `compost`, `hazardous`), one item per photo on a plain background;
+the naming and photo rules are in that folder's `README.md`. Rerun
+`build_splits.py` and they are treated like Amy's photos: duplicates removed,
+turned upright by their EXIF tag, HEIC converted, placed around the fixed
+Kaggle split with look-alikes kept in one split. The dataset is `optional: true`,
+so a machine whose folders are still empty prints
+`WARNING: data/raw/team_photos/ has no images yet` and builds without them;
+the manifests are then byte-identical to a build that never had the folder.
+
+## Camera test set: `data/raw/camera_test/` (held out)
+
+Photos taken with the webcam or Pi camera in the demo room go in
+`data/raw/camera_test/<class>/` and **nowhere else**. `build_splits.py` never
+reads that folder: it is not in `configs/label_map.yaml`, a dataset entry that
+points at it stops the build, and after the manifests are written the build
+checks them and stops if any path mentions `camera_test`. Score the photos with
+
+```bash
+python src/eval/export_predictions.py --model models/waste_classifier.pth --arch mobilenet_v3_small
+python src/eval/score_camera_test.py --model models/waste_classifier.pth --arch mobilenet_v3_small
+```
+
+The first command gives the validation predictions that pick the "I'm not sure"
+cutoff; the second compares every camera photo against the train images with
+the pipeline's pHash / dHash rules (a near copy prints a WARNING), writes
+`results/camera_test_predictions.csv` and scores it with `evaluate.py`.
+
 ## Troubleshooting
 
 - **"No Kaggle token found"**: redo setup step 3. On Windows the folder is `C:\Users\<you>\.kaggle\`.

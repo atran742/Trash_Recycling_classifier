@@ -52,6 +52,8 @@ Recycling is 68% of the training data. A "model" that always answers recycling g
 
 - `src/data/` downloads, cleans and splits the data. `docs/data_pipeline.md` explains every step and every error message.
 - `docs/dataset_inventory.md` lists each dataset, its license, the real counts and what was removed.
-- `src/eval/evaluate.py` scores predictions, draws a confusion matrix and picks a confidence cutoff.
+- `src/eval/evaluate.py` scores predictions, draws a confusion matrix and picks a confidence cutoff. `src/eval/score_camera_test.py` scores the held-out demo-room photos.
+- `data/raw/team_photos/<class>/` is where our own phone photos go (they join the split). `data/raw/camera_test/<class>/` is where demo-room webcam or Pi photos go (never trained on). Each folder has a README with the rules.
+- `src/webcam_smooth.py` is the demo loop: averages the last 8 predictions, classifies only a center box, says "I'm not sure" below a 0.55 cutoff and shows the San Diego rule for the class. `src/webcam_test.py` is Amy's plain version.
 - `raspberry_pi/` has the camera test and a first-time Pi guide.
 - `trash_recycling_classifier_project_plan.md` is the original plan.
