@@ -1,7 +1,8 @@
-# Data Pipeline: zero to train / validation / test
+# Data Pipeline: zero to train / validation / test / wild_test
 
-This takes a teammate from a fresh clone to `data/train`, `data/validation` and
-`data/test` folders that are ready for training. None of these images go into git.
+This takes a teammate from a fresh clone to `data/train`, `data/validation`,
+`data/test` (the frozen benchmark) and `data/wild_test` folders that are ready
+for training and scoring. None of these images go into git.
 
 ## One-time setup
 
@@ -14,13 +15,14 @@ This takes a teammate from a fresh clone to `data/train`, `data/validation` and
    "Create New Token". Save it as `~/.kaggle/kaggle.json` (file download) or
    `~/.kaggle/access_token` (token string), then run `chmod 600` on that file.
 
-## The 3 commands
+## The 4 commands
 
 Run these from the repo root with the virtual environment active.
 
 ```bash
 pip install -r requirements.txt
 python src/data/download.py
+python src/data/crop_taco.py
 python src/data/build_splits.py
 ```
 
@@ -31,8 +33,9 @@ not committed).
 | Command | What it does | Time |
 |---|---|---|
 | `pip install -r requirements.txt` | Installs kaggle, pyyaml, pillow, pillow-heif, imagehash, numpy, matplotlib, scikit-learn and opencv-python. | under 1 minute |
-| `python src/data/download.py` | Downloads `garbage12_enhanced` (about 557 MB unzipped) into `data/raw/`. Skips it if it is already there. Also fetches `garbage_v2` only if there are fewer than 500 battery images. | a few minutes |
-| `python src/data/build_splits.py` | Applies `configs/label_map.yaml`, drops broken files, exact duplicates and near duplicates, checks the counts add up, copies a 70/15/15 split into `data/train`, `data/validation` and `data/test`, and writes the CSV manifests and class weights. | about 20 seconds |
+| `python src/data/download.py` | Downloads `garbage12_enhanced` (about 557 MB unzipped) into `data/raw/`, then the two wild datasets: TACO (the official annotations file, pinned to one commit, and its 1,500 photos, about 2.5 GB) and RealWaste (657 MB zip from UCI). Skips what is already there. Fetches `garbage_v2` only if there are fewer than 500 battery images. | 10 to 30 minutes, mostly TACO |
+| `python src/data/crop_taco.py` | Cuts one image per TACO object whose category maps to a class in `configs/label_map.yaml` (box + 10% padding, at least 64 px a side) into `data/raw/taco_crops/<class>/<category>/`, and prints counts per category and class. | about 2 minutes |
+| `python src/data/build_splits.py` | Applies `configs/label_map.yaml`, drops broken files, exact duplicates and near duplicates, splits the Kaggle set 70/15/15 into `data/train`, `data/validation` and `data/test` (the frozen benchmark, checked byte for byte), splits every other source 70/15/15 on its own into train, validation and `data/wild_test`, checks the counts add up, and writes the CSV manifests and class weights. | about 10 minutes |
 
 ## What you should see
 
@@ -280,6 +283,31 @@ The first command gives the validation predictions that pick the "I'm not sure"
 cutoff; the second compares every camera photo against the train images with
 the pipeline's pHash / dHash rules (a near copy prints a WARNING), writes
 `results/camera_test_predictions.csv` and scores it with `evaluate.py`.
+
+## Wild datasets: TACO and RealWaste
+
+Two open datasets add messy real-world photos (litter on the ground, items from a
+landfill) next to the clean Kaggle images. How each category was mapped with the
+City of San Diego guide, the quality check and the licenses are in
+`docs/dataset_inventory.md`. How they are used:
+
+- **They never touch the benchmark.** `data/splits/test.csv` stays the 1,270 Kaggle
+  test images of Oct 24, byte for byte; the build stops if it changes.
+- **They are split on their own**, 70/15/15 with seed 42, into train, validation and
+  `data/splits/wild_test.csv`. Crops of one TACO photo, RealWaste shots of one item
+  (blocks of 20 consecutive file numbers) and look-alikes stay in one split.
+- **A wild test image may not look like any train or benchmark image** (pHash <= 6
+  and dHash <= 8, the leakage-check rule); one that does is dropped.
+- **Recycling is capped**: at most 400 new recycling images, spread evenly over the
+  categories, because recycling is already most of train.
+- Both are `optional: true`: a machine without them warns and builds without them,
+  but then its train, validation and wild test differ from the committed manifests.
+
+The same own-split rule now covers `amy_images`, `team_photos` and
+`personal_battery`: their test share goes to `wild_test`, never to the benchmark.
+
+After a build, `python src/data/review_new_images.py` saves
+`results/new_images_<class>.png`, 30 random new images per class for a label check by eye.
 
 ## Troubleshooting
 

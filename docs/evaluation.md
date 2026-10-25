@@ -23,13 +23,47 @@ python src/eval/export_predictions.py --model models/waste_classifier.pth --arch
 ```
 
 ```bash
-python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv
+python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv --wild results/wild_test_predictions.csv
 ```
 
 | Command | What it does | Writes |
 |---|---|---|
-| `export_predictions.py` | Runs the model over every validation and test image and records the true label, the predicted label and the model's confidence. | `results/val_predictions.csv`, `results/test_predictions.csv` |
-| `evaluate.py` | Prints accuracy, macro F1 and per-class scores, sweeps cutoffs on the validation file, picks the lowest cutoff reaching 90% accuracy on answered items (`--target` to change), and applies it once to the test file. `--balanced` adds the test score with equal counts per class (see below). | `results/confusion_matrix.png`, `results/threshold_sweep.csv`, `results/threshold_sweep.png` |
+| `export_predictions.py` | Runs the model over every validation, benchmark test and wild test image and records the true label, the predicted label and the model's confidence. | `results/val_predictions.csv`, `results/test_predictions.csv`, `results/wild_test_predictions.csv` |
+| `evaluate.py` | Prints accuracy, macro F1 and per-class scores, sweeps cutoffs on the validation file, picks the lowest cutoff reaching 90% accuracy on answered items (`--target` to change), and applies it once to the benchmark test file and, with `--wild`, to the wild test file. `--balanced` adds scores with equal counts per class (see below). Ends with one summary line: benchmark macro F1 and wild test macro F1. | `results/confusion_matrix.png`, `results/confusion_matrix_wild.png`, `results/threshold_sweep.csv`, `results/threshold_sweep.png` |
+
+## Two test sets: the benchmark and the wild test
+
+| Test set | File | What is in it | Changes? |
+|---|---|---|---|
+| **Benchmark** | `data/splits/test.csv` | The 1,270 Kaggle test images of Oct 24, 2026 | **Never.** `build_splits.py` stops if a single byte changes (`benchmark:` in `configs/label_map.yaml`). |
+| **Wild test** | `data/splits/wild_test.csv` | 15% of the new real-world sources (TACO crops, RealWaste, and later team or Amy photos), split on their own | Grows when new photos are added; its share of each source never touches the benchmark. |
+
+The benchmark keeps every score comparable with every earlier one. The wild
+test asks the harder question: how does the model do on messy photos that look
+more like the demo? It has no hazardous items (hazardous was left alone), so its
+macro F1 averages recycling, compost and trash. A wrong "hazardous" guess still
+counts against the item's true class.
+
+## The swap rule: when a new model replaces the current one
+
+Score both models with the commands above on the same split (same stamp line).
+The new model replaces `models/waste_classifier.pth` only if **both** hold:
+
+1. **Benchmark macro F1 drops by no more than 0.01.** New benchmark macro F1 >= current benchmark macro F1 - 0.01.
+2. **Wild test macro F1 goes up.** New wild test macro F1 > current wild test macro F1.
+
+Baseline to beat (Amy's first model, `models/waste_classifier.pth`, split stamp in
+`results/class_weights.json`): **benchmark macro F1 0.785, wild test macro F1 0.270**
+(recall: compost 0.00, recycling 0.27, trash 0.51; it calls every RealWaste food photo trash).
+
+Example: a new model with 0.778 on the benchmark and 0.45 on the wild test replaces it
+(0.778 >= 0.775, and 0.45 > 0.270). A new model with 0.770 and 0.60 does not
+(0.770 < 0.775), however much better it is on the wild test. The rule protects what
+already works while the wild data is added.
+
+Note: validation now also holds wild images, so the "I'm not sure" cutoff is tuned on
+both kinds. For Amy's first model, validation accuracy is 0.758 and no cutoff reaches the
+default 90% target; a model trained with the wild images in train should do better.
 
 The CSVs and charts are git-ignored. Share them in the PR or Discord.
 
@@ -74,8 +108,9 @@ cutoff still comes from validation. This is the number closest to the demo.
 
 ## Reading the result
 
-- **Macro F1 on the test file** is the headline number. Accuracy is inflated
-  by the recycling class (68% of train).
+- **Macro F1 on the benchmark test file** is the headline number. Accuracy is
+  inflated by the recycling class (68% of train). **Wild test macro F1** is the
+  second number; together they decide the swap rule above.
 - **The chosen cutoff** comes from validation only. The test numbers "with
   cutoff applied" are what the Pi demo would show: how many items get an
   answer, how accurate those answers are, and how many wrong answers became

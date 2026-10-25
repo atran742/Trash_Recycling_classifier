@@ -1,10 +1,12 @@
 """
-export_predictions.py - run a trained model over the validation and test splits
-and write the prediction CSVs that src/eval/evaluate.py reads.
+export_predictions.py - run a trained model over the validation, test and wild_test
+splits and write the prediction CSVs that src/eval/evaluate.py reads.
 
 Output (git-ignored, under results/):
-    results/val_predictions.csv    one row per image in data/validation
-    results/test_predictions.csv   one row per image in data/test
+    results/val_predictions.csv        one row per image in data/validation
+    results/test_predictions.csv       one row per image in data/test (the frozen benchmark)
+    results/wild_test_predictions.csv  one row per image in data/wild_test (TACO, RealWaste, ...),
+                                       skipped when data/splits/wild_test.csv lists no images
 Columns: path, true_label, predicted_label, confidence
 confidence is the softmax probability of the predicted label (0 to 1).
 
@@ -54,7 +56,8 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_PATH = REPO_ROOT / "configs" / "label_map.yaml"
 MANIFEST_DIR = REPO_ROOT / "data" / "splits"
 RESULTS_DIR = REPO_ROOT / "results"
-OUTPUT_NAMES = {"validation": "val_predictions.csv", "test": "test_predictions.csv"}
+OUTPUT_NAMES = {"validation": "val_predictions.csv", "test": "test_predictions.csv",
+                "wild_test": "wild_test_predictions.csv"}
 
 # Each network with the pretrained weights it was fine-tuned from; the weights
 # carry the exact eval preprocessing (resize, crop, normalization) to reuse.
@@ -214,7 +217,7 @@ def main():
     parser.add_argument("--model", type=Path, required=True, help="model file: TorchScript, whole model, or state_dict")
     parser.add_argument("--arch", choices=sorted(ARCHITECTURES), help="network to rebuild when --model is a state_dict")
     parser.add_argument("--batch-size", type=int, default=32)
-    parser.add_argument("--splits", nargs="+", default=["validation", "test"], choices=list(OUTPUT_NAMES))
+    parser.add_argument("--splits", nargs="+", default=list(OUTPUT_NAMES), choices=list(OUTPUT_NAMES))
     args = parser.parse_args()
 
     device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
@@ -234,8 +237,15 @@ def main():
     print("  " + str(preprocess).replace("\n", "\n  "))  # torchvision prints its own resize / crop / mean / std
 
     RESULTS_DIR.mkdir(exist_ok=True)
+    written = []
     for split_name in args.splits:
+        if split_name == "wild_test" and not (MANIFEST_DIR / "wild_test.csv").exists():
+            print("\nwild_test: data/splits/wild_test.csv not found (built before wild_test existed), skipped.")
+            continue
         rows = read_manifest(split_name)
+        if not rows:
+            print(f"\n{split_name}: data/splits/{split_name}.csv lists no images, skipped.")
+            continue
         print(f"\n{split_name}: {len(rows)} images from data/splits/{split_name}.csv")
         unknown = sorted({r["label"] for r in rows} - set(classes))  # manifests are lowercase already
         if unknown:
@@ -249,8 +259,11 @@ def main():
             writer.writerows(predictions)
         correct = sum(p["true_label"] == p["predicted_label"] for p in predictions)
         print(f"  wrote {out_path.relative_to(REPO_ROOT)}  (plain accuracy {correct / len(predictions):.3f})")
+        written.append(split_name)
 
-    print("\nNext: python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv")
+    wild = " --wild results/wild_test_predictions.csv" if "wild_test" in written else ""
+    print(f"\nNext: python src/eval/evaluate.py --tune results/val_predictions.csv "
+          f"--report results/test_predictions.csv{wild}")
 
 
 if __name__ == "__main__":

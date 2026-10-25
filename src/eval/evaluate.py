@@ -24,7 +24,10 @@ What it prints:
      items, the "always say recycling" baseline for comparison, and then the
      numbers WITH the cutoff applied: answered share, accuracy and macro F1 on the
      answered items, wrong answers left, wrong answers avoided.
-  4. With --balanced: the report file scored with EQUAL counts per class (the smallest
+  4. With --wild: the wild test file (data/splits/wild_test.csv: TACO, RealWaste and
+     other new photos, never in the benchmark) scored the same way, with the same
+     cutoff, and a confusion matrix in results/confusion_matrix_wild.png.
+  5. With --balanced: the report (and wild) file scored with EQUAL counts per class (the smallest
      class's count drawn from every class, 1000 random draws, seed 42) with 95%
      intervals. This separates "how good is the model" from "how much does the
      68% recycling class mix hurt the small classes".
@@ -38,6 +41,8 @@ Run from the repo root:
     python src/eval/evaluate.py --tune docs/sample_validation_predictions.csv --report docs/sample_test_predictions.csv
     python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv --target 0.85
     python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv --balanced
+    python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv \
+        --wild results/wild_test_predictions.csv
 """
 
 import argparse
@@ -125,7 +130,7 @@ def print_scores(title, true, pred, classes, per_class=True):
             print(f"  {c:<12}{p:>10.3f}{r:>8.3f}{s:>8.3f}{n:>7}")
 
 
-def save_confusion_matrix(true, pred, classes, out_path):
+def save_confusion_matrix(true, pred, classes, out_path, title="Confusion matrix (report file, all items)"):
     """Rows = true class, columns = predicted class, with the count in every cell."""
     cm = confusion_matrix(true, pred, labels=classes)
     fig, ax = plt.subplots(figsize=(6.5, 5.5))
@@ -134,7 +139,7 @@ def save_confusion_matrix(true, pred, classes, out_path):
     ax.set_yticks(range(len(classes)), classes)
     ax.set_xlabel("Predicted")
     ax.set_ylabel("True")
-    ax.set_title("Confusion matrix (report file, all items)")
+    ax.set_title(title)
     for i in range(len(classes)):
         for j in range(len(classes)):
             # White text on dark cells, black on light ones.
@@ -216,6 +221,21 @@ def print_sweep(rows, n_items):
         print(f"  {r['cutoff']:>6.2f}{r['answered']:>10}{r['share_answered']:>8.2f}{acc:>10}{r['wrong_avoided']:>15}{r['wrong_remaining']:>12}")
 
 
+def print_cutoff_result(name, true, pred, conf, cutoff, classes):
+    """The numbers WITH the cutoff applied (below it the system says "I'm not sure")."""
+    res = at_cutoff(true, pred, conf, cutoff, classes)
+    print(f"\n{name} with cutoff {cutoff:.2f} applied (below it the system says \"I'm not sure\"):")
+    print(f"  answered           {res['answered']} of {len(true)} items ({res['share_answered']:.1%})")
+    if res["answered"]:
+        print(f"  accuracy answered  {res['accuracy_answered']:.4f}")
+        print(f"  macro F1 answered  {res['macro_f1_answered']:.4f}")
+    else:
+        print("  nothing answered at this cutoff")
+    print(f"  wrong answers left {res['wrong_remaining']}")
+    print(f"  wrong avoided      {res['wrong_avoided']}  (now \"I'm not sure\")")
+    return res
+
+
 def balanced_resample(true, pred, classes, n_resamples=1000, seed=42):
     """Score the report file as if every class had the same number of images.
 
@@ -248,10 +268,10 @@ def mean_and_interval(values):
     return arr.mean(), np.percentile(arr, 2.5), np.percentile(arr, 97.5)
 
 
-def print_balanced(res, classes, n_resamples, seed):
+def print_balanced(res, classes, n_resamples, seed, name="Report file"):
     """The balanced scores as a small table with 95% intervals."""
     m, lo, hi = mean_and_interval(res["macro_f1"])
-    print(f"\nReport file, balanced: {res['n_per_class']} images per class (the smallest class), "
+    print(f"\n{name}, balanced: {res['n_per_class']} images per class (the smallest class), "
           f"{n_resamples} random draws, seed {seed}")
     print(f"  macro F1   mean {m:.4f}   95% interval [{lo:.4f}, {hi:.4f}]")
     print(f"  {'class':<12}{'precision':>10}{'95% interval':>18}{'recall':>9}{'95% interval':>18}")
@@ -268,6 +288,9 @@ def main():
     parser.add_argument("csv", nargs="?", type=Path, help="(old form) one CSV used for both; prints a warning")
     parser.add_argument("--target", type=float, default=0.90,
                         help="accuracy on answered items the cutoff must reach (default 0.90)")
+    parser.add_argument("--wild", type=Path,
+                        help="wild_test predictions CSV (results/wild_test_predictions.csv): scored next to the "
+                             "benchmark with the same cutoff")
     parser.add_argument("--balanced", action="store_true",
                         help="also score the report file with equal counts per class (1000 draws, seed 42)")
     args = parser.parse_args()
@@ -323,24 +346,45 @@ def main():
         print_balanced(balanced_resample(r_true, r_pred, classes, BALANCED_DRAWS, BALANCED_SEED),
                        classes, BALANCED_DRAWS, BALANCED_SEED)
 
+    saved = [sweep_csv, sweep_png, cm_path]
     if cutoff is None:
         print("\nNo cutoff was chosen, so the report file is shown without one.")
-        print(f"\nSaved {sweep_csv.relative_to(REPO_ROOT)}, {sweep_png.relative_to(REPO_ROOT)}, {cm_path.relative_to(REPO_ROOT)}")
-        return
-    res = at_cutoff(r_true, r_pred, r_conf, cutoff, classes)
-    print(f"\nReport file with cutoff {cutoff:.2f} applied (below it the system says \"I'm not sure\"):")
-    print(f"  answered           {res['answered']} of {len(r_true)} items ({res['share_answered']:.1%})")
-    if res["answered"]:
-        print(f"  accuracy answered  {res['accuracy_answered']:.4f}")
-        print(f"  macro F1 answered  {res['macro_f1_answered']:.4f}")
     else:
-        print("  nothing answered at this cutoff")
-    print(f"  wrong answers left {res['wrong_remaining']}")
-    print(f"  wrong avoided      {res['wrong_avoided']}  (now \"I'm not sure\")")
-    if same_file:
-        print("\n  (tuned and reported on the same file: treat these numbers as an upper bound)")
+        print_cutoff_result("Report file", r_true, r_pred, r_conf, cutoff, classes)
+        if same_file:
+            print("\n  (tuned and reported on the same file: treat these numbers as an upper bound)")
 
-    print(f"\nSaved {sweep_csv.relative_to(REPO_ROOT)}, {sweep_png.relative_to(REPO_ROOT)}, {cm_path.relative_to(REPO_ROOT)}")
+    # ---- 3. Wild test file (TACO, RealWaste, ...): same classes, same cutoff, never tuned on. ----
+    w_f1 = None
+    if args.wild:
+        w_true, w_pred, w_conf = read_predictions(args.wild)
+        check_labels(args.wild, w_true + w_pred, classes)
+        print(f"\nWILD TEST file: {args.wild} ({len(w_true)} items; messy real-world photos, never in the benchmark)")
+        # The wild test may lack a class (no hazardous this round). A class with no items
+        # would add an F1 of 0 to the average, so wild macro F1 averages over the classes
+        # that are present. A wrong guess of a missing class still lowers the recall of
+        # the item's true class, so it is not hidden.
+        w_classes = [c for c in classes if c in set(w_true)]
+        absent = [c for c in classes if c not in w_classes]
+        if absent:
+            n_pred_absent = sum(p in absent for p in w_pred)
+            print(f"  No {', '.join(absent)} items in this file: macro F1 averages {', '.join(w_classes)}. "
+                  f"{n_pred_absent} items were wrongly predicted as {', '.join(absent)} (counted as misses).")
+        print_scores("Wild test file, all items (no cutoff)", w_true, w_pred, w_classes)
+        w_f1 = macro_f1(w_true, w_pred, w_classes)
+        wild_cm = RESULTS_DIR / "confusion_matrix_wild.png"
+        save_confusion_matrix(w_true, w_pred, classes, wild_cm, "Confusion matrix (wild test, all items)")
+        saved.append(wild_cm)
+        if args.balanced:
+            print_balanced(balanced_resample(w_true, w_pred, w_classes, BALANCED_DRAWS, BALANCED_SEED),
+                           w_classes, BALANCED_DRAWS, BALANCED_SEED, name="Wild test file")
+        if cutoff is not None:
+            print_cutoff_result("Wild test file", w_true, w_pred, w_conf, cutoff, w_classes)
+
+    print(f"\nSummary: benchmark macro F1 {macro_f1(r_true, r_pred, classes):.4f}"
+          + (f"   wild test macro F1 {w_f1:.4f}" if w_f1 is not None else "")
+          + "   (swap rule: docs/evaluation.md)")
+    print("\nSaved " + ", ".join(str(p.relative_to(REPO_ROOT)) for p in saved))
 
 
 if __name__ == "__main__":

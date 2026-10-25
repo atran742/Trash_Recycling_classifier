@@ -31,17 +31,44 @@ class_sets:
 # pHash distances are always even (each pHash has 32 one-bits), so 3 acts like 2.
 near_duplicates:
   max_phash: 3     # team decision Oct 18 (was 5)
-  # New photo sources only (amy_images, personal_battery, team_photos): photos that look alike
+  # New photo sources only (everything not in base_datasets): photos that look alike
   # under this looser rule are always kept in the SAME split, so near-identical
-  # shots never end up in both train and test. Same rule as check_leakage.py.
+  # shots never end up in both train and a test set. Same rule as check_leakage.py,
+  # and the rule for the final wild_test check against train and the benchmark.
   keep_together_max_phash: 6
   keep_together_max_dhash: 8
   max_dhash: 2     # tightened 4 -> 3 -> 2 after spot checks; cross-label review found 0 true copies (docs/dataset_inventory.md)
 
 # The BASE datasets are split first, on their own, exactly as if no other
-# source existed. Every other dataset (amy_images, personal_battery, ...) is
-# placed around them, so adding new photos never moves a base image to another split.
+# source existed. Their test split is the FROZEN BENCHMARK (see `benchmark:`).
+# Every other dataset (taco_crops, realwaste, amy_images, team_photos,
+# personal_battery) is split separately into train / validation / wild_test
+# (see `wild_split:`), so adding new photos never moves a base image and never
+# adds anything to the benchmark test set.
 base_datasets: [garbage12_enhanced]
+
+# Frozen benchmark: data/splits/test.csv must stay byte-identical so every model
+# is scored on the same 1,270 images (Oct 24). build_splits.py stops if it changes.
+# Only change this hash on a deliberate team decision to retire the benchmark.
+benchmark:
+  test_csv_sha256: 44805ae865a07e6315bf44e9b240c406a320d9fa0ad063a2282de354aad9dd42
+
+# How non-base images are split (build_splits.py, split_wild_images()):
+#   - images from one source photo (group_pattern below) and look-alikes
+#     (keep_together rule) always stay in ONE split;
+#   - a group that looks like a benchmark test image is dropped; one that looks
+#     like a base train / validation image follows it;
+#   - the rest: 70 / 15 / 15 per class into train / validation / wild_test, seed 42;
+#   - finally every wild_test image is checked against all train and benchmark
+#     images with the keep_together rule and dropped if it looks like one.
+wild_split:
+  ratios: {train: 0.70, validation: 0.15, wild_test: 0.15}
+  seed: 42
+  # Recycling is already 68% of train: new recycling images from these sources
+  # are capped at this many in total, spread evenly over their categories
+  # (random with the seed inside each category). No cap on other classes.
+  recycling_cap: 400
+  cap_datasets: [taco_crops, realwaste]
 
 # How to split each class. Same seed -> same split every run.
 split:
@@ -162,3 +189,116 @@ datasets:
       recycling: recycling
       compost: compost
       hazardous: hazardous
+
+  # ------------------------------------------------------------------
+  # Wild datasets: messy real-world photos (Oct 24). Mapped with the City of
+  # San Diego "What Goes Where" guide (April 2026 edition):
+  #   https://www.sandiego.gov/sites/default/files/what_goes_where_guide_english.pdf
+  # Rules used, in order:
+  #   1. The guide puts the item in one bin -> that class.
+  #   2. The guide leaves it unclear (two bins fit, or it is not listed and could be
+  #      recyclable) -> EXCLUDE. Team list: pizza boxes, paper cups, aerosol cans,
+  #      plastic bags and tissues are EXCLUDE even where the guide names a bin.
+  #   3. Not on the blue or green list, not hazardous, plainly not recyclable or
+  #      organic -> trash (the guide's own rule: "When in doubt, throw it out").
+  #   Hazardous is left alone (already 0.99 recall), so nothing maps to it.
+  # Quality check (Oct 24): 15 random images per category were checked by eye
+  # (45 for borderline ones); a category with more than 10% of images that belong in
+  # another bin was set to EXCLUDE, with the count in its comment.
+  # Both are optional: a machine without them warns and builds without them.
+  # ------------------------------------------------------------------
+
+  # TACO object crops, made by src/data/crop_taco.py from data/raw/taco/
+  # (download.py). One image per annotated object, in
+  # data/raw/taco_crops/<class>/<category>/img<photo id>_ann<object id>.jpg.
+  taco_crops:
+    optional: true
+    root: ""
+    folders:
+      recycling: recycling
+      trash: trash
+    # Crops cut from the same TACO photo share its background: keep them in one split.
+    group_pattern: "^(img\\d+)_"
+    # Every category name in the official annotations file (60), and its class.
+    # crop_taco.py stops if a category in the file is missing here.
+    categories:
+      Aluminium foil: EXCLUDE           # guide unclear: English layout lists foil and trays with trash, Spanish text lists them with recycling
+      Battery: EXCLUDE                  # hazardous; hazardous is left alone this round
+      Aluminium blister pack: EXCLUDE   # not in the guide; foil and plastic mixed
+      Carded blister pack: EXCLUDE      # not in the guide; card and plastic mixed
+      Other plastic bottle: recycling   # blue: "Plastic Bottles"
+      Clear plastic bottle: recycling   # blue: "Plastic Bottles"
+      Glass bottle: recycling           # blue: "Glass Bottles and Jars"
+      Plastic bottle cap: recycling     # blue: "Plastic Bottles, Containers, Lids"
+      Metal bottle cap: EXCLUDE         # not in the guide (only cans are listed for metal)
+      Broken glass: EXCLUDE             # unclear: bottles and jars are blue, dishes and glassware are trash
+      Food Can: recycling               # blue: "Aluminum and Steel Cans"
+      Aerosol: EXCLUDE                  # team list; not in the guide, and a full can is hazardous waste
+      Drink can: recycling              # blue: "Aluminum and Steel Cans"
+      Toilet tube: recycling            # blue: "Cardboard" / "Mixed Paper"
+      Other carton: EXCLUDE             # was recycling; dropped at the quality check: 6 of 15 were cigarette packs (foil-lined, not clearly blue)
+      Egg carton: EXCLUDE               # not in the guide; made of paper, foam or plastic
+      Drink carton: recycling           # blue: "Paper Cartons"
+      Corrugated carton: recycling      # blue: "Cardboard"
+      Meal carton: EXCLUDE              # was trash; dropped at the quality check: 4 of 30 were a paper cup, a drink carton, a plastic piece and a corrugated sleeve
+      Pizza box: EXCLUDE                # team list; not in the guide (city web page: soiled part trash, clean part blue)
+      Paper cup: EXCLUDE                # team list; the guide puts paper cups in black trash
+      Disposable plastic cup: recycling # blue: Spanish text lists plastic cups ("tazas ... de plastico") with bottles and containers
+      Foam cup: EXCLUDE                 # unclear: "Styrofoam Packaging" is blue, cups and takeout are trash
+      Glass cup: EXCLUDE                # was trash; dropped at the quality check: 2 of 6 look like plastic cups (blue)
+      Other plastic cup: recycling      # same as Disposable plastic cup
+      Food waste: EXCLUDE               # was compost; dropped at the quality check: 2 of 5 showed food inside a can or a plastic bag
+      Glass jar: recycling              # blue: "Glass Bottles and Jars"
+      Plastic lid: EXCLUDE              # was recycling; dropped at the quality check: 7 of 45 show the lid on a paper coffee cup (paper cups are excluded)
+      Metal lid: EXCLUDE                # not in the guide (only cans are listed for metal)
+      Other plastic: EXCLUDE            # unidentified plastic: could be hard plastic (blue) or film (trash)
+      Magazine paper: recycling         # blue: "Mixed Paper"
+      Tissues: EXCLUDE                  # team list; the guide puts tissues in black trash
+      Wrapping paper: EXCLUDE           # unclear: mixed paper is blue, but gift wrap is often foil or plastic coated
+      Normal paper: EXCLUDE             # was recycling; dropped at the quality check: 4 of 30 look like tissues or napkins (green or excluded)
+      Paper bag: EXCLUDE                # unclear: the guide lists paper bags under green food-soiled paper; clean paper is blue
+      Plastified paper bag: EXCLUDE     # not in the guide; paper and plastic mixed
+      Plastic film: EXCLUDE             # team list (plastic bags): mostly bag pieces; the guide puts film in black trash
+      Six pack rings: trash             # plastic, not a bottle or container; rule 3
+      Garbage bag: EXCLUDE              # team list (plastic bags)
+      Other plastic wrapper: trash      # black: "Plastic Bags, Wrappers and Film" (wrappers)
+      Single-use carrier bag: EXCLUDE   # team list (plastic bags)
+      Polypropylene bag: EXCLUDE        # team list (plastic bags)
+      Crisp packet: trash               # black: wrappers
+      Spread tub: EXCLUDE               # was recycling; dropped at the quality check: 2 of 9 were a foil tub or unidentifiable
+      Tupperware: EXCLUDE               # was recycling; dropped at the quality check: 2 of 4 were plastic film or bags
+      Disposable food container: recycling # blue: plastic "Containers" (curbside page: clean food containers, trays)
+      Foam food container: EXCLUDE      # unclear: polystyrene containers are blue, takeout boxes are trash
+      Other plastic container: EXCLUDE  # was recycling; dropped at the quality check: 2 of 5 were film or foil
+      Plastic glooves: trash            # green NO list names disposable gloves; not on the blue list; rule 3
+      Plastic utensils: trash           # black: "Plastic Straws and Utensils"
+      Pop tab: EXCLUDE                  # not in the guide (only cans are listed for metal)
+      Rope & strings: trash             # curbside page: rope is a "tangler", not for blue; not organic; rule 3
+      Scrap metal: EXCLUDE              # not in the guide (only cans are listed for metal)
+      Shoe: EXCLUDE                     # shoes are still VERIFY for the team (see garbage12_enhanced)
+      Squeezable tube: EXCLUDE          # not in the guide; tubes are mixed plastic and metal
+      Plastic straw: trash              # black: "Plastic Straws and Utensils"
+      Paper straw: EXCLUDE              # not in the guide; "compostable" products are trash, plain paper is unclear
+      Styrofoam piece: EXCLUDE          # unclear: foam packaging is blue, but loose broken pieces are not packaging
+      Unlabeled litter: EXCLUDE         # no category: could be anything
+      Cigarette: trash                  # not on the blue or green list, not hazardous; rule 3
+
+  # RealWaste (UCI dataset 908): 524x524 photos of items picked from a landfill.
+  realwaste:
+    optional: true
+    root: realwaste-main/RealWaste
+    # RealWaste shot each item several times in a row, rearranged between shots, so
+    # the fingerprints miss them (files 373 and 374: pHash 20, dHash 32). Files are
+    # numbered in shooting order and carry no EXIF time, so blocks of 20 consecutive
+    # numbers per category stay in one split. A burst across a multiple of 20 can still split.
+    group_block: 20
+    folders:
+      Cardboard: EXCLUDE                # was recycling; dropped at the quality check: 4 of 15 wrong (pizza box, packing straw, foil-lined coffee bag, plastic pouch)
+      Glass: EXCLUDE                    # was recycling; dropped at the quality check: 8 of 15 were broken glass or a glass dish (not bottles or jars)
+      Metal: EXCLUDE                    # was recycling; dropped at the quality check: 4 of 15 were aerosol cans (team list) and 1 crumpled foil
+      Food Organics: compost            # green: "Food Scraps"
+      Vegetation: EXCLUDE               # was compost; dropped at the quality check: 8 of 45 were piles of dirt (the guide: no dirt in the green bin)
+      Miscellaneous Trash: EXCLUDE      # was trash; dropped at the quality check: 5 of 45 belong elsewhere (notebook, hard plastic tubs, plant matter, string lights)
+      Paper: EXCLUDE                    # landfill paper is often soiled; soiled paper is green, clean is blue
+      Plastic: EXCLUDE                  # mixes rigid plastic (blue) with bags and film (trash)
+      Textile Trash: EXCLUDE            # clothes are not blue; textiles left out, like the Kaggle clothes folder

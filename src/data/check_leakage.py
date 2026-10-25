@@ -1,5 +1,5 @@
 """
-check_leakage.py - look for near copies of TRAIN images inside validation and test.
+check_leakage.py - look for near copies of TRAIN images inside validation, test and wild_test.
 
 Why: if (almost) the same photo is in train and in test, the model has
 effectively seen the test answer during training, and its test score looks
@@ -94,18 +94,18 @@ def find_flagged_pairs(train_rows, other_rows, split_name):
 
 
 def print_count_table(pairs, sizes):
-    """Flagged pairs per split, broken down by dHash distance 0 to 8."""
+    """Flagged pairs per split, broken down by dHash distance 0 to 8. `sizes`: split -> images checked."""
     print(f"\nFlagged pairs (pHash <= {FLAG_MAX_PHASH} and dHash <= {FLAG_MAX_DHASH}) by dHash distance:")
     header = f"{'split':<12}" + "".join(f"{d:>5}" for d in range(FLAG_MAX_DHASH + 1)) + f"{'total':>8}{'of':>6}"
     print(header)
     print("-" * len(header))
-    for split_name in ["validation", "test"]:
+    for split_name in sizes:
         by_d = Counter(p["dhash_distance"] for p in pairs if p["split"] == split_name)
         print(f"{split_name:<12}" + "".join(f"{by_d[d]:>5}" for d in range(FLAG_MAX_DHASH + 1))
               + f"{sum(by_d.values()):>8}{sizes[split_name]:>6}")
     all_d = Counter(p["dhash_distance"] for p in pairs)
     print(f"{'both':<12}" + "".join(f"{all_d[d]:>5}" for d in range(FLAG_MAX_DHASH + 1))
-          + f"{len(pairs):>8}{sizes['validation'] + sizes['test']:>6}")
+          + f"{len(pairs):>8}{sum(sizes.values()):>6}")
     print(f"\n{len(pairs)} flagged pairs.")
 
 
@@ -141,9 +141,10 @@ def main():
     args = parser.parse_args()
 
     train = read_manifest("train")
-    others = {name: read_manifest(name) for name in ["validation", "test"]}
-    print(f"Comparing {len(others['validation'])} validation and {len(others['test'])} test images "
-          f"against {len(train)} train images...")
+    names = ["validation", "test"] + (["wild_test"] if (MANIFEST_DIR / "wild_test.csv").exists() else [])
+    others = {name: read_manifest(name) for name in names}
+    print("Comparing " + ", ".join(f"{len(rows)} {name}" for name, rows in others.items())
+          + f" images against {len(train)} train images...")
 
     pairs = []
     for split_name, rows in others.items():
