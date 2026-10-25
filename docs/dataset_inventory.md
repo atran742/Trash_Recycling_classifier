@@ -3,18 +3,19 @@
 Owner: Isiah (data side). Last updated: 2026-10-24 (wild datasets TACO and RealWaste added).
 
 Images are **never committed**. They download into `data/raw/` (git-ignored) with
-`python src/data/download.py`. Licenses are copied from each Kaggle page on
-2026-10-17. Check the page again before publishing anything.
+`python src/data/download.py`. Kaggle licenses are copied from each Kaggle page on
+2026-10-17; TACO and RealWaste licenses are in "License notes" below (checked 2026-10-24).
+Check the source again before publishing anything.
 
 ## Summary
 
-| Name | Kaggle URL | License (as listed on Kaggle) | Images | Classes | Clean or real-world | Battery images | Status |
+| Name | Source | License (as listed at the source) | Images | Classes | Clean or real-world | Battery images | Status |
 |---|---|---|---:|---|---|---:|---|
 | `garbage12_enhanced` | [huberthamelin/garbage-classification-labels-corrections](https://www.kaggle.com/datasets/huberthamelin/garbage-classification-labels-corrections) | Database: Open Database, Contents: Database Contents | 15,870 (counted locally) | 12: battery, biological, brown-glass, cardboard, clothes, green-glass, metal, paper, plastic, shoes, trash, white-glass | Clean. Mostly web-scraped, centered objects | **979** (counted locally) | **Primary. Downloaded and mapped.** |
 | `garbage12` | [mostafaabla/garbage-classification](https://www.kaggle.com/datasets/mostafaabla/garbage-classification) | Database: Open Database, Contents: © Original Authors | 15,150 per page text; its folders add up to 15,515 | Same 12 classes | Clean. Mostly web-scraped | 945 (Kaggle page) | Listed only. Not downloaded. |
 | `garbage_v2` | [sumn2u/garbage-classification-v2](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2) | MIT | 13,348 (Kaggle page) | 10: battery, biological, cardboard, clothes, glass, metal, paper, plastic, shoes, trash | Mixed. Phone-app photos plus curated web images | 756 (Kaggle page) | Listed only. Not downloaded. |
 | `personal_battery` | none, our own photos | Ours. Team decides before publishing | 0 today | 1: hazardous | **Real-world** | 0 today, target 50 | Folder and photo rules ready. |
-| `taco` / `taco_crops` | [github.com/pedropro/TACO](https://github.com/pedropro/TACO) (not Kaggle) | CC BY 4.0 per dataset listings; see License notes | 1,500 photos, 4,784 objects, 60 categories; 1,665 crops kept | 9 categories to recycling, 6 to trash (after the quality check) | **Real-world** litter in context | 0 | **Wild dataset. Downloaded, cropped, mapped.** |
+| `taco` / `taco_crops` | [github.com/pedropro/TACO](https://github.com/pedropro/TACO) (not Kaggle) | CC BY 4.0 per dataset listings; see License notes | 1,500 photos, 4,784 objects, 60 categories; 1,665 crops cut, 990 used after the recycling cap | 14 categories to recycling, 8 to trash (after the quality check) | **Real-world** litter in context | 0 | **Wild dataset. Downloaded, cropped, mapped.** |
 | `realwaste` | [UCI dataset 908](https://archive.ics.uci.edu/dataset/908/realwaste) (not Kaggle) | CC BY 4.0 | 4,752 | 9 folders; Food Organics to compost (after the quality check) | **Real-world** landfill items | 0 | **Wild dataset. Downloaded and mapped.** |
 
 ## Overlap notes
@@ -286,7 +287,7 @@ either side (most cigarettes: 543 of 667). The mapping lives in `configs/label_m
 |---|---:|---|---|
 | Clear plastic bottle | 285 | **recycling** | blue: "Plastic Bottles" |
 | Corrugated carton | 64 | **recycling** | blue: "Cardboard" |
-| Disposable food container | 38 | **recycling** | blue: plastic "Containers" (curbside page: clean food containers, trays) |
+| Disposable food container | 38 | **recycling** | blue: "Plastic Bottles, Containers" (Spanish: "envases", "charolas" de plastico) |
 | Disposable plastic cup | 104 | **recycling** | blue: Spanish text lists plastic cups ("tazas ... de plastico") with bottles and containers |
 | Drink can | 229 | **recycling** | blue: "Aluminum and Steel Cans" |
 | Drink carton | 45 | **recycling** | blue: "Paper Cartons" |
@@ -301,11 +302,11 @@ either side (most cigarettes: 543 of 667). The mapping lives in `configs/label_m
 | Cigarette | 667 | **trash** | not on the blue or green list, not hazardous; rule 3 |
 | Crisp packet | 39 | **trash** | black: wrappers |
 | Other plastic wrapper | 260 | **trash** | black: "Plastic Bags, Wrappers and Film" (wrappers) |
-| Plastic glooves | 4 | **trash** | green NO list names disposable gloves; not on the blue list; rule 3 |
+| Plastic glooves | 4 | **trash** | not on the blue or green list, not hazardous; rule 3 |
 | Plastic straw | 157 | **trash** | black: "Plastic Straws and Utensils" |
 | Plastic utensils | 37 | **trash** | black: "Plastic Straws and Utensils" |
-| Rope & strings | 29 | **trash** | curbside page: rope is a "tangler", not for blue; not organic; rule 3 |
-| Six pack rings | 5 | **trash** | plastic, not a bottle or container; rule 3 |
+| Rope & strings | 29 | **trash** | not on the blue or green list, not hazardous; rule 3 (the curbside web page also lists rope as a "tangler" that must not go in blue) |
+| Six pack rings | 5 | **trash** | soft plastic, not a bottle, container or hard plastic; black: "Wrappers and Film" is the closest line; rule 3 |
 | Aerosol | 10 | EXCLUDE | team list; not in the guide, and a full can is hazardous waste |
 | Aluminium blister pack | 6 | EXCLUDE | not in the guide; foil and plastic mixed |
 | Aluminium foil | 62 | EXCLUDE | guide unclear: English layout lists foil and trays with trash, Spanish text lists them with recycling |
@@ -437,7 +438,8 @@ No cap on compost or trash. Hazardous is untouched.
 
 Duplicates: 0 new images were copies of a Kaggle image, 0 were copies of each other, 0 groups
 looked like a benchmark image, and 0 wild test images looked like a train or benchmark image
-(pHash <= 6 and dHash <= 8). `check_leakage.py` flags 0 wild test pairs.
+(pHash <= 6 and dHash <= 8). `check_leakage.py` on this build (6,946 train against 1,478 validation,
+1,270 test and 209 wild test images) flags 0 wild test pairs and the same 15 judged Kaggle look-alikes as before.
 
 Train class shares, before and after:
 
@@ -460,7 +462,7 @@ The swap rule for models is in `docs/evaluation.md`.
 
 ## Class imbalance to watch
 
-- `recycling` was 68.09% of train with 4 classes (76.88% with 3) before the wild datasets, and is 62.47% after them (recycling cap of 400). Always guessing recycling scores 68.06% validation accuracy but only 0.2025 macro F1 (see `docs/data_pipeline.md`), so report macro F1.
+- `recycling` was 68.09% of train with 4 classes (76.88% with 3) before the wild datasets, and is 62.47% after them (recycling cap of 400). Always guessing recycling scores 62.58% validation accuracy but only 0.1925 macro F1 on this build's 1,478 validation images (68.06% and 0.2025 before the wild datasets; see `docs/data_pipeline.md`), so report macro F1.
 - `clothes` (5,286 images) is dropped by team decision. `shoes` (2,006) is skipped until the team decides.
 - `hazardous` comes from web photos only today. The 50 personal battery photos add real-world examples.
 

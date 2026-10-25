@@ -8,8 +8,8 @@ cutoff the right way: tuned on validation, reported on test.
 
 - The splits are built: `python src/data/build_splits.py` ends with
   `Split version: 678e931  manifest_sha256: 5dc15608812d`. Both commands below
-  read `data/splits/validation.csv` and `data/splits/test.csv`, so they score
-  exactly that split.
+  read `data/splits/validation.csv`, `data/splits/test.csv` and
+  `data/splits/wild_test.csv`, so they score exactly that split.
 - `pip install -r requirements.txt` plus PyTorch and torchvision for your
   computer (see https://pytorch.org/get-started/locally/).
 - A model file. Three forms work: a TorchScript file, a whole model saved with
@@ -109,7 +109,7 @@ cutoff still comes from validation. This is the number closest to the demo.
 ## Reading the result
 
 - **Macro F1 on the benchmark test file** is the headline number. Accuracy is
-  inflated by the recycling class (68% of train). **Wild test macro F1** is the
+  inflated by the recycling class (62% of train, 68% of the benchmark). **Wild test macro F1** is the
   second number; together they decide the swap rule above.
 - **The chosen cutoff** comes from validation only. The test numbers "with
   cutoff applied" are what the Pi demo would show: how many items get an

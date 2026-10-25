@@ -104,7 +104,7 @@ def print_count_table(pairs, sizes):
         print(f"{split_name:<12}" + "".join(f"{by_d[d]:>5}" for d in range(FLAG_MAX_DHASH + 1))
               + f"{sum(by_d.values()):>8}{sizes[split_name]:>6}")
     all_d = Counter(p["dhash_distance"] for p in pairs)
-    print(f"{'both':<12}" + "".join(f"{all_d[d]:>5}" for d in range(FLAG_MAX_DHASH + 1))
+    print(f"{'all':<12}" + "".join(f"{all_d[d]:>5}" for d in range(FLAG_MAX_DHASH + 1))
           + f"{len(pairs):>8}{sum(sizes.values()):>6}")
     print(f"\n{len(pairs)} flagged pairs.")
 

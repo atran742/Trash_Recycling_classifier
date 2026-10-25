@@ -39,38 +39,64 @@ not committed).
 
 ## What you should see
 
-With `num_classes: 4`, the last command prints:
+With `num_classes: 4`, the last command prints (abridged; the first lines map each
+folder and the recycling cap lists every TACO category):
 
 ```text
-Files skipped: 1 not an image, 0 outside a class folder, 0 unsupported format, 0 corrupted
-  not an image: data/raw/personal_battery/README.md
+Files skipped: 6 not an image, 0 outside a class folder, 0 unsupported format, 0 corrupted
+  not an image: data/raw/personal_battery/README.md, data/raw/team_photos/README.md, data/raw/team_photos/trash/.gitkeep (+3 more)
 Checking duplicates: pHash <= 3 and dHash <= 2...
 
-Removed 2 exact duplicates and 57 near duplicates. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted and 0 unsupported files. 8519 images are split (8519 base, 0 new).
+Removed 2 exact duplicates and 57 near duplicates, and 0 new images that copy a base image. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted and 0 unsupported files. 10595 images go on to the split (8519 base, 2076 new).
 Dropped 17 known duplicates listed in configs/label_map.yaml (the copy outside train is dropped; see results/removed_duplicates.csv).
+Recycling cap: 1075 new recycling images from realwaste, taco_crops, kept 400 (cap 400, seed 42):
+  taco_crops/recycling/clear-plastic-bottle       269 ->   39
+  taco_crops/recycling/corrugated-carton           64 ->   38
+  taco_crops/recycling/disposable-food-container    37 ->   37
+  taco_crops/recycling/disposable-plastic-cup     102 ->   38
+  taco_crops/recycling/drink-can                  214 ->   38
+  taco_crops/recycling/drink-carton                43 ->   38
+  taco_crops/recycling/food-can                    34 ->   34
+  taco_crops/recycling/glass-bottle               100 ->   38
+  taco_crops/recycling/glass-jar                    6 ->    6
+  taco_crops/recycling/magazine-paper              12 ->   12
+  taco_crops/recycling/other-plastic-bottle        49 ->   38
+  taco_crops/recycling/other-plastic-cup            2 ->    2
+  taco_crops/recycling/plastic-bottle-cap         139 ->   38
+  taco_crops/recycling/toilet-tube                  4 ->    4
 
-class          train  validation    test   total
-------------------------------------------------
-compost          718         154     153    1025
-hazardous        681         146     145     972
-recycling       4059         865     864    5788
-trash            503         106     108     717
-------------------------------------------------
-TOTAL           5961        1271    1270    8502
+Wild split (1401 new images, 644 groups, 209 with more than one image; seed 42): 0 dropped as look-alikes of benchmark test images, 0 wild_test images dropped as look-alikes of train/benchmark images.
+  source        class        train  validation  wild_test  total
+  realwaste     compost        292          59         60    411
+  taco_crops    recycling      280          60         60    400
+  taco_crops    trash          413          88         89    590
+
+class          train  validation    test  wild_test   total
+-----------------------------------------------------------
+compost         1010         213     153         60    1436
+hazardous        681         146     145          0     972
+recycling       4339         925     864         60    6188
+trash            916         194     108         89    1307
+-----------------------------------------------------------
+TOTAL           6946        1478    1270        209    9903
+(test = the frozen benchmark; wild_test = new sources only)
 
 Train split share and class weights (results/class_weights.json):
   class         train   % train   inverse  sqrt inv
-  compost         718    12.04%    2.0756    1.0983
-  hazardous       681    11.42%    2.1883    1.1277
-  recycling      4059    68.09%    0.3671    0.4619
-  trash           503     8.44%    2.9627    1.3121
+  compost        1010    14.54%    1.7193    1.0666
+  hazardous       681     9.80%    2.5499    1.2989
+  recycling      4339    62.47%    0.4002    0.5146
+  trash           916    13.19%    1.8957    1.1200
 
-Baseline 'always guess recycling' on validation (1271 images): accuracy 68.06%, macro F1 0.2025
+Baseline 'always guess recycling' on validation (1478 images): accuracy 62.58%, macro F1 0.1925
 
+Benchmark check passed: data/splits/test.csv is byte-identical to the frozen benchmark (sha256 44805ae865a0).
+Camera test check passed: no data/raw/camera_test/ photo is in any split.
 Overlap check passed: no exact or near duplicate appears in more than one split.
-Count check: 8578 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 17 known duplicates - 0 held for review = 8502; 8502 in the splits; 76 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
+
+Count check: 10654 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 0 copies of base images - 17 known duplicates - 675 recycling cap - 0 look-alikes of benchmark - 0 wild_test look-alikes - 0 held for review = 9903; 9903 in the splits; 751 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: d010b6a  manifest_sha256: 4d578382b730  (both saved in results/class_weights.json)
+Split version: STAMP_VERSION  manifest_sha256: 5dc15608812d  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
@@ -86,7 +112,7 @@ before training.
 
 **After any rebuild, run `python src/data/check_leakage.py`.** It is read-only. A
 clean result is the 15 flagged pairs already judged as look-alikes in
-`docs/dataset_inventory.md`, with 0 true copies. The 17 confirmed copies are
+`docs/dataset_inventory.md` (validation and benchmark test), 0 for the wild test, and 0 true copies. The 17 confirmed copies are
 dropped through `known_duplicates` in `configs/label_map.yaml`. If a new pair
 shows up, look at it in `results/leakage_review.png`. If it is a true copy, add it to
 `known_duplicates`.
@@ -124,13 +150,14 @@ validation split (printed by `build_splits.py` on every run):
 
 | Classes | Validation images | Accuracy | Macro F1 |
 |---|---:|---:|---:|
-| 4 | 1,271 | 68.06% | 0.2025 |
-| 3 | 1,125 | 76.89% | 0.2898 |
+| 4 (with the wild datasets, Oct 24) | 1,478 | 62.58% | 0.1925 |
+| 4 (Kaggle only, before Oct 24) | 1,271 | 68.06% | 0.2025 |
+| 3 (Kaggle only, before Oct 24) | 1,125 | 76.89% | 0.2898 |
 
 Accuracy looks good only because recycling is most of the data. Macro F1
 averages the F1 score of every class equally, so ignoring compost, trash and
 hazardous drags it down. **Report macro F1, not accuracy.** A useful model must
-beat 0.2025 by a wide margin.
+beat 0.1925 by a wide margin.
 
 ## Near-duplicate cutoffs
 

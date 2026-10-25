@@ -1121,8 +1121,9 @@ def split_files_on_disk():
 def check_no_overlap(rules):
     """Re-hash every copied file and confirm no exact or near duplicate spans two splits.
 
-    This reads the files actually on disk in data/train, data/validation and
-    data/test, so it checks the real output, not just our in-memory lists.
+    This reads the files actually on disk in data/train, data/validation,
+    data/test and data/wild_test, so it checks the real output, not just our
+    in-memory lists.
     Near duplicates use the same rules as the removal step.
     """
     files = split_files_on_disk()

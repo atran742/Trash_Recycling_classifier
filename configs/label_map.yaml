@@ -259,7 +259,7 @@ datasets:
       Paper bag: EXCLUDE                # unclear: the guide lists paper bags under green food-soiled paper; clean paper is blue
       Plastified paper bag: EXCLUDE     # not in the guide; paper and plastic mixed
       Plastic film: EXCLUDE             # team list (plastic bags): mostly bag pieces; the guide puts film in black trash
-      Six pack rings: trash             # plastic, not a bottle or container; rule 3
+      Six pack rings: trash             # soft plastic, not a bottle, container or hard plastic; black: "Wrappers and Film" is the closest line; rule 3
       Garbage bag: EXCLUDE              # team list (plastic bags)
       Other plastic wrapper: trash      # black: "Plastic Bags, Wrappers and Film" (wrappers)
       Single-use carrier bag: EXCLUDE   # team list (plastic bags)
@@ -267,13 +267,13 @@ datasets:
       Crisp packet: trash               # black: wrappers
       Spread tub: EXCLUDE               # was recycling; dropped at the quality check: 2 of 9 were a foil tub or unidentifiable
       Tupperware: EXCLUDE               # was recycling; dropped at the quality check: 2 of 4 were plastic film or bags
-      Disposable food container: recycling # blue: plastic "Containers" (curbside page: clean food containers, trays)
+      Disposable food container: recycling # blue: "Plastic Bottles, Containers" (Spanish: "envases", "charolas" de plastico)
       Foam food container: EXCLUDE      # unclear: polystyrene containers are blue, takeout boxes are trash
       Other plastic container: EXCLUDE  # was recycling; dropped at the quality check: 2 of 5 were film or foil
-      Plastic glooves: trash            # green NO list names disposable gloves; not on the blue list; rule 3
+      Plastic glooves: trash            # not on the blue or green list, not hazardous; rule 3
       Plastic utensils: trash           # black: "Plastic Straws and Utensils"
       Pop tab: EXCLUDE                  # not in the guide (only cans are listed for metal)
-      Rope & strings: trash             # curbside page: rope is a "tangler", not for blue; not organic; rule 3
+      Rope & strings: trash             # not on the blue or green list, not hazardous; rule 3 (the curbside web page also lists rope as a "tangler" that must not go in blue)
       Scrap metal: EXCLUDE              # not in the guide (only cans are listed for metal)
       Shoe: EXCLUDE                     # shoes are still VERIFY for the team (see garbage12_enhanced)
       Squeezable tube: EXCLUDE          # not in the guide; tubes are mixed plastic and metal
