@@ -121,8 +121,8 @@ shows up, look at it in `results/leakage_review.png`. If it is a true copy, add 
 
 | File | In git? | What it is |
 |---|---|---|
-| `data/train/`, `data/validation/`, `data/test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. |
-| `data/splits/train.csv`, `validation.csv`, `test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. |
+| `data/train/`, `data/validation/`, `data/test/`, `data/wild_test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. `data/test/` is the frozen benchmark; `data/wild_test/` holds only non-Kaggle images. |
+| `data/splits/train.csv`, `validation.csv`, `test.csv`, `wild_test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. `test.csv` must stay byte-identical (the build stops otherwise). |
 | `results/class_weights.json` | Yes | `split_version` (the last commit that changed `build_splits.py` or `configs/`), `manifest_sha256` (fingerprint of the split CSVs), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
 | `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate`, `known_duplicate` (listed in `known_duplicates` in `configs/label_map.yaml`) or `corrupted`. |
 | `results/conflicts_to_review.csv` | Yes | Label conflicts: look-alike images with different labels, as `group,file,label,matches,distance,dhash_distance`. These are **not deleted** but kept out of every split until a person checks them. Header only when there are none. |
@@ -210,7 +210,7 @@ prints that command, and `build_splits.py` stops rather than drop HEIC photos.
 
 ### What a good run prints
 
-These lines come from a test run in a git clone with a fake `amy_images` folder (every tricky case included). Her numbers will differ.
+These lines come from a test run in a git clone with a fake `amy_images` folder (every tricky case included), made before the frozen benchmark existed. Her numbers will differ, and the duplicate summary now has the format shown under "What you should see" (`... go on to the split (N base, M new)`, then a `Wild split (...)` line and a table of new images per source, class and split).
 
 ```text
   Ignored folders in data/raw/amy_images/ (system or zip metadata): __MACOSX
@@ -224,8 +224,6 @@ Files skipped: 5 not an image, 1 outside a class folder, 1 unsupported format, 1
   outside a class folder: data/raw/amy_images/IMG_9999.jpg
   unsupported format: data/raw/amy_images/Batteries/IMG_0400.DNG
   corrupted: data/raw/amy_images/Trash/broken.jpg
-Removed 7 exact duplicates and 60 near duplicates. Held 6 images in 3 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 1 corrupted and 1 unsupported files. 8653 images are split (8516 base, 137 new).
-Placed 137 new images: 0 look-alike groups kept together, 1 groups followed a base look-alike.
 Overlap check passed: no exact or near duplicate appears in more than one split.
 Count check passed.
 Split version: 07a0572-dirty  manifest_sha256: d45367601158  (both saved in results/class_weights.json)
@@ -233,9 +231,9 @@ Split version: 07a0572-dirty  manifest_sha256: d45367601158  (both saved in resu
 
 - **The `-> trash`, `-> recycling`, ... lines** show how each of her folders was read, one line per folder. `__MACOSX` and hidden folders are ignored with a note.
 - **`Files skipped`** lists every file that did not become a training image, and why. Check the examples if a number looks high.
-- **`(N base, M new)`** shows how many Kaggle and how many of her photos made it into the splits.
+- **`(N base, M new)`** and the `Wild split` table show how many Kaggle and how many of her photos made it into the splits, and where her photos went.
 - **`Count check passed`** means every file is accounted for.
-- **`-dirty` after the split version** is expected, because step 2 edited `label_map.yaml`. `manifest_sha256` is what identifies her split.
+- **`-dirty` after the split version** means `build_splits.py` or `configs/` has uncommitted edits on that machine (the sample above was made that way). With nothing edited there is no `-dirty`. `manifest_sha256` is what identifies her split.
 - **A `__2/__3 suffix` line** can appear if two of her files would get the same copied name. Both are kept.
 
 After the build, run `python src/data/check_leakage.py` and open
@@ -245,9 +243,10 @@ After the build, run `python src/data/check_leakage.py` and open
 
 - **iPhone rotation is fixed in the pipeline.** Phones often store a photo sideways plus an EXIF "rotate me" tag. Her photos are turned upright before the duplicate checks and before copying, and the copies are saved without the tag, so the training loader needs no extra step. A sideways copy and an upright copy of one photo count as duplicates. Kaggle images are copied byte for byte, exactly as before.
 - **A copy of a Kaggle photo with the same label** is removed, and the Kaggle photo is kept.
-- **A copy with a different label** holds both images out of every split and lists them in `results/conflicts_to_review.csv` for a person to check.
-- **Adding her photos never moves a Kaggle image to another split.** `base_datasets:` in `configs/label_map.yaml` is split first, on its own, exactly as before.
-- **Look-alike photos stay in one split.** Her photos that look alike (pHash ≤ 6 and dHash ≤ 8, the leakage check's rule) go to the same split, and so do near-copies of a Kaggle train photo. Burst shots of one object taken with a bigger camera shift than that can still land in different splits. A photo that looks like Kaggle validation or test images joins the split holding most of them.
+- **A copy with a different label** holds her photo out of every split and lists it in `results/conflicts_to_review.csv` for a person to check. The Kaggle photo stays where it is.
+- **Adding her photos never moves, removes or joins a Kaggle image.** `base_datasets:` in `configs/label_map.yaml` is split first, on its own, exactly as before, and its test split is the frozen benchmark: none of her photos ever goes into `data/splits/test.csv`.
+- **Her photos are split on their own**, 70/15/15 with seed 42, into train, validation and `wild_test`, like TACO and RealWaste.
+- **Look-alike photos stay in one split.** Her photos that look alike (pHash ≤ 6 and dHash ≤ 8, the leakage check's rule) go to the same split. A group that looks like a Kaggle train photo goes to train, one that only looks like Kaggle validation photos goes to validation, and one that looks like a benchmark test photo is dropped (`lookalike_of_benchmark` in `results/removed_duplicates.csv`). Burst shots of one object taken with a bigger camera shift than that can still land in different splits. Finally every `wild_test` photo is checked against all train and benchmark photos with the same rule, and a look-alike is dropped.
 
 ### What each error means
 
@@ -259,7 +258,7 @@ After the build, run `python src/data/check_leakage.py` and open
 | `data/raw/amy_images/ has no images` | The class folders hold no photos (only things like `.DS_Store`). | Copy the photos in. |
 | `... has folder(s) that match no class: X` | A folder name is not a class name or a known variant. The message lists the folders found and the names accepted. | Rename the folder, or add the name under `folder_aliases:`. |
 | `label_map.yaml folder(s) ... have no folder` | One class has no folder at all. | Add that class folder. |
-| `configs/label_map.yaml could not be read` | Step 2 changed the spacing, for example by deleting only `#`. | Delete exactly `# ` (hash and one space) on each of the 7 lines. |
+| `configs/label_map.yaml could not be read` | The file was edited by hand and its spacing broke (YAML needs the same indentation as the lines around it). | Undo the edit with `git checkout configs/label_map.yaml`, or fix the indentation. |
 | `Found N iPhone HEIC/HEIF photos ... pillow-heif ... is not installed` | Her photos are HEIC but the package that opens them is missing. Nothing was built. | Run `pip install -r requirements.txt` and rerun. |
 | `ERROR: missing Python packages` (from `download.py`) | A package from `requirements.txt` is not installed. | Run `pip install -r requirements.txt` and rerun. |
 
