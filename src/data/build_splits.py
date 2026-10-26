@@ -29,10 +29,11 @@ What it does, in order:
      - BASE datasets (`base_datasets:` in label_map.yaml, the Kaggle set) are
        de-duplicated and shuffled 70 / 15 / 15 with seed 42 exactly as if nothing
        else existed. Their test split is the FROZEN BENCHMARK.
-     - NEW sources (taco_crops, realwaste, amy_images, team_photos, personal_battery)
-       are first checked against every base image and every LOCKED image
-       (configs/frozen/wild_split_lock.csv): a copy is dropped (or held, if its label
-       differs) and the base or locked image stays. They never enter the benchmark.
+     - NEW sources (taco_crops, realwaste, amy_images, team_photos, personal_battery):
+       images LOCKED in configs/frozen/wild_split_lock.csv keep their frozen split and
+       skip the duplicate checks. Every UNLOCKED image is checked against every base
+       and every locked image: a copy is dropped (or held, if its label differs) and
+       the base or locked image stays. Unlocked images never enter either test set.
   5b. Drop the KNOWN DUPLICATES listed in label_map.yaml: copies a person confirmed by
      eye in the leakage check. The listed `file` is dropped, its `train_match` is kept.
      This happens AFTER the base split is decided, so no other image changes split.
@@ -189,8 +190,8 @@ def manifest_fingerprint():
 
     The manifests list every image path and label in every split, so any change
     to the splits changes this fingerprint, even when the git commit stays the same.
-    wild_test.csv is only included when it lists images, so a build without any
-    new source gives the same fingerprint as before wild_test existed.
+    wild_test.csv is only included when it lists images, so a build without the
+    TACO and RealWaste images gives the same fingerprint as before wild_test existed.
     """
     h = hashlib.sha256()
     for split_name in ALL_SPLITS:
@@ -811,6 +812,11 @@ def load_split_lock(config):
         raise SystemExit(f"{path} (frozen.wild_split_lock in configs/label_map.yaml) is missing. Without it every "
                          f"wild image would be re-split and the frozen wild test would change. Restore it with "
                          f"git checkout {path}.")
+    expected = (config.get("frozen") or {}).get("wild_split_lock_sha256")
+    if expected and hashlib.sha256((REPO_ROOT / path).read_bytes()).hexdigest() != expected:
+        raise SystemExit(f"{path} does not match its sha256 in configs/label_map.yaml (frozen.wild_split_lock_sha256). "
+                         f"The lock must never be edited by hand: moving an image between train and validation "
+                         f"there would change the split silently. Restore it with git checkout {path}.")
     with open(REPO_ROOT / path, newline="") as f:
         return {row["source"]: (row["label"], row["split"]) for row in csv.DictReader(f)}
 
@@ -852,8 +858,8 @@ def category_of(item):
 def apply_recycling_cap(items, wild_cfg, removed_rows):
     """Keep at most `recycling_cap` new recycling images from `cap_datasets`, spread over their categories.
 
-    Recycling is already about 68% of train, so the wild sources must not push it
-    further. The cap is shared evenly by the categories ("water filling": a small
+    Recycling was about 68% of train before the wild datasets, so they must not push
+    it further. The cap is shared evenly by the categories ("water filling": a small
     category keeps all its images and its unused share goes to the bigger ones),
     and inside each category the images are drawn at random with the seed.
     Dropped images are logged as "recycling_cap". Returns (kept items, number dropped).
@@ -1272,6 +1278,8 @@ def check_frozen_tests(config, active):
     for name, key in [("test.csv", "test_csv"), (f"{WILD_TEST}.csv", "wild_test_csv")]:
         copy = REPO_ROOT / frozen[key]
         expected = frozen[f"{key}_sha256"]
+        if not copy.exists():
+            raise SystemExit(f"FAILED: the frozen copy {frozen[key]} is missing. Restore it with git checkout {frozen[key]}.")
         if hashlib.sha256(copy.read_bytes()).hexdigest() != expected:
             raise SystemExit(f"FAILED: the frozen copy {frozen[key]} does not match its sha256 in "
                              f"configs/label_map.yaml. The frozen copies must never be edited by hand.")
@@ -1418,7 +1426,7 @@ def print_table(splits_by_class):
     print("-" * 59)
     print(f"{'TOTAL':<12}{totals['train']:>8}{totals['validation']:>12}{totals['test']:>8}"
           f"{totals[WILD_TEST]:>11}{totals['total']:>8}")
-    print("(test = the frozen benchmark; wild_test = new sources only)")
+    print("(test = the frozen Kaggle benchmark; wild_test = the frozen TACO / RealWaste test, never new photos)")
     return totals["total"]
 
 

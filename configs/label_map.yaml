@@ -61,6 +61,7 @@ frozen:
   wild_test_csv: configs/frozen/wild_test.csv
   wild_test_csv_sha256: ee224c6731f34a198c92dd1ce0fa2d95331e8b1dcdcf1e1179799b2d58642b5c
   wild_split_lock: configs/frozen/wild_split_lock.csv
+  wild_split_lock_sha256: 36bb185409408b6e5db6fc49238712244ac1293bcc30168140b538827229bb60
 
 # How non-base images are split (build_splits.py, split_wild_images()):
 #   - an image listed in frozen/wild_split_lock.csv keeps its locked split;

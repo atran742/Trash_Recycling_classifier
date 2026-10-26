@@ -68,10 +68,10 @@ trash 0.58; it calls every RealWaste food photo trash). Camera test: not scored 
 The Oct 24 build had a different, smaller wild test (209 images, macro F1 0.270); that number
 is not comparable.
 
-Example: a new model with 0.778 on the benchmark and 0.45 on the wild test replaces it
-(0.778 >= 0.775, and 0.45 > 0.289). A new model with 0.770 and 0.60 does not
-(0.770 < 0.775), however much better it is on the wild test. Either model also needs a
-camera test score at least as high as the current one. The rule protects what already
+Example: a new model with 0.778 on the benchmark and 0.45 on the wild test passes rules 1
+and 2 (0.778 >= 0.775, and 0.45 > 0.289); it still needs rule 3, a camera test score at least
+as high as the current one, before it replaces the current model. A new model with 0.770 and
+0.60 fails rule 1 (0.770 < 0.775), however much better it is on the wild test. The rule protects what already
 works while the wild data is added, and the camera test keeps the wild test honest: a model
 can learn each wild source's background instead of the item (see the note above).
 

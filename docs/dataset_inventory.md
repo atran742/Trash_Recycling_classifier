@@ -1,6 +1,6 @@
 # Dataset Inventory
 
-Owner: Isiah (data side). Last updated: 2026-10-24 (wild datasets TACO and RealWaste added).
+Owner: Isiah (data side). Last updated: 2026-10-26 (wild datasets TACO and RealWaste added Oct 24; both test sets frozen and wild splits locked Oct 26).
 
 Images are **never committed**. They download into `data/raw/` (git-ignored) with
 `python src/data/download.py`. Kaggle licenses are copied from each Kaggle page on
@@ -482,8 +482,8 @@ Train class shares, before and after:
 | `data/splits/test.csv` (benchmark, 1,270 Kaggle images) | `configs/frozen/test.csv` | `44805ae865a07e6315bf44e9b240c406a320d9fa0ad063a2282de354aad9dd42` | 2026-10-24 |
 | `data/splits/wild_test.csv` (298 TACO and RealWaste images) | `configs/frozen/wild_test.csv` | `ee224c6731f34a198c92dd1ce0fa2d95331e8b1dcdcf1e1179799b2d58642b5c` | 2026-10-26, stamp def16b3 |
 
-Both hashes sit under `frozen:` in `label_map.yaml`, and `build_splits.py` stops if either
-manifest differs from its copy by one byte. Every Kaggle image keeps its split, and so does
+Both hashes sit under `frozen:` in `label_map.yaml` (with a third for the lock), and `build_splits.py` stops if either
+manifest differs from its copy by one byte, or if a copy or the lock was edited. Every Kaggle image keeps its split, and so does
 every TACO and RealWaste image of the def16b3 build: `configs/frozen/wild_split_lock.csv`
 lists all 2,010 of them (1,409 train, 303 validation, 298 wild test) with their label and
 split. New sources can never remove, move or join a Kaggle or locked image (a new copy of

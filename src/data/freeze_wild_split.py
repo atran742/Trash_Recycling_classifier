@@ -9,7 +9,7 @@ manifest_sha256 08d058850b31, on 2026-10-26). It writes three files in configs/f
     wild_split_lock.csv    source,label,split for every non-Kaggle image in train,
                            validation and wild_test (source = its file under data/raw/)
 
-and prints the two sha256 lines to put under `frozen:` in configs/label_map.yaml.
+and prints the three sha256 lines to put under `frozen:` in configs/label_map.yaml.
 From then on build_splits.py:
   - keeps every locked image in its locked split,
   - puts every image NOT in the lock (new sources: amy_images, team_photos, any new
@@ -96,6 +96,7 @@ def main():
     print("\nPut these under `frozen:` in configs/label_map.yaml:")
     print(f"  test_csv_sha256: {sha256(FROZEN_DIR / 'test.csv')}")
     print(f"  wild_test_csv_sha256: {sha256(FROZEN_DIR / 'wild_test.csv')}")
+    print(f"  wild_split_lock_sha256: {sha256(FROZEN_DIR / 'wild_split_lock.csv')}")
 
 
 if __name__ == "__main__":

@@ -66,7 +66,7 @@ recycling       4339         925     864         60    6188
 trash           1341         289     108        178    1916
 -----------------------------------------------------------
 TOTAL           7370        1574    1270        298   10512
-(test = the frozen benchmark; wild_test = new sources only)
+(test = the frozen Kaggle benchmark; wild_test = the frozen TACO / RealWaste test, never new photos)
 
 Train split share and class weights (results/class_weights.json):
   class         train   % train   inverse  sqrt inv
@@ -112,7 +112,7 @@ shows up, look at it in `results/leakage_review.png`. If it is a true copy, add 
 | `data/train/`, `data/validation/`, `data/test/`, `data/wild_test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. `data/test/` is the frozen benchmark; `data/wild_test/` holds only non-Kaggle images. |
 | `data/splits/train.csv`, `validation.csv`, `test.csv`, `wild_test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. `test.csv` and `wild_test.csv` must stay byte-identical to their frozen copies in `configs/frozen/` (the build stops otherwise). |
 | `results/class_weights.json` | Yes | `split_version` (the last commit that changed `build_splits.py` or `configs/`), `manifest_sha256` (fingerprint of the split CSVs), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
-| `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate`, `known_duplicate` (listed in `known_duplicates` in `configs/label_map.yaml`) or `corrupted`. |
+| `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate`, `known_duplicate` (listed in `known_duplicates` in `configs/label_map.yaml`), `corrupted`, `unsupported_format`, `copy_of_base` and `copy_of_locked` (a new image copying a Kaggle or locked image), `recycling_cap`, `lookalike_of_benchmark` and `lookalike_of_wild_test` (a new image looking like a frozen test image), and `wild_test_lookalike`. |
 | `results/conflicts_to_review.csv` | Yes | Label conflicts: look-alike images with different labels, as `group,file,label,matches,distance,dhash_distance`. These are **not deleted** but kept out of every split until a person checks them. Header only when there are none. |
 | `results/class_counts.png`, `results/split_counts.png` | No | Written by `python src/data/plot_counts.py` from the manifests. |
 | `results/near_dup_review.png`, `results/cross_label_review.png` | No | Written by `python src/data/review_near_dups.py` (add `--cross-label` for the second), not by this step. Show the most borderline removed pairs, or every label-conflict group, side by side for checking the cutoffs by eye. |
@@ -327,7 +327,7 @@ test set. A new photo that copies or looks like a frozen test image is dropped. 
 demo-room photos, use `data/raw/camera_test/` instead.
 
 **Re-freezing** (only on a team decision, because every earlier score stops being
-comparable): build, run `python src/data/freeze_wild_split.py`, and put the two sha256 lines
+comparable): build, run `python src/data/freeze_wild_split.py`, and put the three sha256 lines
 it prints under `frozen:` in `configs/label_map.yaml`.
 
 After a build, `python src/data/review_new_images.py` saves
