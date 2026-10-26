@@ -251,13 +251,13 @@ datasets:
       Other plastic cup: recycling      # same as Disposable plastic cup
       Food waste: EXCLUDE               # was compost; dropped at the quality check: 2 of 5 showed food inside a can or a plastic bag
       Glass jar: recycling              # blue: "Glass Bottles and Jars"
-      Plastic lid: EXCLUDE              # was recycling; dropped at the quality check: 7 of 45 show the lid on a paper coffee cup (paper cups are excluded)
+      Plastic lid: EXCLUDE              # was recycling; dropped at the quality check: 7 of 45 show the lid on a paper coffee cup (the paper cup is trash, the lid is blue)
       Metal lid: EXCLUDE                # not in the guide (only cans are listed for metal)
       Other plastic: EXCLUDE            # unidentified plastic: could be hard plastic (blue) or film (trash)
       Magazine paper: recycling         # blue: "Mixed Paper"
       Tissues: trash                    # black: "Tissues and Disposable Wipes" (Spanish: "Servilletas y toallitas desinfectantes"); team decision Oct 25
       Wrapping paper: EXCLUDE           # unclear: mixed paper is blue, but gift wrap is often foil or plastic coated
-      Normal paper: EXCLUDE             # was recycling; dropped at the quality check: 4 of 30 look like tissues or napkins (green or excluded)
+      Normal paper: EXCLUDE             # was recycling; dropped at the quality check: 4 of 30 look like tissues or napkins (tissues are trash, napkins green)
       Paper bag: EXCLUDE                # unclear: the guide lists paper bags under green food-soiled paper; clean paper is blue
       Plastified paper bag: EXCLUDE     # not in the guide; paper and plastic mixed
       Plastic film: trash               # black: "Plastic Bags, Wrappers and Film" (Spanish: "Bolsas y envolturas de plástico"); team decision Oct 25

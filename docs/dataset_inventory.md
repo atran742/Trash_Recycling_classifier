@@ -325,7 +325,7 @@ either side (most cigarettes: 543 of 667). The mapping lives in `configs/label_m
 | Meal carton | 30 | EXCLUDE | was trash; dropped at the quality check: 4 of 30 were a paper cup, a drink carton, a plastic piece and a corrugated sleeve |
 | Metal bottle cap | 80 | EXCLUDE | not in the guide (only cans are listed for metal) |
 | Metal lid | 10 | EXCLUDE | not in the guide (only cans are listed for metal) |
-| Normal paper | 82 | EXCLUDE | was recycling; dropped at the quality check: 4 of 30 look like tissues or napkins (green or excluded) |
+| Normal paper | 82 | EXCLUDE | was recycling; dropped at the quality check: 4 of 30 look like tissues or napkins (tissues are trash, napkins green) |
 | Other carton | 93 | EXCLUDE | was recycling; dropped at the quality check: 6 of 15 were cigarette packs (foil-lined, not clearly blue) |
 | Other plastic | 273 | EXCLUDE | unidentified plastic: could be hard plastic (blue) or film (trash) |
 | Other plastic container | 6 | EXCLUDE | was recycling; dropped at the quality check: 2 of 5 were film or foil |
@@ -334,7 +334,7 @@ either side (most cigarettes: 543 of 667). The mapping lives in `configs/label_m
 | Paper straw | 4 | EXCLUDE | not in the guide; "compostable" products are trash, plain paper is unclear |
 | Pizza box | 3 | EXCLUDE | team list; not in the guide (city web page: soiled part trash, clean part blue) |
 | Plastic film | 451 | **trash** | black: "Plastic Bags, Wrappers and Film" (Spanish: "Bolsas y envolturas de plástico"); team decision Oct 25 |
-| Plastic lid | 77 | EXCLUDE | was recycling; dropped at the quality check: 7 of 45 show the lid on a paper coffee cup (paper cups are excluded) |
+| Plastic lid | 77 | EXCLUDE | was recycling; dropped at the quality check: 7 of 45 show the lid on a paper coffee cup (the paper cup is trash, the lid is blue) |
 | Plastified paper bag | 0 | EXCLUDE | not in the guide; paper and plastic mixed |
 | Polypropylene bag | 3 | **trash** | black: "Plastic Bags, Wrappers and Film"; team decision Oct 25 |
 | Pop tab | 99 | EXCLUDE | not in the guide (only cans are listed for metal) |
@@ -400,7 +400,7 @@ category had at most 1 wrong in 15.
 | Category | Checked | Wrong | Decision |
 |---|---:|---:|---|
 | Paper cup | 30 | 0 | trash |
-| Tissues | 30 | 3 (two paper-towel rolls, which the guide puts in green, and dried leaves) | trash (10%, not more) |
+| Tissues | 30 | 3 (two paper-towel rolls, which the guide puts in green, and dried leaves) | trash (10%, not more; one more tile, tissue wadded around a toilet brush, was counted as tissue: counted as wrong it would be 13% and dropped) |
 | Single-use carrier bag | 30 | 0 | trash |
 | Polypropylene bag | 3 | 0 | trash |
 | Plastic film | 30 | 2 (a bottle or carton fills the crop) | trash |
