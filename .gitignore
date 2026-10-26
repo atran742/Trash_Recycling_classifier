@@ -116,3 +116,4 @@ results/threshold_sweep.csv
 # Prediction CSVs from src/eval/export_predictions.py: they belong to one
 # model file, so they are shared in the PR or Discord, not committed.
 results/*_predictions.csv
+.gitignore
