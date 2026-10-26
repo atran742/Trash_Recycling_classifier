@@ -27,17 +27,17 @@ This downloads the Kaggle images and the two wild datasets (TACO litter photos, 
 
 ## The data right now
 
-From [docs/dataset_inventory.md](docs/dataset_inventory.md), 4 classes, split 70 / 15 / 15 with seed 42:
+From [docs/dataset_inventory.md](docs/dataset_inventory.md), 4 classes, Kaggle plus TACO and RealWaste, split 70 / 15 / 15 with seed 42. Test is the frozen Kaggle benchmark; wild test holds only TACO and RealWaste images.
 
-| Class | Train | Validation | Test | Total |
-|---|---:|---:|---:|---:|
-| compost | 718 | 154 | 153 | 1,025 |
-| hazardous | 681 | 146 | 145 | 972 |
-| recycling | 4,059 | 865 | 864 | 5,788 |
-| trash | 503 | 106 | 108 | 717 |
-| **Total** | **5,961** | **1,271** | **1,270** | **8,502** |
+| Class | Train | Validation | Test (benchmark) | Wild test | Total |
+|---|---:|---:|---:|---:|---:|
+| compost | 1,009 | 214 | 153 | 60 | 1,436 |
+| hazardous | 681 | 146 | 145 | 0 | 972 |
+| recycling | 4,339 | 925 | 864 | 60 | 6,188 |
+| trash | 1,341 | 289 | 108 | 178 | 1,916 |
+| **Total** | **7,370** | **1,574** | **1,270** | **298** | **10,512** |
 
-Recycling is 68% of the training data. A "model" that always answers recycling gets 68% accuracy but only **0.20 macro F1** on validation, so we report macro F1, not accuracy. Class weights for training are in `results/class_weights.json`. Every build prints a stamp (`Split version` and `manifest_sha256`); two runs only compare fairly if the stamps match.
+Recycling is 59% of the training data. A "model" that always answers recycling gets 59% validation accuracy but only **0.19 macro F1**, so we report macro F1, not accuracy. Class weights for training are in `results/class_weights.json`. Every build prints a stamp (`Split version` and `manifest_sha256`); two runs only compare fairly if the stamps match.
 
 ## Status by plan week
 

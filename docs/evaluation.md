@@ -44,6 +44,8 @@ more like the demo? It has no hazardous items (hazardous was left alone), so its
 macro F1 averages recycling, compost and trash. A wrong "hazardous" guess still
 counts against the item's true class.
 
+**Compost in the wild set comes only from RealWaste, and trash and recycling only from TACO, so judge any retrain on camera_test too.** A model can score well on the wild test by learning each source's look (RealWaste's concrete floor, TACO's ground litter) instead of the item, and neither looks like the demo room. `src/eval/score_camera_test.py` on the demo-room photos in `data/raw/camera_test/` is the check that cannot be passed that way.
+
 ## The swap rule: when a new model replaces the current one
 
 Score both models with the commands above on the same split (same stamp line).
@@ -52,17 +54,18 @@ The new model replaces `models/waste_classifier.pth` only if **both** hold:
 1. **Benchmark macro F1 drops by no more than 0.01.** New benchmark macro F1 >= current benchmark macro F1 - 0.01.
 2. **Wild test macro F1 goes up.** New wild test macro F1 > current wild test macro F1.
 
-Baseline to beat (Amy's first model, `models/waste_classifier.pth`, split stamp in
-`results/class_weights.json`): **benchmark macro F1 0.785, wild test macro F1 0.270**
-(recall: compost 0.00, recycling 0.27, trash 0.51; it calls every RealWaste food photo trash).
+Baseline to beat (Amy's first model, `models/waste_classifier.pth`, on the build stamped
+`manifest_sha256: 08d058850b31`): **benchmark macro F1 0.785, wild test macro F1 0.289**
+(recall: compost 0.00, recycling 0.23, trash 0.58; it calls every RealWaste food photo trash).
+The Oct 24 build had a smaller wild test (209 images, macro F1 0.270); the two numbers are not comparable.
 
 Example: a new model with 0.778 on the benchmark and 0.45 on the wild test replaces it
-(0.778 >= 0.775, and 0.45 > 0.270). A new model with 0.770 and 0.60 does not
+(0.778 >= 0.775, and 0.45 > 0.289). A new model with 0.770 and 0.60 does not
 (0.770 < 0.775), however much better it is on the wild test. The rule protects what
 already works while the wild data is added.
 
 Note: validation now also holds wild images, so the "I'm not sure" cutoff is tuned on
-both kinds. For Amy's first model, validation accuracy is 0.758 and no cutoff reaches the
+both kinds. For Amy's first model, validation accuracy is 0.746 and no cutoff reaches the
 default 90% target; a model trained with the wild images in train should do better.
 
 The CSVs and charts are git-ignored. Share them in the PR or Discord.

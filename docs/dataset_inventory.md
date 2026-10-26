@@ -15,7 +15,7 @@ Check the source again before publishing anything.
 | `garbage12` | [mostafaabla/garbage-classification](https://www.kaggle.com/datasets/mostafaabla/garbage-classification) | Database: Open Database, Contents: © Original Authors | 15,150 per page text; its folders add up to 15,515 | Same 12 classes | Clean. Mostly web-scraped | 945 (Kaggle page) | Listed only. Not downloaded. |
 | `garbage_v2` | [sumn2u/garbage-classification-v2](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2) | MIT | 13,348 (Kaggle page) | 10: battery, biological, cardboard, clothes, glass, metal, paper, plastic, shoes, trash | Mixed. Phone-app photos plus curated web images | 756 (Kaggle page) | Listed only. Not downloaded. |
 | `personal_battery` | none, our own photos | Ours. Team decides before publishing | 0 today | 1: hazardous | **Real-world** | 0 today, target 50 | Folder and photo rules ready. |
-| `taco` / `taco_crops` | [github.com/pedropro/TACO](https://github.com/pedropro/TACO) (not Kaggle) | CC BY 4.0 per dataset listings; see License notes | 1,500 photos, 4,784 objects, 60 categories; 1,665 crops cut, 990 used after the recycling cap | 14 categories to recycling, 8 to trash (after the quality check) | **Real-world** litter in context | 0 | **Wild dataset. Downloaded, cropped, mapped.** |
+| `taco` / `taco_crops` | [github.com/pedropro/TACO](https://github.com/pedropro/TACO) (not Kaggle) | CC BY 4.0 per dataset listings; see License notes | 1,500 photos, 4,784 objects, 60 categories; 2,274 crops cut, 1,599 used after the recycling cap | 14 categories to recycling, 13 to trash (after the quality checks) | **Real-world** litter in context | 0 | **Wild dataset. Downloaded, cropped, mapped.** |
 | `realwaste` | [UCI dataset 908](https://archive.ics.uci.edu/dataset/908/realwaste) (not Kaggle) | CC BY 4.0 | 4,752 | 9 folders; Food Organics to compost (after the quality check) | **Real-world** landfill items | 0 | **Wild dataset. Downloaded and mapped.** |
 
 ## Overlap notes
@@ -215,7 +215,7 @@ look-alikes judged above, and 0 true copies.
 ## Train / validation / test splits (seed 42, 70/15/15)
 
 Output of `python src/data/build_splits.py` on 2026-10-18, after duplicate removal and the 17 known duplicates.
-The Kaggle set is split on its own (`base_datasets:` in `configs/label_map.yaml`), so adding Amy's or personal photos never moves a Kaggle image to another split; new photos are placed around it, look-alikes together (see `docs/data_pipeline.md`).
+The Kaggle set is split on its own (`base_datasets:` in `configs/label_map.yaml`), so adding Amy's or personal photos never moves a Kaggle image to another split. These are the Kaggle (base) splits; since 2026-10-24 every other source is split on its own into train, validation and wild_test (see "Wild datasets" below), and the Kaggle test split is the frozen benchmark.
 Weights come from the train split only. Inverse frequency is
 `total_train / (num_classes * class_count)`. Square-root inverse frequency takes
 the square root of that and divides by the mean, so the weights average 1.
@@ -266,9 +266,12 @@ Rules used, in order:
 
 1. The guide puts the item in one bin: that class.
 2. The guide leaves it unclear (two bins fit, or it is not listed and could be recyclable): EXCLUDE.
-   The team list is EXCLUDE regardless: **pizza boxes, paper cups, aerosol cans, plastic bags and tissues.**
-   Note: this guide edition does name a bin for three of them (paper cups, plastic bags and film,
-   and tissues all go in black trash), so they could move to trash on a team decision.
+   The team list is EXCLUDE regardless: **pizza boxes and aerosol cans.**
+   Paper cups, plastic bags and film, and tissues were on that list until 2026-10-25. This guide
+   edition puts all three in black trash ("Paper Plates, Cups and Takeout Boxes", "Tissues and
+   Disposable Wipes", "Plastic Bags, Wrappers and Film"), so by team decision they now map to
+   trash (rule 1), each with its quote in `label_map.yaml`. Foam stays EXCLUDE: the guide lists
+   "Styrofoam Packaging" (Spanish: "bloques y envases de poliestireno") in the blue bin, never in trash.
 3. Not on the blue or green list, not hazardous, and plainly neither recyclable nor organic:
    trash, the guide's own default ("When in doubt, throw it out"). Used for cigarettes, gloves, rope and six-pack rings.
 
@@ -314,10 +317,10 @@ either side (most cigarettes: 543 of 667). The mapping lives in `configs/label_m
 | Broken glass | 138 | EXCLUDE | unclear: bottles and jars are blue, dishes and glassware are trash |
 | Carded blister pack | 1 | EXCLUDE | not in the guide; card and plastic mixed |
 | Egg carton | 11 | EXCLUDE | not in the guide; made of paper, foam or plastic |
-| Foam cup | 13 | EXCLUDE | unclear: "Styrofoam Packaging" is blue, cups and takeout are trash |
-| Foam food container | 15 | EXCLUDE | unclear: polystyrene containers are blue, takeout boxes are trash |
+| Foam cup | 13 | EXCLUDE | the guide does not list foam as trash: blue has "Styrofoam Packaging" (Spanish: "bloques y envases de poliestireno"); paper cups are trash, foam cups unclear |
+| Foam food container | 15 | EXCLUDE | the guide does not list foam as trash: blue has "bloques y envases de poliestireno" (polystyrene blocks and containers); takeout boxes are trash |
 | Food waste | 8 | EXCLUDE | was compost; dropped at the quality check: 2 of 5 showed food inside a can or a plastic bag |
-| Garbage bag | 31 | EXCLUDE | team list (plastic bags) |
+| Garbage bag | 31 | EXCLUDE | black: "Plastic Bags, Wrappers and Film", but dropped at the quality check (Oct 25): 4 of 30 show leaves and plants, a cardboard box or a plastic bin instead |
 | Glass cup | 6 | EXCLUDE | was trash; dropped at the quality check: 2 of 6 look like plastic cups (blue) |
 | Meal carton | 30 | EXCLUDE | was trash; dropped at the quality check: 4 of 30 were a paper cup, a drink carton, a plastic piece and a corrugated sleeve |
 | Metal bottle cap | 80 | EXCLUDE | not in the guide (only cans are listed for metal) |
@@ -327,21 +330,21 @@ either side (most cigarettes: 543 of 667). The mapping lives in `configs/label_m
 | Other plastic | 273 | EXCLUDE | unidentified plastic: could be hard plastic (blue) or film (trash) |
 | Other plastic container | 6 | EXCLUDE | was recycling; dropped at the quality check: 2 of 5 were film or foil |
 | Paper bag | 27 | EXCLUDE | unclear: the guide lists paper bags under green food-soiled paper; clean paper is blue |
-| Paper cup | 67 | EXCLUDE | team list; the guide puts paper cups in black trash |
+| Paper cup | 67 | **trash** | black: "Paper Plates, Cups and Takeout Boxes" (Spanish: "Platos, vasos, y contenedores de comida desechables hechos de papel"); team decision Oct 25 |
 | Paper straw | 4 | EXCLUDE | not in the guide; "compostable" products are trash, plain paper is unclear |
 | Pizza box | 3 | EXCLUDE | team list; not in the guide (city web page: soiled part trash, clean part blue) |
-| Plastic film | 451 | EXCLUDE | team list (plastic bags): mostly bag pieces; the guide puts film in black trash |
+| Plastic film | 451 | **trash** | black: "Plastic Bags, Wrappers and Film" (Spanish: "Bolsas y envolturas de plástico"); team decision Oct 25 |
 | Plastic lid | 77 | EXCLUDE | was recycling; dropped at the quality check: 7 of 45 show the lid on a paper coffee cup (paper cups are excluded) |
 | Plastified paper bag | 0 | EXCLUDE | not in the guide; paper and plastic mixed |
-| Polypropylene bag | 3 | EXCLUDE | team list (plastic bags) |
+| Polypropylene bag | 3 | **trash** | black: "Plastic Bags, Wrappers and Film"; team decision Oct 25 |
 | Pop tab | 99 | EXCLUDE | not in the guide (only cans are listed for metal) |
 | Scrap metal | 20 | EXCLUDE | not in the guide (only cans are listed for metal) |
 | Shoe | 7 | EXCLUDE | shoes are still VERIFY for the team (see garbage12_enhanced) |
-| Single-use carrier bag | 61 | EXCLUDE | team list (plastic bags) |
+| Single-use carrier bag | 61 | **trash** | black: "Plastic Bags, Wrappers and Film"; team decision Oct 25 |
 | Spread tub | 9 | EXCLUDE | was recycling; dropped at the quality check: 2 of 9 were a foil tub or unidentifiable |
 | Squeezable tube | 7 | EXCLUDE | not in the guide; tubes are mixed plastic and metal |
-| Styrofoam piece | 112 | EXCLUDE | unclear: foam packaging is blue, but loose broken pieces are not packaging |
-| Tissues | 42 | EXCLUDE | team list; the guide puts tissues in black trash |
+| Styrofoam piece | 112 | EXCLUDE | the guide does not list foam as trash: blue has "Styrofoam Packaging"; loose broken pieces are not packaging |
+| Tissues | 42 | **trash** | black: "Tissues and Disposable Wipes" (Spanish: "Servilletas y toallitas desinfectantes"); team decision Oct 25 |
 | Tupperware | 4 | EXCLUDE | was recycling; dropped at the quality check: 2 of 4 were plastic film or bags |
 | Unlabeled litter | 517 | EXCLUDE | no category: could be anything |
 | Wrapping paper | 12 | EXCLUDE | unclear: mixed paper is blue, but gift wrap is often foil or plastic coated |
@@ -392,6 +395,17 @@ count in its `label_map.yaml` comment):
 Kept after a larger sample: Plastic straw (3 of 45, 7%, show a cup or lid). Every other mapped
 category had at most 1 wrong in 15.
 
+**Categories moved to trash on 2026-10-25**, 30 random crops each (all 3 for polypropylene bag):
+
+| Category | Checked | Wrong | Decision |
+|---|---:|---:|---|
+| Paper cup | 30 | 0 | trash |
+| Tissues | 30 | 3 (two paper-towel rolls, which the guide puts in green, and dried leaves) | trash (10%, not more) |
+| Single-use carrier bag | 30 | 0 | trash |
+| Polypropylene bag | 3 | 0 | trash |
+| Plastic film | 30 | 2 (a bottle or carton fills the crop) | trash |
+| Garbage bag | 30 | 4 (mostly leaves and plants, a cardboard box in a bin, a plastic bin) | **dropped** (13%), stays EXCLUDE |
+
 Final check on what was built, 30 random new images per class (`python src/data/review_new_images.py`,
 sheets in `results/new_images_<class>.png`, not committed):
 
@@ -399,7 +413,10 @@ sheets in `results/new_images_<class>.png`, not committed):
 |---|---:|---:|---:|
 | recycling | 28 | 0 | 2 |
 | compost | 30 | 0 | 0 |
-| trash | 25 | 1 (a straw crop dominated by a plastic cup lid) | 4 |
+| trash | 25 | 1 (a utensils crop that mostly shows a cup) | 4 |
+
+(Build of 2026-10-25. The recycling and compost samples are the same 30 images as on Oct 24;
+the trash sample is new because trash gained five categories.)
 
 ### Recycling cap
 
@@ -427,29 +444,33 @@ by the categories (a small category keeps all its images) and drawn at random wi
 
 No cap on compost or trash. Hazardous is untouched.
 
-### What the wild datasets added (build of 2026-10-24)
+### What the wild datasets added (build of 2026-10-25)
 
 | Source | Class | Train | Validation | Wild test | Total |
 |---|---|---:|---:|---:|---:|
-| realwaste | compost | 292 | 59 | 60 | 411 |
+| realwaste | compost | 291 | 60 | 60 | 411 |
 | taco_crops | recycling | 280 | 60 | 60 | 400 |
-| taco_crops | trash | 413 | 88 | 89 | 590 |
-| **Total** | | **985** | **207** | **209** | **1,401** |
+| taco_crops | trash | 838 | 183 | 178 | 1,199 |
+| **Total** | | **1,409** | **303** | **298** | **2,010** |
+
+The five categories moved to trash on Oct 25 added 609 trash images (590 before, 1,199 now). The
+wild split shuffles all new groups together, so adding them also moved one RealWaste block of 20
+from train to validation; compare wild test scores only between builds with the same `manifest_sha256`.
 
 Duplicates: 0 new images were copies of a Kaggle image, 0 were copies of each other, 0 groups
 looked like a benchmark image, and 0 wild test images looked like a train or benchmark image
-(pHash <= 6 and dHash <= 8). `check_leakage.py` on this build (6,946 train against 1,478 validation,
-1,270 test and 209 wild test images) flags 0 wild test pairs and the same 15 judged Kaggle look-alikes as before.
+(pHash <= 6 and dHash <= 8). `check_leakage.py` on this build (7,370 train against 1,574 validation,
+1,270 test and 298 wild test images) flags 0 wild test pairs and the same 15 judged Kaggle look-alikes as before.
 
 Train class shares, before and after:
 
-| Class | Train before | Share before | Train after | Share after |
-|---|---:|---:|---:|---:|
-| compost | 718 | 12.04% | 1,010 | 14.54% |
-| hazardous | 681 | 11.42% | 681 | 9.80% |
-| recycling | 4,059 | 68.09% | 4,339 | 62.47% |
-| trash | 503 | 8.44% | 916 | 13.19% |
-| **Total** | **5,961** | | **6,946** | |
+| Class | Kaggle only | Share | Oct 24 | Share | Oct 25 (now) | Share |
+|---|---:|---:|---:|---:|---:|---:|
+| compost | 718 | 12.04% | 1,010 | 14.54% | 1,009 | 13.69% |
+| hazardous | 681 | 11.42% | 681 | 9.80% | 681 | 9.24% |
+| recycling | 4,059 | 68.09% | 4,339 | 62.47% | 4,339 | 58.87% |
+| trash | 503 | 8.44% | 916 | 13.19% | 1,341 | **18.20%** |
+| **Total** | **5,961** | | **6,946** | | **7,370** | |
 
 ### Frozen benchmark
 
@@ -462,7 +483,7 @@ The swap rule for models is in `docs/evaluation.md`.
 
 ## Class imbalance to watch
 
-- `recycling` was 68.09% of train with 4 classes (76.88% with 3) before the wild datasets, and is 62.47% after them (recycling cap of 400). Always guessing recycling scores 62.58% validation accuracy but only 0.1925 macro F1 on this build's 1,478 validation images (68.06% and 0.2025 before the wild datasets; see `docs/data_pipeline.md`), so report macro F1.
+- `recycling` was 68.09% of train with 4 classes (76.88% with 3) before the wild datasets, and is 58.87% now (recycling cap of 400; trash grew to 18.20%). Always guessing recycling scores 58.77% validation accuracy but only 0.1851 macro F1 on this build's 1,574 validation images (68.06% and 0.2025 before the wild datasets; see `docs/data_pipeline.md`), so report macro F1.
 - `clothes` (5,286 images) is dropped by team decision. `shoes` (2,006) is skipped until the team decides.
 - `hazardous` comes from web photos only today. The 50 personal battery photos add real-world examples.
 

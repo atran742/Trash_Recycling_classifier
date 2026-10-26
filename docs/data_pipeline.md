@@ -47,7 +47,7 @@ Files skipped: 6 not an image, 0 outside a class folder, 0 unsupported format, 0
   not an image: data/raw/personal_battery/README.md, data/raw/team_photos/README.md, data/raw/team_photos/trash/.gitkeep (+3 more)
 Checking duplicates: pHash <= 3 and dHash <= 2...
 
-Removed 2 exact duplicates and 57 near duplicates, and 0 new images that copy a base image. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted and 0 unsupported files. 10595 images go on to the split (8519 base, 2076 new).
+Removed 2 exact duplicates and 57 near duplicates, and 0 new images that copy a base image. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted and 0 unsupported files. 11204 images go on to the split (8519 base, 2685 new).
 Dropped 17 known duplicates listed in configs/label_map.yaml (the copy outside train is dropped; see results/removed_duplicates.csv).
 Recycling cap: 1075 new recycling images from realwaste, taco_crops, kept 400 (cap 400, seed 42):
   taco_crops/recycling/clear-plastic-bottle       269 ->   39
@@ -65,38 +65,38 @@ Recycling cap: 1075 new recycling images from realwaste, taco_crops, kept 400 (c
   taco_crops/recycling/plastic-bottle-cap         139 ->   38
   taco_crops/recycling/toilet-tube                  4 ->    4
 
-Wild split (1401 new images, 644 groups, 209 with more than one image; seed 42): 0 dropped as look-alikes of benchmark test images, 0 wild_test images dropped as look-alikes of train/benchmark images.
+Wild split (2010 new images, 933 groups, 324 with more than one image; seed 42): 0 dropped as look-alikes of benchmark test images, 0 wild_test images dropped as look-alikes of train/benchmark images.
   source        class        train  validation  wild_test  total
-  realwaste     compost        292          59         60    411
+  realwaste     compost        291          60         60    411
   taco_crops    recycling      280          60         60    400
-  taco_crops    trash          413          88         89    590
+  taco_crops    trash          838         183        178   1199
 
 class          train  validation    test  wild_test   total
 -----------------------------------------------------------
-compost         1010         213     153         60    1436
+compost         1009         214     153         60    1436
 hazardous        681         146     145          0     972
 recycling       4339         925     864         60    6188
-trash            916         194     108         89    1307
+trash           1341         289     108        178    1916
 -----------------------------------------------------------
-TOTAL           6946        1478    1270        209    9903
+TOTAL           7370        1574    1270        298   10512
 (test = the frozen benchmark; wild_test = new sources only)
 
 Train split share and class weights (results/class_weights.json):
   class         train   % train   inverse  sqrt inv
-  compost        1010    14.54%    1.7193    1.0666
-  hazardous       681     9.80%    2.5499    1.2989
-  recycling      4339    62.47%    0.4002    0.5146
-  trash           916    13.19%    1.8957    1.1200
+  compost        1009    13.69%    1.8261    1.1214
+  hazardous       681     9.24%    2.7056    1.3650
+  recycling      4339    58.87%    0.4246    0.5408
+  trash          1341    18.20%    1.3740    0.9728
 
-Baseline 'always guess recycling' on validation (1478 images): accuracy 62.58%, macro F1 0.1925
+Baseline 'always guess recycling' on validation (1574 images): accuracy 58.77%, macro F1 0.1851
 
 Benchmark check passed: data/splits/test.csv is byte-identical to the frozen benchmark (sha256 44805ae865a0).
 Camera test check passed: no data/raw/camera_test/ photo is in any split.
 Overlap check passed: no exact or near duplicate appears in more than one split.
 
-Count check: 10654 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 0 copies of base images - 17 known duplicates - 675 recycling cap - 0 look-alikes of benchmark - 0 wild_test look-alikes - 0 held for review = 9903; 9903 in the splits; 751 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
+Count check: 11263 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 0 copies of base images - 17 known duplicates - 675 recycling cap - 0 look-alikes of benchmark - 0 wild_test look-alikes - 0 held for review = 10512; 10512 in the splits; 751 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: c6fe0eb  manifest_sha256: 5dc15608812d  (both saved in results/class_weights.json)
+Split version: STAMP_VERSION  manifest_sha256: 08d058850b31  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
@@ -150,6 +150,7 @@ validation split (printed by `build_splits.py` on every run):
 
 | Classes | Validation images | Accuracy | Macro F1 |
 |---|---:|---:|---:|
+| 4 (with the wild datasets, Oct 25) | 1,574 | 58.77% | 0.1851 |
 | 4 (with the wild datasets, Oct 24) | 1,478 | 62.58% | 0.1925 |
 | 4 (Kaggle only, before Oct 24) | 1,271 | 68.06% | 0.2025 |
 | 3 (Kaggle only, before Oct 24) | 1,125 | 76.89% | 0.2898 |
@@ -157,7 +158,7 @@ validation split (printed by `build_splits.py` on every run):
 Accuracy looks good only because recycling is most of the data. Macro F1
 averages the F1 score of every class equally, so ignoring compost, trash and
 hazardous drags it down. **Report macro F1, not accuracy.** A useful model must
-beat 0.1925 by a wide margin.
+beat 0.1851 by a wide margin.
 
 ## Near-duplicate cutoffs
 
