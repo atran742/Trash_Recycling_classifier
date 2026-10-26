@@ -103,7 +103,8 @@ def main():
     config, active, _ = load_config()
     if args.max_dhash is not None:
         config["near_duplicates"]["max_dhash"] = args.max_dhash  # this review only; the yaml is not changed
-    _, removed_rows, review_rows, _, _ = find_duplicates(config, active)
+    found = find_duplicates(config, active)
+    removed_rows, review_rows = found["removed_rows"], found["review_rows"]
 
     RESULTS_DIR.mkdir(exist_ok=True)
     out = cross_label_sheet(review_rows) if args.cross_label else removed_pairs_sheet(removed_rows, args.pairs)
