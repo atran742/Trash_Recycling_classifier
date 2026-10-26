@@ -2,8 +2,6 @@
 .venv/
 venv/
 env/
-.env
-.env.*
 !.env.example
 
 # Python bytecode and tool caches
@@ -117,3 +115,5 @@ results/threshold_sweep.csv
 # model file, so they are shared in the PR or Discord, not committed.
 results/*_predictions.csv
 .gitignore
+config.bat
+node_modules
