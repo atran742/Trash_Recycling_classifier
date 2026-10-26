@@ -1,0 +1,2011 @@
+source,label,split
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_1.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_10.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_100.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_101.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_102.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_103.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_104.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_105.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_106.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_107.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_108.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_109.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_11.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_110.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_111.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_112.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_113.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_114.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_115.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_116.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_117.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_118.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_119.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_12.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_120.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_121.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_122.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_123.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_124.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_125.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_126.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_127.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_128.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_129.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_13.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_130.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_131.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_132.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_133.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_134.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_135.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_136.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_137.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_138.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_139.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_14.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_140.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_141.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_142.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_143.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_144.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_145.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_146.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_147.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_148.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_149.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_15.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_150.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_151.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_152.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_153.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_154.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_155.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_156.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_157.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_158.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_159.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_16.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_160.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_161.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_162.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_163.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_164.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_165.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_166.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_167.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_168.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_169.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_17.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_170.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_171.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_172.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_173.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_174.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_175.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_176.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_177.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_178.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_179.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_18.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_180.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_181.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_182.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_183.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_184.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_185.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_186.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_187.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_188.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_189.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_19.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_190.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_191.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_192.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_193.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_194.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_195.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_196.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_197.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_198.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_199.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_2.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_20.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_200.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_201.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_202.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_203.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_204.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_205.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_206.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_207.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_208.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_209.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_21.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_210.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_211.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_212.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_213.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_214.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_215.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_216.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_217.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_218.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_219.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_22.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_220.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_221.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_222.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_223.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_224.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_225.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_226.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_227.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_228.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_229.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_23.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_230.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_231.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_232.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_233.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_234.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_235.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_236.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_237.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_238.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_239.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_24.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_240.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_241.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_242.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_243.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_244.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_245.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_246.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_247.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_248.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_249.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_25.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_250.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_251.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_252.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_253.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_254.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_255.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_256.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_257.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_258.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_259.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_26.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_260.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_261.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_262.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_263.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_264.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_265.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_266.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_267.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_268.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_269.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_27.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_270.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_271.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_272.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_273.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_274.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_275.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_276.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_277.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_278.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_279.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_28.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_280.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_281.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_282.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_283.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_284.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_285.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_286.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_287.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_288.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_289.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_29.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_290.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_291.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_292.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_293.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_294.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_295.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_296.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_297.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_298.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_299.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_3.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_30.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_300.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_301.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_302.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_303.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_304.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_305.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_306.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_307.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_308.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_309.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_31.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_310.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_311.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_312.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_313.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_314.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_315.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_316.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_317.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_318.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_319.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_32.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_320.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_321.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_322.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_323.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_324.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_325.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_326.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_327.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_328.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_329.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_33.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_330.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_331.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_332.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_333.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_334.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_335.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_336.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_337.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_338.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_339.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_34.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_340.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_341.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_342.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_343.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_344.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_345.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_346.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_347.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_348.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_349.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_35.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_350.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_351.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_352.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_353.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_354.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_355.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_356.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_357.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_358.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_359.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_36.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_360.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_361.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_362.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_363.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_364.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_365.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_366.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_367.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_368.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_369.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_37.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_370.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_371.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_372.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_373.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_374.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_375.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_376.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_377.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_378.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_379.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_38.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_380.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_381.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_382.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_383.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_384.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_385.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_386.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_387.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_388.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_389.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_39.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_390.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_391.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_392.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_393.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_394.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_395.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_396.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_397.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_398.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_399.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_4.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_40.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_400.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_401.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_402.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_403.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_404.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_405.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_406.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_407.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_408.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_409.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_41.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_410.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_411.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_42.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_43.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_44.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_45.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_46.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_47.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_48.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_49.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_5.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_50.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_51.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_52.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_53.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_54.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_55.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_56.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_57.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_58.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_59.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_6.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_60.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_61.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_62.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_63.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_64.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_65.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_66.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_67.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_68.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_69.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_7.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_70.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_71.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_72.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_73.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_74.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_75.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_76.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_77.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_78.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_79.jpg,compost,wild_test
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_8.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_80.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_81.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_82.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_83.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_84.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_85.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_86.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_87.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_88.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_89.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_9.jpg,compost,train
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_90.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_91.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_92.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_93.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_94.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_95.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_96.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_97.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_98.jpg,compost,validation
+data/raw/realwaste/realwaste-main/RealWaste/Food Organics/Food Organics_99.jpg,compost,validation
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000003_ann000006.jpg,recycling,validation
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000013_ann000042.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000076_ann000189.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000102_ann000317.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000103_ann000325.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000322_ann000970.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000325_ann000976.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000344_ann001133.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000348_ann001152.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000385_ann001339.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000391_ann001391.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000429_ann001549.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000437_ann001562.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000538_ann001757.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000673_ann002165.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000860_ann002668.jpg,recycling,validation
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000866_ann002688.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000964_ann002926.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img000975_ann002944.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001022_ann003044.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001078_ann003232.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001081_ann003245.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001096_ann003275.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001097_ann003276.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001101_ann003286.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001112_ann003401.jpg,recycling,validation
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001118_ann003416.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001139_ann003480.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001153_ann003535.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001155_ann003545.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001160_ann003557.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001222_ann003790.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001246_ann003876.jpg,recycling,validation
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001246_ann003877.jpg,recycling,validation
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001252_ann003909.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001304_ann004047.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001343_ann004284.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001484_ann004713.jpg,recycling,train
+data/raw/taco_crops/recycling/clear-plastic-bottle/img001484_ann004714.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000081_ann000202.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000100_ann000276.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000131_ann000442.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000132_ann000443.jpg,recycling,validation
+data/raw/taco_crops/recycling/corrugated-carton/img000186_ann000623.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000199_ann000683.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000199_ann000684.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000204_ann000693.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000204_ann000695.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000206_ann000700.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000207_ann000703.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000209_ann000708.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000209_ann000709.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000210_ann000711.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000211_ann000712.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000211_ann000715.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000212_ann000718.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000213_ann000720.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000214_ann000723.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000215_ann000724.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000217_ann000731.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000255_ann000803.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000348_ann001146.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000348_ann001147.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000455_ann001596.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/corrugated-carton/img000745_ann002329.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img000821_ann002564.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/corrugated-carton/img000997_ann002982.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/corrugated-carton/img001003_ann002991.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/corrugated-carton/img001064_ann003159.jpg,recycling,validation
+data/raw/taco_crops/recycling/corrugated-carton/img001104_ann003293.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img001119_ann003419.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img001151_ann003529.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img001171_ann003574.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img001171_ann003575.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img001179_ann003649.jpg,recycling,validation
+data/raw/taco_crops/recycling/corrugated-carton/img001450_ann004594.jpg,recycling,train
+data/raw/taco_crops/recycling/corrugated-carton/img001488_ann004741.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-food-container/img000013_ann000045.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000030_ann000084.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000088_ann000230.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-food-container/img000089_ann000235.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-food-container/img000098_ann000260.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-food-container/img000106_ann000355.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000317_ann000954.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000320_ann000966.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-food-container/img000460_ann001635.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-food-container/img000499_ann001698.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000614_ann001929.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000630_ann002030.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000688_ann002203.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000694_ann002222.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000809_ann002543.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-food-container/img000822_ann002566.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-food-container/img000835_ann002592.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-food-container/img000837_ann002597.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000841_ann002610.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000846_ann002621.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000870_ann002710.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000952_ann002870.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000963_ann002897.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000978_ann002950.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img000989_ann002967.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001013_ann003019.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001013_ann003020.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001060_ann003141.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001092_ann003269.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001117_ann003415.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-food-container/img001130_ann003463.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001190_ann003668.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001228_ann003815.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001319_ann004115.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-food-container/img001389_ann004453.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-food-container/img001399_ann004472.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-food-container/img001408_ann004502.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000104_ann000335.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000318_ann000957.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000347_ann001137.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000350_ann001159.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000368_ann001308.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000375_ann001320.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000375_ann001323.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000388_ann001362.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000390_ann001385.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000416_ann001476.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000457_ann001618.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000460_ann001632.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000502_ann001701.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000532_ann001749.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000607_ann001897.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000677_ann002176.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000720_ann002280.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000737_ann002317.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000737_ann002318.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000804_ann002531.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000859_ann002666.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000910_ann002818.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000911_ann002819.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img000994_ann002973.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001008_ann003008.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001032_ann003066.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001032_ann003067.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001062_ann003147.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001074_ann003180.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001076_ann003229.jpg,recycling,validation
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001149_ann003527.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001200_ann003701.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001270_ann003937.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001302_ann004045.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001325_ann004195.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001366_ann004393.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001373_ann004415.jpg,recycling,train
+data/raw/taco_crops/recycling/disposable-plastic-cup/img001455_ann004625.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000003_ann000009.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-can/img000019_ann000054.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000032_ann000086.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000055_ann000139.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000063_ann000151.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000088_ann000228.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-can/img000088_ann000229.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-can/img000324_ann000973.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img000335_ann001099.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img000344_ann001127.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img000354_ann001195.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000427_ann001543.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000455_ann001603.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img000455_ann001609.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img000537_ann001755.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000548_ann001775.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-can/img000582_ann001824.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000677_ann002173.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000708_ann002249.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000725_ann002288.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000761_ann002361.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000805_ann002538.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000807_ann002541.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000827_ann002575.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img000828_ann002577.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img001020_ann003034.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img001024_ann003047.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img001032_ann003068.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img001056_ann003133.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img001082_ann003249.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img001123_ann003438.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img001123_ann003441.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-can/img001314_ann004079.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img001314_ann004081.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img001320_ann004118.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-can/img001374_ann004424.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img001397_ann004468.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-can/img001401_ann004477.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img000012_ann000035.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-carton/img000012_ann000036.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-carton/img000099_ann000264.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-carton/img000100_ann000278.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img000128_ann000433.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-carton/img000297_ann000901.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-carton/img000298_ann000905.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-carton/img000334_ann001091.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-carton/img000364_ann001299.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img000414_ann001463.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img000417_ann001479.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img000420_ann001486.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img000426_ann001532.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-carton/img000860_ann002671.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-carton/img001001_ann002988.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001078_ann003236.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001121_ann003424.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001152_ann003533.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001153_ann003536.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001159_ann003550.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001203_ann003707.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001205_ann003716.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001207_ann003723.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-carton/img001209_ann003729.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001210_ann003735.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001215_ann003779.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001235_ann003828.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001237_ann003832.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/drink-carton/img001239_ann003845.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001239_ann003847.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001239_ann003849.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001240_ann003857.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001253_ann003911.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001257_ann003920.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001323_ann004180.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001409_ann004506.jpg,recycling,train
+data/raw/taco_crops/recycling/drink-carton/img001495_ann004766.jpg,recycling,validation
+data/raw/taco_crops/recycling/drink-carton/img001495_ann004767.jpg,recycling,validation
+data/raw/taco_crops/recycling/food-can/img000005_ann000011.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000005_ann000012.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000009_ann000021.jpg,recycling,validation
+data/raw/taco_crops/recycling/food-can/img000020_ann000056.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000020_ann000057.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000021_ann000060.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000033_ann000087.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000033_ann000088.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000044_ann000110.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000044_ann000111.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000044_ann000112.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000045_ann000115.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000045_ann000116.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000045_ann000117.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000045_ann000118.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000045_ann000119.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000045_ann000120.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000046_ann000121.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000046_ann000122.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000046_ann000123.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000067_ann000158.jpg,recycling,validation
+data/raw/taco_crops/recycling/food-can/img000068_ann000162.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000098_ann000253.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/food-can/img000098_ann000254.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/food-can/img000099_ann000267.jpg,recycling,validation
+data/raw/taco_crops/recycling/food-can/img000099_ann000268.jpg,recycling,validation
+data/raw/taco_crops/recycling/food-can/img000100_ann000277.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img000595_ann001847.jpg,recycling,validation
+data/raw/taco_crops/recycling/food-can/img000797_ann002518.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img001061_ann003146.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img001152_ann003530.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img001203_ann003713.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img001253_ann003913.jpg,recycling,train
+data/raw/taco_crops/recycling/food-can/img001359_ann004353.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000000_ann000001.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000010_ann000024.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000039_ann000101.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000040_ann000102.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000112_ann000382.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000112_ann000385.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000114_ann000391.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000114_ann000392.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000192_ann000646.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/glass-bottle/img000194_ann000657.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/glass-bottle/img000358_ann001205.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/glass-bottle/img000460_ann001629.jpg,recycling,validation
+data/raw/taco_crops/recycling/glass-bottle/img000468_ann001645.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000582_ann001821.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000597_ann001850.jpg,recycling,validation
+data/raw/taco_crops/recycling/glass-bottle/img000605_ann001893.jpg,recycling,validation
+data/raw/taco_crops/recycling/glass-bottle/img000619_ann001952.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000685_ann002194.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000685_ann002195.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000687_ann002200.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img000793_ann002513.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001000_ann002986.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001008_ann003007.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001010_ann003011.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001044_ann003104.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001101_ann003284.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001101_ann003287.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001102_ann003288.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001103_ann003291.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001160_ann003558.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/glass-bottle/img001211_ann003737.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001320_ann004117.jpg,recycling,validation
+data/raw/taco_crops/recycling/glass-bottle/img001321_ann004119.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001321_ann004120.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001335_ann004259.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-bottle/img001336_ann004266.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/glass-bottle/img001338_ann004271.jpg,recycling,validation
+data/raw/taco_crops/recycling/glass-bottle/img001494_ann004765.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-jar/img000067_ann000159.jpg,recycling,validation
+data/raw/taco_crops/recycling/glass-jar/img000797_ann002520.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-jar/img000838_ann002602.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-jar/img000838_ann002603.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-jar/img000839_ann002604.jpg,recycling,train
+data/raw/taco_crops/recycling/glass-jar/img000839_ann002605.jpg,recycling,train
+data/raw/taco_crops/recycling/magazine-paper/img000139_ann000508.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/magazine-paper/img000238_ann000775.jpg,recycling,train
+data/raw/taco_crops/recycling/magazine-paper/img000874_ann002719.jpg,recycling,validation
+data/raw/taco_crops/recycling/magazine-paper/img000874_ann002720.jpg,recycling,validation
+data/raw/taco_crops/recycling/magazine-paper/img000874_ann002721.jpg,recycling,validation
+data/raw/taco_crops/recycling/magazine-paper/img000874_ann002722.jpg,recycling,validation
+data/raw/taco_crops/recycling/magazine-paper/img000874_ann002723.jpg,recycling,validation
+data/raw/taco_crops/recycling/magazine-paper/img000874_ann002724.jpg,recycling,validation
+data/raw/taco_crops/recycling/magazine-paper/img000874_ann002725.jpg,recycling,validation
+data/raw/taco_crops/recycling/magazine-paper/img000881_ann002777.jpg,recycling,train
+data/raw/taco_crops/recycling/magazine-paper/img000881_ann002779.jpg,recycling,train
+data/raw/taco_crops/recycling/magazine-paper/img001184_ann003657.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000005_ann000013.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000014_ann000046.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000015_ann000047.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/other-plastic-bottle/img000015_ann000048.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/other-plastic-bottle/img000023_ann000065.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000023_ann000066.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000043_ann000107.jpg,recycling,validation
+data/raw/taco_crops/recycling/other-plastic-bottle/img000043_ann000108.jpg,recycling,validation
+data/raw/taco_crops/recycling/other-plastic-bottle/img000084_ann000217.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000084_ann000218.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000102_ann000310.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000220_ann000741.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000222_ann000746.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000229_ann000765.jpg,recycling,validation
+data/raw/taco_crops/recycling/other-plastic-bottle/img000235_ann000772.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000334_ann001094.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/other-plastic-bottle/img000362_ann001254.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000414_ann001461.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000427_ann001545.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000435_ann001557.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/other-plastic-bottle/img000507_ann001708.jpg,recycling,validation
+data/raw/taco_crops/recycling/other-plastic-bottle/img000508_ann001710.jpg,recycling,validation
+data/raw/taco_crops/recycling/other-plastic-bottle/img000522_ann001731.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000578_ann001813.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000604_ann001892.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000686_ann002198.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000755_ann002347.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000803_ann002528.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000840_ann002609.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000962_ann002888.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img000995_ann002975.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img001105_ann003294.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img001107_ann003306.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img001234_ann003826.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-bottle/img001331_ann004228.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/other-plastic-bottle/img001347_ann004295.jpg,recycling,validation
+data/raw/taco_crops/recycling/other-plastic-bottle/img001351_ann004306.jpg,recycling,validation
+data/raw/taco_crops/recycling/other-plastic-bottle/img001383_ann004442.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/other-plastic-cup/img000901_ann002804.jpg,recycling,train
+data/raw/taco_crops/recycling/other-plastic-cup/img001380_ann004438.jpg,recycling,validation
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000005_ann000014.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000012_ann000038.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000013_ann000043.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000015_ann000049.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000082_ann000210.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000224_ann000748.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000296_ann000894.jpg,recycling,validation
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000300_ann000920.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000307_ann000934.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000316_ann000952.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000320_ann000965.jpg,recycling,validation
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000334_ann001095.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000335_ann001101.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000342_ann001124.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000380_ann001331.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000391_ann001390.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000391_ann001392.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000493_ann001688.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000530_ann001747.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000538_ann001758.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000557_ann001787.jpg,recycling,validation
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000592_ann001840.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000602_ann001888.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000650_ann002100.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000654_ann002114.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000686_ann002199.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000816_ann002556.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000880_ann002776.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000899_ann002802.jpg,recycling,validation
+data/raw/taco_crops/recycling/plastic-bottle-cap/img000931_ann002846.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img001113_ann003405.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img001131_ann003465.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img001157_ann003548.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img001251_ann003908.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img001288_ann003977.jpg,recycling,train
+data/raw/taco_crops/recycling/plastic-bottle-cap/img001408_ann004494.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img001408_ann004500.jpg,recycling,wild_test
+data/raw/taco_crops/recycling/plastic-bottle-cap/img001467_ann004659.jpg,recycling,train
+data/raw/taco_crops/recycling/toilet-tube/img000084_ann000214.jpg,recycling,train
+data/raw/taco_crops/recycling/toilet-tube/img000084_ann000215.jpg,recycling,train
+data/raw/taco_crops/recycling/toilet-tube/img000084_ann000216.jpg,recycling,train
+data/raw/taco_crops/recycling/toilet-tube/img000099_ann000269.jpg,recycling,validation
+data/raw/taco_crops/trash/cigarette/img000050_ann000284.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000050_ann000285.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000054_ann000286.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000057_ann000289.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000057_ann000290.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000057_ann000291.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000057_ann000292.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000057_ann000293.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000060_ann000294.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000064_ann000297.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000065_ann000301.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000065_ann000302.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000066_ann000303.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000086_ann000304.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000121_ann000409.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000135_ann000459.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000135_ann000460.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000165_ann000573.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000291_ann000886.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000292_ann000887.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000297_ann000904.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000298_ann000912.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000299_ann000918.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000304_ann000930.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000316_ann000951.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000325_ann000982.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000325_ann000997.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000326_ann001001.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000327_ann001028.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001029.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001031.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001032.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001036.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001037.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001038.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001039.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001040.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001044.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000327_ann001047.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000332_ann001081.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000333_ann001088.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000351_ann001163.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000351_ann001166.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000351_ann001168.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000351_ann001176.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000352_ann001178.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000352_ann001180.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000352_ann001190.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000352_ann001191.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000352_ann001192.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000398_ann001423.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000408_ann001443.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000411_ann001457.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000426_ann001540.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000451_ann001589.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img000457_ann001622.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000484_ann001666.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000488_ann001678.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000488_ann001679.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000490_ann001682.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000490_ann001683.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000504_ann001705.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000512_ann001716.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000533_ann001750.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000546_ann001770.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000546_ann001771.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000548_ann001776.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000617_ann001947.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000629_ann002014.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000631_ann002049.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000632_ann002051.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000642_ann002087.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000653_ann002108.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000653_ann002109.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000653_ann002110.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000681_ann002190.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000713_ann002395.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000714_ann002400.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000714_ann002403.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000728_ann002448.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000730_ann002452.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000730_ann002453.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000730_ann002454.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000730_ann002455.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img000777_ann002481.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000788_ann002729.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000788_ann002732.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000788_ann002737.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img000996_ann003187.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001027_ann003194.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001132_ann003610.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001161_ann003632.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001169_ann003634.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001208_ann004012.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001208_ann004013.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001234_ann004021.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001316_ann004108.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001319_ann004114.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001325_ann004194.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001325_ann004196.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001328_ann004207.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img001329_ann004223.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001331_ann004233.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001331_ann004234.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001331_ann004235.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001331_ann004236.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001353_ann004323.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001373_ann004411.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001373_ann004414.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001373_ann004420.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001379_ann004436.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001395_ann004465.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001398_ann004471.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001404_ann004484.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001411_ann004511.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001422_ann004531.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001428_ann004547.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001429_ann004555.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001439_ann004577.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001439_ann004578.jpg,trash,wild_test
+data/raw/taco_crops/trash/cigarette/img001440_ann004581.jpg,trash,validation
+data/raw/taco_crops/trash/cigarette/img001453_ann004606.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001478_ann004690.jpg,trash,train
+data/raw/taco_crops/trash/cigarette/img001478_ann004691.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000038_ann000100.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000054_ann000137.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000061_ann000146.jpg,trash,validation
+data/raw/taco_crops/trash/crisp-packet/img000091_ann000243.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000112_ann000377.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000308_ann000935.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000318_ann000956.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000356_ann001198.jpg,trash,validation
+data/raw/taco_crops/trash/crisp-packet/img000358_ann001201.jpg,trash,wild_test
+data/raw/taco_crops/trash/crisp-packet/img000362_ann001244.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000362_ann001245.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000656_ann002117.jpg,trash,wild_test
+data/raw/taco_crops/trash/crisp-packet/img000689_ann002205.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000690_ann002212.jpg,trash,validation
+data/raw/taco_crops/trash/crisp-packet/img000698_ann002228.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000705_ann002240.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000705_ann002241.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000708_ann002254.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000734_ann002314.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000747_ann002332.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000757_ann002351.jpg,trash,validation
+data/raw/taco_crops/trash/crisp-packet/img000771_ann002383.jpg,trash,validation
+data/raw/taco_crops/trash/crisp-packet/img000772_ann002384.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000791_ann002511.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img000792_ann002512.jpg,trash,wild_test
+data/raw/taco_crops/trash/crisp-packet/img000815_ann002551.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img001037_ann003091.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img001059_ann003140.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img001072_ann003178.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img001073_ann003179.jpg,trash,validation
+data/raw/taco_crops/trash/crisp-packet/img001084_ann003256.jpg,trash,wild_test
+data/raw/taco_crops/trash/crisp-packet/img001140_ann003485.jpg,trash,validation
+data/raw/taco_crops/trash/crisp-packet/img001140_ann003487.jpg,trash,validation
+data/raw/taco_crops/trash/crisp-packet/img001147_ann003523.jpg,trash,wild_test
+data/raw/taco_crops/trash/crisp-packet/img001162_ann003561.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img001162_ann003562.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img001202_ann003703.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img001239_ann003841.jpg,trash,train
+data/raw/taco_crops/trash/crisp-packet/img001367_ann004397.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000025_ann000070.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000026_ann000072.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000070_ann000168.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000075_ann000180.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000076_ann000190.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000087_ann000226.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000104_ann000334.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000106_ann000360.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000123_ann000426.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000133_ann000445.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000143_ann000521.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000150_ann000542.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000186_ann000618.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000187_ann000625.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000194_ann000653.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000200_ann000685.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000241_ann000781.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000244_ann000786.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000246_ann000790.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000247_ann000792.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000248_ann000793.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000252_ann000798.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000273_ann000839.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000283_ann000873.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000283_ann000874.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000287_ann000879.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000293_ann000888.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000293_ann000889.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000301_ann000923.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000308_ann000936.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000310_ann000938.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000311_ann000944.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000311_ann000945.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000329_ann001057.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000329_ann001058.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000331_ann001074.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000331_ann001075.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000331_ann001076.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000331_ann001077.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000332_ann001078.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000332_ann001079.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000332_ann001083.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000333_ann001089.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000334_ann001090.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000335_ann001097.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000335_ann001102.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000335_ann001103.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000340_ann001121.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000348_ann001154.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000356_ann001197.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000356_ann001199.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000357_ann001200.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000359_ann001212.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000359_ann001213.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000360_ann001218.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000360_ann001219.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000360_ann001221.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000360_ann001222.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000361_ann001223.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001224.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001225.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001226.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001228.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001229.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001230.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001231.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001232.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001233.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001246.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001247.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001248.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001249.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001250.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001252.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001253.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001255.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001256.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001257.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001258.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001259.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001260.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000362_ann001261.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000363_ann001264.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000363_ann001270.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000363_ann001274.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000363_ann001291.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000363_ann001295.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000367_ann001304.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000379_ann001329.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000382_ann001333.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000383_ann001334.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000389_ann001376.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000389_ann001378.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000391_ann001388.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000391_ann001389.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000392_ann001404.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000393_ann001406.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000405_ann001435.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000406_ann001436.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000406_ann001440.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000407_ann001441.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000410_ann001448.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000410_ann001450.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000414_ann001460.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000415_ann001470.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000416_ann001477.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000419_ann001483.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000424_ann001504.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000426_ann001535.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000436_ann001559.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000441_ann001568.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000445_ann001575.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000452_ann001590.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000458_ann001625.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000462_ann001639.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000484_ann001663.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000501_ann001700.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000505_ann001706.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000536_ann001754.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000566_ann001797.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000568_ann001799.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000569_ann001802.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000584_ann001828.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000585_ann001830.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000586_ann001831.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000588_ann001833.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000590_ann001838.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000591_ann001839.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000594_ann001843.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000613_ann001923.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000622_ann001970.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000622_ann001971.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000623_ann001974.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000623_ann001975.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000623_ann001976.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000629_ann002011.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000630_ann002029.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000640_ann002084.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000648_ann002093.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000652_ann002106.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000653_ann002107.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000653_ann002111.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000657_ann002122.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000675_ann002169.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000680_ann002187.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000682_ann002191.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000687_ann002202.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000688_ann002204.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000689_ann002206.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000696_ann002226.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000702_ann002232.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000715_ann002270.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000735_ann002315.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000736_ann002316.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img000744_ann002327.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000762_ann002363.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000768_ann002380.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000769_ann002381.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000777_ann002390.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000781_ann002490.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000796_ann002517.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000798_ann002522.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000831_ann002583.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000834_ann002589.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000853_ann002650.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000871_ann002711.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img000872_ann002714.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000955_ann002880.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000957_ann002882.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000962_ann002890.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img000998_ann002983.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001021_ann003036.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001023_ann003045.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001023_ann003046.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001029_ann003057.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001029_ann003058.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001039_ann003095.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001046_ann003111.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001049_ann003116.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001080_ann003243.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001084_ann003257.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001086_ann003260.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001094_ann003273.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001107_ann003363.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001107_ann003365.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001107_ann003366.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001107_ann003367.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001107_ann003369.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001107_ann003370.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001111_ann003398.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001111_ann003399.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001122_ann003432.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001134_ann003470.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001140_ann003486.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001156_ann003546.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001169_ann003572.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001172_ann003576.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001172_ann003577.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001173_ann003636.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001177_ann003645.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001206_ann003721.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001213_ann003747.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001213_ann003748.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001223_ann003792.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001224_ann003796.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001224_ann003797.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001224_ann003798.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001226_ann003807.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001230_ann003819.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001246_ann003884.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001246_ann003885.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001282_ann003963.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001287_ann003974.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001291_ann003983.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001298_ann004001.jpg,trash,wild_test
+data/raw/taco_crops/trash/other-plastic-wrapper/img001303_ann004046.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001305_ann004049.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001323_ann004178.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001344_ann004287.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001358_ann004351.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001368_ann004398.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001392_ann004460.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001402_ann004479.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001407_ann004492.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001414_ann004517.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001414_ann004518.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001414_ann004520.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001424_ann004537.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001425_ann004538.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001434_ann004568.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001456_ann004628.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001460_ann004637.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001461_ann004640.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001468_ann004662.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001475_ann004685.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001481_ann004710.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001482_ann004711.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001486_ann004731.jpg,trash,train
+data/raw/taco_crops/trash/other-plastic-wrapper/img001495_ann004771.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001495_ann004772.jpg,trash,validation
+data/raw/taco_crops/trash/other-plastic-wrapper/img001499_ann004781.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000017_ann000052.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img000056_ann000140.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000062_ann000147.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000090_ann000239.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000239_ann000776.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000243_ann000785.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000247_ann000791.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img000253_ann000800.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img000289_ann000881.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000302_ann000927.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000318_ann000955.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000321_ann000968.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000327_ann001033.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000327_ann001034.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000327_ann001043.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000328_ann001052.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img000336_ann001105.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img000460_ann001633.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img000503_ann001702.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000523_ann001737.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000603_ann001889.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img000633_ann002056.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000637_ann002063.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000638_ann002080.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img000678_ann002179.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000684_ann002193.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000693_ann002216.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img000693_ann002217.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img000708_ann002250.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000726_ann002289.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000804_ann002532.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000811_ann002545.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img000852_ann002632.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img000860_ann002677.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img000865_ann002687.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001022_ann003041.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img001046_ann003110.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001047_ann003113.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001051_ann003118.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001052_ann003120.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img001057_ann003136.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img001057_ann003137.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img001064_ann003154.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img001069_ann003170.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001070_ann003174.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img001103_ann003292.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001160_ann003556.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img001166_ann003566.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img001197_ann003693.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img001199_ann003697.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001200_ann003699.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001200_ann003700.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001202_ann003705.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001208_ann003724.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001212_ann003740.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001213_ann003767.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001215_ann003780.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001217_ann003783.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img001240_ann003858.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001246_ann003888.jpg,trash,validation
+data/raw/taco_crops/trash/paper-cup/img001247_ann003893.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img001255_ann003917.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001300_ann004042.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001306_ann004051.jpg,trash,wild_test
+data/raw/taco_crops/trash/paper-cup/img001344_ann004285.jpg,trash,train
+data/raw/taco_crops/trash/paper-cup/img001373_ann004408.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000011_ann000029.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000013_ann000044.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000038_ann000099.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000072_ann000170.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000075_ann000182.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000075_ann000183.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000075_ann000184.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000083_ann000213.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000093_ann000245.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000098_ann000255.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000098_ann000256.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000099_ann000273.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000103_ann000328.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000104_ann000329.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000104_ann000332.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000104_ann000333.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000104_ann000338.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000104_ann000339.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000105_ann000344.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000105_ann000347.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000105_ann000352.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000106_ann000356.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000106_ann000358.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000106_ann000359.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000109_ann000369.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000109_ann000370.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000109_ann000371.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000112_ann000387.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000117_ann000401.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000121_ann000405.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000123_ann000423.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000136_ann000486.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000141_ann000513.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000142_ann000515.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000142_ann000516.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000142_ann000517.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000142_ann000518.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000143_ann000519.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000143_ann000520.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000144_ann000526.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000144_ann000527.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000144_ann000528.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000149_ann000540.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000149_ann000541.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000151_ann000544.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000151_ann000549.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000151_ann000553.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000154_ann000556.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000155_ann000557.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000156_ann000559.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000157_ann000560.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000158_ann000561.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000159_ann000563.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000160_ann000564.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000161_ann000566.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000163_ann000568.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000163_ann000570.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000164_ann000571.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000164_ann000572.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000166_ann000574.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000167_ann000575.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000168_ann000576.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000169_ann000577.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000174_ann000585.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000177_ann000590.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000178_ann000595.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000186_ann000617.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000191_ann000641.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000192_ann000649.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000193_ann000650.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000194_ann000664.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000219_ann000734.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000231_ann000768.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000233_ann000770.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000245_ann000788.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000245_ann000789.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000251_ann000797.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000254_ann000802.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000260_ann000811.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000262_ann000814.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000264_ann000818.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000264_ann000819.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000264_ann000820.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000265_ann000822.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000267_ann000824.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000270_ann000828.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000272_ann000832.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000272_ann000833.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000272_ann000835.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000272_ann000836.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000272_ann000837.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000272_ann000838.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000274_ann000840.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000275_ann000843.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000275_ann000844.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000275_ann000846.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000275_ann000847.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000275_ann000848.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000275_ann000849.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000276_ann000854.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000277_ann000857.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000280_ann000861.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000281_ann000870.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000283_ann000875.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000284_ann000876.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000285_ann000877.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000288_ann000880.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000296_ann000896.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000305_ann000932.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000306_ann000933.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000311_ann000941.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000311_ann000942.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000311_ann000943.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000320_ann000959.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000334_ann001093.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000336_ann001106.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000339_ann001114.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000339_ann001115.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000339_ann001116.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000341_ann001123.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000344_ann001131.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000348_ann001155.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000358_ann001202.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000358_ann001207.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000358_ann001209.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000362_ann001227.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001234.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001235.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001236.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001237.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001238.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001239.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001240.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001241.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001242.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000362_ann001251.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001262.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001265.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001266.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001267.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001268.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001278.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001279.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001280.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001281.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001287.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001288.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001289.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000363_ann001290.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000364_ann001300.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000365_ann001301.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000366_ann001302.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000371_ann001311.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000374_ann001314.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000384_ann001335.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000385_ann001341.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000385_ann001342.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000385_ann001343.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000385_ann001344.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001346.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001347.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001348.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001349.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001350.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001351.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001352.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001353.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001356.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000386_ann001357.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000387_ann001359.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000387_ann001360.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000388_ann001363.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000388_ann001364.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000389_ann001371.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000389_ann001372.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000389_ann001373.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000389_ann001380.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000389_ann001381.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000390_ann001383.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000390_ann001384.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000390_ann001386.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000390_ann001387.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000392_ann001397.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000392_ann001401.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000392_ann001402.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000392_ann001403.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000394_ann001410.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000398_ann001421.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000400_ann001425.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000406_ann001437.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000409_ann001447.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000410_ann001449.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000420_ann001488.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000420_ann001490.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000420_ann001491.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000421_ann001493.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000421_ann001494.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000423_ann001500.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000425_ann001505.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000426_ann001530.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000426_ann001531.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000426_ann001533.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000426_ann001534.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000426_ann001537.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000426_ann001538.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000426_ann001539.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000432_ann001552.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000432_ann001554.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000439_ann001565.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000442_ann001570.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000447_ann001581.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000459_ann001626.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000466_ann001643.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000475_ann001652.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000477_ann001654.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000479_ann001657.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000484_ann001664.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000486_ann001676.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000500_ann001699.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000504_ann001704.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000511_ann001715.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000513_ann001717.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000519_ann001726.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000527_ann001744.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000528_ann001745.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000529_ann001746.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000535_ann001753.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000549_ann001778.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000558_ann001788.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000563_ann001793.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000565_ann001796.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000568_ann001800.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000568_ann001801.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000587_ann001832.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000608_ann001901.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000612_ann001920.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000616_ann001940.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000623_ann001972.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000627_ann002003.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000630_ann002020.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000630_ann002022.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000630_ann002033.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000630_ann002041.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000632_ann002052.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000633_ann002058.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000653_ann002112.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000657_ann002121.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000659_ann002127.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000663_ann002132.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000675_ann002170.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000676_ann002171.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000676_ann002172.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000689_ann002211.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000694_ann002223.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000715_ann002271.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000732_ann002307.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000732_ann002309.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000743_ann002326.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000750_ann002336.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000758_ann002358.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000763_ann002365.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000766_ann002378.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000767_ann002379.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000773_ann002386.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000799_ann002523.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000813_ann002547.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000814_ann002548.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000814_ann002549.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000815_ann002550.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000817_ann002558.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000819_ann002561.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000820_ann002562.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000822_ann002567.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000823_ann002569.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000824_ann002571.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000829_ann002579.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000831_ann002584.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000832_ann002585.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000832_ann002586.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000832_ann002587.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000835_ann002593.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000835_ann002594.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000837_ann002598.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000846_ann002622.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000856_ann002658.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000858_ann002660.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000862_ann002681.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000863_ann002683.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000864_ann002686.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000867_ann002704.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000873_ann002718.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000877_ann002770.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000879_ann002774.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000884_ann002782.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000892_ann002795.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000896_ann002799.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000900_ann002803.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000904_ann002808.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000904_ann002809.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000905_ann002812.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000905_ann002813.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000915_ann002824.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000915_ann002825.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000918_ann002829.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000922_ann002833.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000923_ann002834.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000933_ann002848.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000943_ann002860.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000944_ann002861.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000945_ann002862.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000950_ann002868.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000953_ann002873.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000953_ann002874.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000954_ann002876.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000954_ann002877.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000958_ann002883.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000963_ann002896.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000971_ann002938.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img000973_ann002940.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img000976_ann002947.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img000990_ann002968.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001002_ann002990.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001005_ann002999.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001005_ann003000.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001005_ann003001.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001009_ann003010.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001010_ann003014.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001011_ann003016.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001012_ann003018.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001014_ann003024.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001015_ann003026.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001037_ann003090.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001038_ann003093.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001039_ann003096.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001040_ann003099.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001052_ann003122.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001052_ann003123.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001054_ann003131.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001060_ann003144.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001060_ann003145.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001065_ann003165.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001075_ann003182.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001079_ann003241.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001087_ann003261.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001098_ann003279.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001107_ann003368.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001107_ann003371.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001111_ann003397.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001116_ann003413.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001134_ann003469.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001139_ann003481.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001150_ann003528.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001167_ann003567.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001172_ann003578.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001178_ann003647.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001183_ann003655.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001194_ann003688.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001203_ann003712.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001206_ann003722.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001209_ann003731.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001209_ann003732.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001213_ann003746.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001213_ann003749.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001215_ann003777.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001219_ann003787.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001224_ann003795.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001224_ann003799.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001224_ann003804.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001226_ann003808.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001226_ann003809.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001228_ann003816.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001229_ann003817.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001231_ann003820.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001239_ann003840.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001240_ann003860.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001240_ann003861.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001244_ann003870.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001258_ann003921.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001263_ann003927.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001264_ann003928.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001267_ann003931.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001279_ann003954.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001280_ann003955.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001286_ann003973.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001349_ann004300.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001356_ann004347.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001360_ann004355.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001366_ann004394.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001367_ann004396.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001375_ann004426.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001386_ann004448.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001389_ann004454.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001398_ann004469.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001400_ann004475.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001402_ann004478.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001403_ann004481.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001406_ann004488.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001410_ann004509.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001411_ann004510.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001411_ann004513.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001412_ann004514.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001417_ann004524.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001418_ann004525.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001420_ann004528.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001421_ann004529.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001422_ann004530.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001423_ann004536.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001425_ann004539.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001427_ann004544.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001427_ann004545.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001428_ann004548.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001428_ann004549.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001430_ann004562.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001430_ann004563.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001431_ann004564.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001432_ann004566.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001435_ann004569.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001436_ann004571.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001436_ann004572.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001438_ann004574.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001441_ann004582.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001442_ann004583.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001443_ann004584.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001444_ann004585.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001445_ann004586.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001446_ann004587.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001446_ann004588.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001447_ann004589.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001447_ann004590.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001457_ann004631.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001458_ann004633.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001459_ann004635.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-film/img001460_ann004638.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001462_ann004647.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001463_ann004648.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001463_ann004650.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001471_ann004673.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001473_ann004676.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001480_ann004698.jpg,trash,train
+data/raw/taco_crops/trash/plastic-film/img001490_ann004754.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-film/img001494_ann004764.jpg,trash,train
+data/raw/taco_crops/trash/plastic-glooves/img000228_ann000754.jpg,trash,train
+data/raw/taco_crops/trash/plastic-glooves/img001035_ann003084.jpg,trash,train
+data/raw/taco_crops/trash/plastic-glooves/img001053_ann003128.jpg,trash,train
+data/raw/taco_crops/trash/plastic-glooves/img001382_ann004440.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img000050_ann000133.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000057_ann000141.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000064_ann000153.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img000134_ann000446.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000145_ann000529.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img000181_ann000599.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000227_ann000753.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000268_ann000826.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000310_ann000940.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000329_ann001059.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000329_ann001064.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000330_ann001065.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000334_ann001092.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000347_ann001138.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000347_ann001139.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000363_ann001296.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000368_ann001307.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000375_ann001316.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000375_ann001317.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000376_ann001324.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000376_ann001325.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000389_ann001374.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000390_ann001382.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000392_ann001394.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000392_ann001400.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000398_ann001422.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000405_ann001434.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000408_ann001442.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000409_ann001446.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000411_ann001456.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img000414_ann001462.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000416_ann001474.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000417_ann001480.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000417_ann001481.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000420_ann001484.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000420_ann001487.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000420_ann001489.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000421_ann001492.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000422_ann001495.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000423_ann001496.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000423_ann001497.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001506.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001508.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001509.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001510.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001511.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001512.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001513.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001515.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001516.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001517.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001520.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001521.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001522.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000426_ann001524.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000442_ann001569.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000448_ann001583.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000457_ann001619.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img000506_ann001707.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000542_ann001763.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000588_ann001834.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000618_ann001950.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000624_ann001983.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img000629_ann002006.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img000630_ann002031.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000630_ann002037.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000630_ann002039.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000650_ann002101.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000650_ann002102.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000660_ann002128.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img000666_ann002145.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000670_ann002158.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000671_ann002159.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000679_ann002182.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img000681_ann002188.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000681_ann002189.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000703_ann002235.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000728_ann002295.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000731_ann002301.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000748_ann002333.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000751_ann002339.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000760_ann002360.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000851_ann002630.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000853_ann002652.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000859_ann002664.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000876_ann002765.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000885_ann002783.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000914_ann002822.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000915_ann002823.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000967_ann002934.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000969_ann002936.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img000991_ann002969.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001026_ann003049.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001026_ann003050.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001036_ann003085.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001046_ann003108.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001048_ann003115.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001056_ann003135.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001064_ann003155.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img001064_ann003156.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img001069_ann003172.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001089_ann003265.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-straw/img001174_ann003637.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001175_ann003641.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001193_ann003685.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001203_ann003709.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001213_ann003766.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001214_ann003771.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001215_ann003773.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001215_ann003774.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001225_ann003805.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img001232_ann003822.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001248_ann003903.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001324_ann004191.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001373_ann004417.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001440_ann004580.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-straw/img001448_ann004592.jpg,trash,train
+data/raw/taco_crops/trash/plastic-straw/img001496_ann004775.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000065_ann000156.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000320_ann000961.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-utensils/img000320_ann000962.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-utensils/img000320_ann000963.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-utensils/img000402_ann001427.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000416_ann001475.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-utensils/img000445_ann001574.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000448_ann001582.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-utensils/img000461_ann001638.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-utensils/img000516_ann001721.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-utensils/img000615_ann001931.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000630_ann002026.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000630_ann002027.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000630_ann002028.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000639_ann002081.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000652_ann002104.jpg,trash,validation
+data/raw/taco_crops/trash/plastic-utensils/img000662_ann002130.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000667_ann002148.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000787_ann002503.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000788_ann002505.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000848_ann002624.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000854_ann002654.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000854_ann002655.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img000854_ann002656.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img001111_ann003393.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-utensils/img001111_ann003394.jpg,trash,wild_test
+data/raw/taco_crops/trash/plastic-utensils/img001163_ann003563.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img001170_ann003573.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img001172_ann003580.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img001213_ann003750.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img001214_ann003769.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img001214_ann003770.jpg,trash,train
+data/raw/taco_crops/trash/plastic-utensils/img001232_ann003821.jpg,trash,train
+data/raw/taco_crops/trash/polypropylene-bag/img000127_ann000432.jpg,trash,train
+data/raw/taco_crops/trash/polypropylene-bag/img000261_ann000812.jpg,trash,train
+data/raw/taco_crops/trash/polypropylene-bag/img001362_ann004359.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000086_ann000225.jpg,trash,wild_test
+data/raw/taco_crops/trash/rope-strings/img000170_ann000578.jpg,trash,validation
+data/raw/taco_crops/trash/rope-strings/img000171_ann000580.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000173_ann000584.jpg,trash,validation
+data/raw/taco_crops/trash/rope-strings/img000221_ann000745.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000255_ann000804.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000349_ann001158.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000351_ann001169.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000431_ann001551.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000450_ann001587.jpg,trash,validation
+data/raw/taco_crops/trash/rope-strings/img000503_ann001703.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000556_ann001786.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000912_ann002820.jpg,trash,validation
+data/raw/taco_crops/trash/rope-strings/img000916_ann002826.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000916_ann002827.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000917_ann002828.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000925_ann002839.jpg,trash,wild_test
+data/raw/taco_crops/trash/rope-strings/img000934_ann002849.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img000968_ann002935.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img001010_ann003013.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img001100_ann003282.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img001293_ann003988.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img001304_ann004048.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img001433_ann004567.jpg,trash,validation
+data/raw/taco_crops/trash/rope-strings/img001438_ann004575.jpg,trash,train
+data/raw/taco_crops/trash/rope-strings/img001467_ann004661.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000034_ann000092.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000073_ann000172.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000104_ann000337.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000105_ann000343.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000107_ann000363.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000107_ann000364.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000110_ann000372.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000229_ann000758.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000229_ann000759.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000229_ann000760.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000229_ann000761.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000229_ann000762.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000229_ann000763.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000229_ann000764.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000264_ann000817.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000266_ann000823.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000340_ann001122.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000344_ann001130.jpg,trash,wild_test
+data/raw/taco_crops/trash/single-use-carrier-bag/img000359_ann001210.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000370_ann001310.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img000372_ann001312.jpg,trash,wild_test
+data/raw/taco_crops/trash/single-use-carrier-bag/img000385_ann001338.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000385_ann001340.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000387_ann001361.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000388_ann001366.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000397_ann001420.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000404_ann001429.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000481_ann001659.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000606_ann001895.jpg,trash,wild_test
+data/raw/taco_crops/trash/single-use-carrier-bag/img000776_ann002389.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000833_ann002588.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000838_ann002599.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img000857_ann002659.jpg,trash,wild_test
+data/raw/taco_crops/trash/single-use-carrier-bag/img000928_ann002842.jpg,trash,wild_test
+data/raw/taco_crops/trash/single-use-carrier-bag/img001039_ann003094.jpg,trash,wild_test
+data/raw/taco_crops/trash/single-use-carrier-bag/img001071_ann003177.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001079_ann003239.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001113_ann003406.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001123_ann003447.jpg,trash,wild_test
+data/raw/taco_crops/trash/single-use-carrier-bag/img001129_ann003461.jpg,trash,wild_test
+data/raw/taco_crops/trash/single-use-carrier-bag/img001203_ann003710.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001203_ann003711.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001213_ann003745.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001215_ann003775.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001215_ann003776.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001218_ann003785.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img001227_ann003810.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001233_ann003824.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001239_ann003839.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001239_ann003842.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001248_ann003902.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001290_ann003982.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img001323_ann004174.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001354_ann004340.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001355_ann004341.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001355_ann004342.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001416_ann004523.jpg,trash,train
+data/raw/taco_crops/trash/single-use-carrier-bag/img001420_ann004527.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img001471_ann004671.jpg,trash,validation
+data/raw/taco_crops/trash/single-use-carrier-bag/img001478_ann004689.jpg,trash,train
+data/raw/taco_crops/trash/six-pack-rings/img000077_ann000194.jpg,trash,validation
+data/raw/taco_crops/trash/six-pack-rings/img000732_ann002304.jpg,trash,validation
+data/raw/taco_crops/trash/six-pack-rings/img000732_ann002305.jpg,trash,validation
+data/raw/taco_crops/trash/six-pack-rings/img001027_ann003052.jpg,trash,train
+data/raw/taco_crops/trash/six-pack-rings/img001370_ann004402.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000035_ann000095.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000067_ann000161.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000098_ann000262.jpg,trash,wild_test
+data/raw/taco_crops/trash/tissues/img000112_ann000386.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000112_ann000388.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000112_ann000389.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000115_ann000394.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000136_ann000472.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000189_ann000634.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000192_ann000647.jpg,trash,wild_test
+data/raw/taco_crops/trash/tissues/img000234_ann000771.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000310_ann000939.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000329_ann001061.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000457_ann001617.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000517_ann001724.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000608_ann001902.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000630_ann002040.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000642_ann002086.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000652_ann002105.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000685_ann002196.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000712_ann002264.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000789_ann002507.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img000815_ann002552.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000815_ann002553.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000864_ann002684.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000864_ann002685.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img000939_ann002855.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img001193_ann003682.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img001197_ann003695.jpg,trash,wild_test
+data/raw/taco_crops/trash/tissues/img001213_ann003754.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img001328_ann004209.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img001400_ann004474.jpg,trash,wild_test
+data/raw/taco_crops/trash/tissues/img001415_ann004521.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img001427_ann004543.jpg,trash,wild_test
+data/raw/taco_crops/trash/tissues/img001456_ann004627.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img001461_ann004644.jpg,trash,train
+data/raw/taco_crops/trash/tissues/img001476_ann004687.jpg,trash,wild_test
+data/raw/taco_crops/trash/tissues/img001487_ann004740.jpg,trash,validation
+data/raw/taco_crops/trash/tissues/img001488_ann004743.jpg,trash,validation

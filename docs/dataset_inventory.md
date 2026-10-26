@@ -1,19 +1,22 @@
 # Dataset Inventory
 
-Owner: Isiah (data side). Last updated: 2026-10-18.
+Owner: Isiah (data side). Last updated: 2026-10-26 (wild datasets TACO and RealWaste added Oct 24; both test sets frozen and wild splits locked Oct 26).
 
 Images are **never committed**. They download into `data/raw/` (git-ignored) with
-`python src/data/download.py`. Licenses are copied from each Kaggle page on
-2026-10-17. Check the page again before publishing anything.
+`python src/data/download.py`. Kaggle licenses are copied from each Kaggle page on
+2026-10-17; TACO and RealWaste licenses are in "License notes" below (checked 2026-10-24).
+Check the source again before publishing anything.
 
 ## Summary
 
-| Name | Kaggle URL | License (as listed on Kaggle) | Images | Classes | Clean or real-world | Battery images | Status |
+| Name | Source | License (as listed at the source) | Images | Classes | Clean or real-world | Battery images | Status |
 |---|---|---|---:|---|---|---:|---|
 | `garbage12_enhanced` | [huberthamelin/garbage-classification-labels-corrections](https://www.kaggle.com/datasets/huberthamelin/garbage-classification-labels-corrections) | Database: Open Database, Contents: Database Contents | 15,870 (counted locally) | 12: battery, biological, brown-glass, cardboard, clothes, green-glass, metal, paper, plastic, shoes, trash, white-glass | Clean. Mostly web-scraped, centered objects | **979** (counted locally) | **Primary. Downloaded and mapped.** |
 | `garbage12` | [mostafaabla/garbage-classification](https://www.kaggle.com/datasets/mostafaabla/garbage-classification) | Database: Open Database, Contents: © Original Authors | 15,150 per page text; its folders add up to 15,515 | Same 12 classes | Clean. Mostly web-scraped | 945 (Kaggle page) | Listed only. Not downloaded. |
 | `garbage_v2` | [sumn2u/garbage-classification-v2](https://www.kaggle.com/datasets/sumn2u/garbage-classification-v2) | MIT | 13,348 (Kaggle page) | 10: battery, biological, cardboard, clothes, glass, metal, paper, plastic, shoes, trash | Mixed. Phone-app photos plus curated web images | 756 (Kaggle page) | Listed only. Not downloaded. |
 | `personal_battery` | none, our own photos | Ours. Team decides before publishing | 0 today | 1: hazardous | **Real-world** | 0 today, target 50 | Folder and photo rules ready. |
+| `taco` / `taco_crops` | [github.com/pedropro/TACO](https://github.com/pedropro/TACO) (not Kaggle) | CC BY 4.0 per dataset listings; see License notes | 1,500 photos, 4,784 objects, 60 categories; 2,274 crops cut, 1,599 used after the recycling cap | 14 categories to recycling, 13 to trash (after the quality checks) | **Real-world** litter in context | 0 | **Wild dataset. Downloaded, cropped, mapped.** |
+| `realwaste` | [UCI dataset 908](https://archive.ics.uci.edu/dataset/908/realwaste) (not Kaggle) | CC BY 4.0 | 4,752 | 9 folders; Food Organics to compost (after the quality check) | **Real-world** landfill items | 0 | **Wild dataset. Downloaded and mapped.** |
 
 ## Overlap notes
 
@@ -212,6 +215,7 @@ look-alikes judged above, and 0 true copies.
 ## Train / validation / test splits (seed 42, 70/15/15)
 
 Output of `python src/data/build_splits.py` on 2026-10-18, after duplicate removal and the 17 known duplicates.
+The Kaggle set is split on its own (`base_datasets:` in `configs/label_map.yaml`), so adding Amy's or personal photos never moves a Kaggle image to another split. These are the Kaggle (base) splits. Since 2026-10-24 the Kaggle test split is the frozen benchmark; TACO and RealWaste were split on their own into train, validation and wild_test, and since 2026-10-26 that split is locked. Every other source goes only to train and validation (see "Wild datasets" and "Frozen test sets" below).
 Weights come from the train split only. Inverse frequency is
 `total_train / (num_classes * class_count)`. Square-root inverse frequency takes
 the square root of that and divides by the mean, so the weights average 1.
@@ -238,9 +242,259 @@ the square root of that and divides by the mean, so the weights average 1.
 All runs passed the overlap check: no exact or near duplicate appears in two
 splits. Running 4, then 3, then 4 again gave byte-identical 4-class outputs.
 
+## Wild datasets: TACO and RealWaste (2026-10-24)
+
+Two open datasets add messy, real-world photos next to the clean Kaggle images:
+TACO (litter photographed where it lies) and RealWaste (items picked from a
+landfill, photographed on concrete). They never enter the benchmark test set; they
+are split on their own into train, validation and `data/splits/wild_test.csv`, and
+since 2026-10-26 that split is frozen (see "Frozen test sets" below).
+
+### San Diego source used for the mapping
+
+**City of San Diego Environmental Services, "What Goes Where" guide** (English, April 2026 edition):
+https://www.sandiego.gov/sites/default/files/what_goes_where_guide_english.pdf
+(linked from the curbside page https://www.sandiego.gov/environmental-services/recycling/residential/curbside).
+
+| Bin | What the guide lists |
+|---|---|
+| Blue (recycling) | Aluminum and steel cans; glass bottles and jars; cardboard (empty, flattened); paper cartons; plastic bottles, containers, lids, hard plastics, toys and Styrofoam packaging; mixed paper. "All recyclables empty, dry and loose." The Spanish text also lists plastic cups and tubs, and aluminum foil and trays, with recycling. |
+| Green (organics) | Food scraps; food-soiled paper (paper towels, napkins, paper bags, parchment paper, coffee filters); plant and yard trimmings. NO plastic bags, glass, food packaging, plant pots, dirt or rocks. |
+| Black (trash) | Hygiene products, diapers, pet waste; dishes and glassware; paper plates, cups and takeout boxes; tissues and disposable wipes; plastic bags, wrappers and film; plastic straws and utensils; anything labeled compostable or biodegradable. "When in doubt, throw it out." |
+| None (hazardous drop-off) | Batteries, toxic products, electronics, paint, bulbs, motor oil, needles, propane and helium tanks, chemical cleaners. |
+
+Rules used, in order:
+
+1. The guide puts the item in one bin: that class.
+2. The guide leaves it unclear (two bins fit, or it is not listed and could be recyclable): EXCLUDE.
+   The team list is EXCLUDE regardless: **pizza boxes and aerosol cans.**
+   Paper cups, plastic bags and film, and tissues were on that list until 2026-10-25. This guide
+   edition puts all three in black trash ("Paper Plates, Cups and Takeout Boxes", "Tissues and
+   Disposable Wipes", "Plastic Bags, Wrappers and Film"), so by team decision they now map to
+   trash (rule 1), each with its quote in `label_map.yaml`. Foam stays EXCLUDE: the guide lists
+   "Styrofoam Packaging" (Spanish: "bloques y envases de poliestireno") in the blue bin, never in trash.
+3. Not on the blue or green list, not hazardous, and plainly neither recyclable nor organic:
+   trash, the guide's own default ("When in doubt, throw it out"). Used for cigarettes, gloves, rope and six-pack rings.
+
+Hazardous is left alone (it already scores 0.99 recall), so nothing maps to it.
+
+### TACO: all 60 categories from the official annotations file
+
+Category names come from `data/annotations.json` in the TACO repository, pinned to commit
+`3844bcd` (2026-10-20) and checked by sha256 in `download.py`. `src/data/crop_taco.py` cuts each
+object of a mapped category out of its photo (turned upright by EXIF first, because TACO's boxes
+are drawn on the upright photo), with 10% padding on each side, and skips crops under 64 px on
+either side (most cigarettes: 543 of 667). The mapping lives in `configs/label_map.yaml`
+(`taco_crops: categories:`).
+
+| TACO category | Objects | Class | Why (City of San Diego guide, April 2026) |
+|---|---:|---|---|
+| Clear plastic bottle | 285 | **recycling** | blue: "Plastic Bottles" |
+| Corrugated carton | 64 | **recycling** | blue: "Cardboard" |
+| Disposable food container | 38 | **recycling** | blue: "Plastic Bottles, Containers" (Spanish: "envases", "charolas" de plastico) |
+| Disposable plastic cup | 104 | **recycling** | blue: Spanish text lists plastic cups ("tazas ... de plastico") with bottles and containers |
+| Drink can | 229 | **recycling** | blue: "Aluminum and Steel Cans" |
+| Drink carton | 45 | **recycling** | blue: "Paper Cartons" |
+| Food Can | 34 | **recycling** | blue: "Aluminum and Steel Cans" |
+| Glass bottle | 104 | **recycling** | blue: "Glass Bottles and Jars" |
+| Glass jar | 6 | **recycling** | blue: "Glass Bottles and Jars" |
+| Magazine paper | 12 | **recycling** | blue: "Mixed Paper" |
+| Other plastic bottle | 50 | **recycling** | blue: "Plastic Bottles" |
+| Other plastic cup | 2 | **recycling** | same as Disposable plastic cup |
+| Plastic bottle cap | 209 | **recycling** | blue: "Plastic Bottles, Containers, Lids" |
+| Toilet tube | 5 | **recycling** | blue: "Cardboard" / "Mixed Paper" |
+| Cigarette | 667 | **trash** | not on the blue or green list, not hazardous; rule 3 |
+| Crisp packet | 39 | **trash** | black: wrappers |
+| Other plastic wrapper | 260 | **trash** | black: "Plastic Bags, Wrappers and Film" (wrappers) |
+| Plastic glooves | 4 | **trash** | not on the blue or green list, not hazardous; rule 3 |
+| Plastic straw | 157 | **trash** | black: "Plastic Straws and Utensils" |
+| Plastic utensils | 37 | **trash** | black: "Plastic Straws and Utensils" |
+| Rope & strings | 29 | **trash** | not on the blue or green list, not hazardous; rule 3 (the curbside web page also lists rope as a "tangler" that must not go in blue) |
+| Six pack rings | 5 | **trash** | soft plastic, not a bottle, container or hard plastic; black: "Wrappers and Film" is the closest line; rule 3 |
+| Aerosol | 10 | EXCLUDE | team list; not in the guide, and a full can is hazardous waste |
+| Aluminium blister pack | 6 | EXCLUDE | not in the guide; foil and plastic mixed |
+| Aluminium foil | 62 | EXCLUDE | guide unclear: English layout lists foil and trays with trash, Spanish text lists them with recycling |
+| Battery | 2 | EXCLUDE | hazardous; hazardous is left alone this round |
+| Broken glass | 138 | EXCLUDE | unclear: bottles and jars are blue, dishes and glassware are trash |
+| Carded blister pack | 1 | EXCLUDE | not in the guide; card and plastic mixed |
+| Egg carton | 11 | EXCLUDE | not in the guide; made of paper, foam or plastic |
+| Foam cup | 13 | EXCLUDE | the guide does not list foam as trash: blue has "Styrofoam Packaging" (Spanish: "bloques y envases de poliestireno"); paper cups are trash, foam cups unclear |
+| Foam food container | 15 | EXCLUDE | the guide does not list foam as trash: blue has "bloques y envases de poliestireno" (polystyrene blocks and containers); takeout boxes are trash |
+| Food waste | 8 | EXCLUDE | was compost; dropped at the quality check: 2 of 5 showed food inside a can or a plastic bag |
+| Garbage bag | 31 | EXCLUDE | black: "Plastic Bags, Wrappers and Film", but dropped at the quality check (Oct 25): 4 of 30 show leaves and plants, a cardboard box or a plastic bin instead |
+| Glass cup | 6 | EXCLUDE | was trash; dropped at the quality check: 2 of 6 look like plastic cups (blue) |
+| Meal carton | 30 | EXCLUDE | was trash; dropped at the Oct 24 quality check with 4 of 30 wrong (paper cup, drink carton, plastic piece, corrugated sleeve). Since Oct 25 paper cups are trash, so it is 3 of 30 (10%, not more): kept EXCLUDE pending a team decision |
+| Metal bottle cap | 80 | EXCLUDE | not in the guide (only cans are listed for metal) |
+| Metal lid | 10 | EXCLUDE | not in the guide (only cans are listed for metal) |
+| Normal paper | 82 | EXCLUDE | was recycling; dropped at the quality check: 4 of 30 look like tissues or napkins (tissues are trash, napkins green) |
+| Other carton | 93 | EXCLUDE | was recycling; dropped at the quality check: 6 of 15 were cigarette packs (foil-lined, not clearly blue) |
+| Other plastic | 273 | EXCLUDE | unidentified plastic: could be hard plastic (blue) or film (trash) |
+| Other plastic container | 6 | EXCLUDE | was recycling; dropped at the quality check: 2 of 5 were film or foil |
+| Paper bag | 27 | EXCLUDE | unclear: the guide lists paper bags under green food-soiled paper; clean paper is blue |
+| Paper cup | 67 | **trash** | black: "Paper Plates, Cups and Takeout Boxes" (Spanish: "Platos, vasos, y contenedores de comida desechables hechos de papel"); team decision Oct 25 |
+| Paper straw | 4 | EXCLUDE | not in the guide; "compostable" products are trash, plain paper is unclear |
+| Pizza box | 3 | EXCLUDE | team list; not in the guide (city web page: soiled part trash, clean part blue) |
+| Plastic film | 451 | **trash** | black: "Plastic Bags, Wrappers and Film" (Spanish: "Bolsas y envolturas de plástico"); team decision Oct 25 |
+| Plastic lid | 77 | EXCLUDE | was recycling; dropped at the quality check: 7 of 45 show the lid on a paper coffee cup (the paper cup is trash, the lid is blue) |
+| Plastified paper bag | 0 | EXCLUDE | not in the guide; paper and plastic mixed |
+| Polypropylene bag | 3 | **trash** | black: "Plastic Bags, Wrappers and Film"; team decision Oct 25 |
+| Pop tab | 99 | EXCLUDE | not in the guide (only cans are listed for metal) |
+| Scrap metal | 20 | EXCLUDE | not in the guide (only cans are listed for metal) |
+| Shoe | 7 | EXCLUDE | shoes are still VERIFY for the team (see garbage12_enhanced) |
+| Single-use carrier bag | 61 | **trash** | black: "Plastic Bags, Wrappers and Film"; team decision Oct 25 |
+| Spread tub | 9 | EXCLUDE | was recycling; dropped at the quality check: 2 of 9 were a foil tub or unidentifiable |
+| Squeezable tube | 7 | EXCLUDE | not in the guide; tubes are mixed plastic and metal |
+| Styrofoam piece | 112 | EXCLUDE | the guide does not list foam as trash: blue has "Styrofoam Packaging"; loose broken pieces are not packaging |
+| Tissues | 42 | **trash** | black: "Tissues and Disposable Wipes" (Spanish: "Servilletas y toallitas desinfectantes"); team decision Oct 25 |
+| Tupperware | 4 | EXCLUDE | was recycling; dropped at the quality check: 2 of 4 were plastic film or bags |
+| Unlabeled litter | 517 | EXCLUDE | no category: could be anything |
+| Wrapping paper | 12 | EXCLUDE | unclear: mixed paper is blue, but gift wrap is often foil or plastic coated |
+
+### RealWaste: the starting mapping, checked against the guide
+
+| RealWaste folder | Images | Started as | Final | Why |
+|---|---:|---|---|---|
+| Cardboard | 461 | recycling | EXCLUDE | was recycling; dropped at the quality check: 4 of 15 wrong (pizza box, packing straw, foil-lined coffee bag, plastic pouch) |
+| Glass | 420 | recycling | EXCLUDE | was recycling; dropped at the quality check: 8 of 15 were broken glass or a glass dish (not bottles or jars) |
+| Metal | 790 | recycling | EXCLUDE | was recycling; dropped at the quality check: 4 of 15 were aerosol cans (team list) and 1 crumpled foil |
+| Food Organics | 411 | compost | **compost** | green: "Food Scraps" |
+| Vegetation | 436 | compost | EXCLUDE | was compost; dropped at the quality check: 8 of 45 were piles of dirt (the guide: no dirt in the green bin) |
+| Miscellaneous Trash | 495 | trash | EXCLUDE | was trash; dropped at the quality check: 5 of 45 belong elsewhere (notebook, hard plastic tubs, plant matter, string lights) |
+| Paper | 500 | EXCLUDE | EXCLUDE | landfill paper is often soiled; soiled paper is green, clean is blue |
+| Plastic | 921 | EXCLUDE | EXCLUDE | mixes rigid plastic (blue) with bags and film (trash) |
+| Textile Trash | 318 | EXCLUDE | EXCLUDE | clothes are not blue; textiles left out, like the Kaggle clothes folder |
+
+RealWaste photographed each item several times in a row, moved between shots, so the image
+fingerprints do not see them as copies (files 373 and 374 of Food Organics: pHash 20, dHash 32).
+The files are numbered in shooting order, so `build_splits.py` keeps blocks of 20 consecutive
+numbers per folder in one split (`group_block: 20`). A burst that crosses a multiple of 20 can
+still be split; this is the remaining leakage risk for the wild test.
+
+### Quality check
+
+Every mapped category was checked by eye on 15 random images; borderline ones got 30 to 45. A
+category with more than 10% of images that belong in another bin was dropped (EXCLUDE, with the
+count in its `label_map.yaml` comment):
+
+| Dropped | Source | Wrong | What was wrong |
+|---|---|---:|---|
+| Cardboard | RealWaste | 4 of 15 | pizza box, packing straw, foil-lined coffee bag, plastic pouch |
+| Glass | RealWaste | 8 of 15 | broken glass and a glass dish, not bottles or jars |
+| Metal | RealWaste | 5 of 15 | aerosol cans (team list) and crumpled foil |
+| Vegetation | RealWaste | 8 of 45 | piles of dirt (no dirt in the green bin) |
+| Miscellaneous Trash | RealWaste | 5 of 45 | notebook, hard plastic tubs, plant matter, string lights |
+| Other carton | TACO | 6 of 15 | cigarette packs (foil-lined) |
+| Plastic lid | TACO | 7 of 45 | lid shown on a paper coffee cup |
+| Normal paper | TACO | 4 of 30 | tissues or napkins |
+| Meal carton | TACO | 4 of 30 (3 since Oct 25) | paper cup, drink carton, plastic piece, corrugated sleeve; paper cups are trash since Oct 25, so it now sits at 10% and is EXCLUDE pending a team decision |
+| Food waste | TACO | 2 of 5 | food inside a can or a plastic bag |
+| Glass cup | TACO | 2 of 6 | plastic cups |
+| Tupperware | TACO | 2 of 4 | plastic film or bags |
+| Other plastic container | TACO | 2 of 5 | film or foil |
+| Spread tub | TACO | 2 of 9 | a foil tub, unidentifiable pieces |
+
+Kept after a larger sample: Plastic straw (3 of 45, 7%, show a cup or lid). Every other mapped
+category had at most 1 wrong in 15.
+
+**Categories moved to trash on 2026-10-25**, 30 random crops each (all 3 for polypropylene bag):
+
+| Category | Checked | Wrong | Decision |
+|---|---:|---:|---|
+| Paper cup | 30 | 0 | trash |
+| Tissues | 30 | 3 (two paper-towel rolls, which the guide puts in green, and dried leaves) | trash (10%, not more; one more tile, tissue wadded around a toilet brush, was counted as tissue: counted as wrong it would be 13% and dropped) |
+| Single-use carrier bag | 30 | 0 | trash |
+| Polypropylene bag | 3 | 0 | trash |
+| Plastic film | 30 | 2 (a bottle or carton fills the crop) | trash |
+| Garbage bag | 30 | 4 (mostly leaves and plants, a cardboard box in a bin, a plastic bin) | **dropped** (13%), stays EXCLUDE |
+
+Final check on what was built, 30 random new images per class (`python src/data/review_new_images.py`,
+sheets in `results/new_images_<class>.png`, not committed):
+
+| Class | Fit the class | Look wrong | Too blurry or cropped to use |
+|---|---:|---:|---:|
+| recycling | 28 | 0 | 2 |
+| compost | 30 | 0 | 0 |
+| trash | 25 | 1 (a utensils crop that mostly shows a cup) | 4 |
+
+(Build of 2026-10-25. The recycling and compost samples are the same 30 images as on Oct 24;
+the trash sample is new because trash gained five categories.)
+
+### Recycling cap
+
+Recycling was 68% of train, so new recycling images are capped at **400** in total, shared evenly
+by the categories (a small category keeps all its images) and drawn at random with seed 42
+(`wild_split: recycling_cap` in `label_map.yaml`). 1,075 TACO recycling crops, 400 kept:
+
+| TACO recycling category | Crops | Kept |
+|---|---:|---:|
+| clear-plastic-bottle | 269 | 39 |
+| corrugated-carton | 64 | 38 |
+| disposable-food-container | 37 | 37 |
+| disposable-plastic-cup | 102 | 38 |
+| drink-can | 214 | 38 |
+| drink-carton | 43 | 38 |
+| food-can | 34 | 34 |
+| glass-bottle | 100 | 38 |
+| glass-jar | 6 | 6 |
+| magazine-paper | 12 | 12 |
+| other-plastic-bottle | 49 | 38 |
+| other-plastic-cup | 2 | 2 |
+| plastic-bottle-cap | 139 | 38 |
+| toilet-tube | 4 | 4 |
+
+
+No cap on compost or trash. Hazardous is untouched.
+
+### What the wild datasets added (build of 2026-10-25)
+
+| Source | Class | Train | Validation | Wild test | Total |
+|---|---|---:|---:|---:|---:|
+| realwaste | compost | 291 | 60 | 60 | 411 |
+| taco_crops | recycling | 280 | 60 | 60 | 400 |
+| taco_crops | trash | 838 | 183 | 178 | 1,199 |
+| **Total** | | **1,409** | **303** | **298** | **2,010** |
+
+The five categories moved to trash on Oct 25 added 609 trash images (590 before, 1,199 now). The
+wild split shuffles all new groups together, so adding them also reshuffled the RealWaste blocks:
+219 of the 411 RealWaste images changed split, although the compost totals per split barely moved
+(train 292 to 291, validation 59 to 60, wild test 60). Since 2026-10-26 this cannot happen again:
+the split of every TACO and RealWaste image is locked and the wild test is frozen.
+
+Duplicates: 0 new images were copies of a Kaggle image, 0 were copies of each other, 0 groups
+looked like a benchmark image, and 0 wild test images looked like a train or benchmark image
+(pHash <= 6 and dHash <= 8). `check_leakage.py` on this build (7,370 train against 1,574 validation,
+1,270 test and 298 wild test images) flags 0 wild test pairs and the same 15 judged Kaggle look-alikes as before.
+
+Train class shares, before and after:
+
+| Class | Kaggle only | Share | Oct 24 | Share | Oct 25 (now) | Share |
+|---|---:|---:|---:|---:|---:|---:|
+| compost | 718 | 12.04% | 1,010 | 14.54% | 1,009 | 13.69% |
+| hazardous | 681 | 11.42% | 681 | 9.80% | 681 | 9.24% |
+| recycling | 4,059 | 68.09% | 4,339 | 62.47% | 4,339 | 58.87% |
+| trash | 503 | 8.44% | 916 | 13.19% | 1,341 | **18.20%** |
+| **Total** | **5,961** | | **6,946** | | **7,370** | |
+
+### Frozen test sets
+
+| Frozen file | Copy | sha256 | Frozen on |
+|---|---|---|---|
+| `data/splits/test.csv` (benchmark, 1,270 Kaggle images) | `configs/frozen/test.csv` | `44805ae865a07e6315bf44e9b240c406a320d9fa0ad063a2282de354aad9dd42` | 2026-10-24 |
+| `data/splits/wild_test.csv` (298 TACO and RealWaste images) | `configs/frozen/wild_test.csv` | `ee224c6731f34a198c92dd1ce0fa2d95331e8b1dcdcf1e1179799b2d58642b5c` | 2026-10-26, stamp def16b3 |
+
+Both hashes sit under `frozen:` in `label_map.yaml` (with a third for the lock), and `build_splits.py` stops if either
+manifest differs from its copy by one byte, or if a copy or the lock was edited. Every Kaggle image keeps its split, and so does
+every TACO and RealWaste image of the def16b3 build: `configs/frozen/wild_split_lock.csv`
+lists all 2,010 of them (1,409 train, 303 validation, 298 wild test) with their label and
+split. New sources can never remove, move or join a Kaggle or locked image (a new copy of
+one is dropped, or held for review if its label differs, and the original stays), and every
+image not in the lock goes only to train or validation. The lock and copies were written by
+`src/data/freeze_wild_split.py`; re-freezing is a team decision. The swap rule for models is
+in `docs/evaluation.md`.
+
 ## Class imbalance to watch
 
-- `recycling` is 68.09% of train with 4 classes and 76.88% with 3. Always guessing recycling scores 68.06% validation accuracy but only 0.2025 macro F1 (see `docs/data_pipeline.md`), so report macro F1.
+- `recycling` was 68.09% of train with 4 classes (76.88% with 3) before the wild datasets, and is 58.87% now (recycling cap of 400; trash grew to 18.20%). Always guessing recycling scores 58.77% validation accuracy but only 0.1851 macro F1 on this build's 1,574 validation images (68.06% and 0.2025 before the wild datasets; see `docs/data_pipeline.md`), so report macro F1.
 - `clothes` (5,286 images) is dropped by team decision. `shoes` (2,006) is skipped until the team decides.
 - `hazardous` comes from web photos only today. The 50 personal battery photos add real-world examples.
 
@@ -248,6 +502,23 @@ splits. Running 4, then 3, then 4 again gave byte-identical 4-class outputs.
 
 - `garbage12_enhanced` is ODbL/DbCL as a database, but its original author says the web-scraped images belong to their photographers. That is fine for a class project and for training. Do not redistribute the images, which matches our "no images in git" rule.
 - `garbage_v2` is MIT, the most permissive of the three.
+- **RealWaste: CC BY 4.0**, stated on the UCI page (https://archive.ics.uci.edu/dataset/908/realwaste).
+  The IEEE DataPort copy lists CC BY-NC-SA 4.0; we use the UCI copy. Attribution required. Cite:
+  - Dataset: Single, S., Iranmanesh, S., & Raad, R. (2023). *RealWaste* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5SS4G
+  - Paper: Single, S., Iranmanesh, S., & Raad, R. (2023). RealWaste: A Novel Real-Life Data Set for Landfill Waste Classification Using Deep Learning. *Information*, 14(12), 633. https://doi.org/10.3390/info14120633
+- **TACO: CC BY 4.0 as listed by the dataset indexes** (Dataset Ninja, Roboflow Universe). The
+  official sources are less explicit: the repository's LICENSE file is MIT and covers the code, the
+  annotations file has an empty license list, and the paper says "all images are under free
+  copyright licences". We only train on it and never redistribute images. Attribution as the
+  authors ask (README of https://github.com/pedropro/TACO):
+  ```bibtex
+  @article{taco2020,
+    title={TACO: Trash Annotations in Context for Litter Detection},
+    author={Pedro F Proen{\c{c}}a and Pedro Sim{\~o}es},
+    journal={arXiv preprint arXiv:2003.06975},
+    year={2020}
+  }
+  ```
 
 ## Other candidates looked at, not used
 
