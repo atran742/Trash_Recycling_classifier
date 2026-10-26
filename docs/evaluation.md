@@ -7,7 +7,7 @@ cutoff the right way: tuned on validation, reported on test.
 ## Before you start
 
 - The splits are built: `python src/data/build_splits.py` ends with
-  `Split version: d41a481  manifest_sha256: 08d058850b31`. Both commands below
+  `Split version: 43f0e7f  manifest_sha256: 08d058850b31`. Both commands below
   read `data/splits/validation.csv`, `data/splits/test.csv` and
   `data/splits/wild_test.csv`, so they score exactly that split.
 - `pip install -r requirements.txt` plus PyTorch and torchvision for your

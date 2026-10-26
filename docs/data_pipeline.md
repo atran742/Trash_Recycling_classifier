@@ -84,7 +84,7 @@ Overlap check passed: no exact or near duplicate appears in more than one split.
 
 Count check: 11263 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 0 copies of base or locked images - 17 known duplicates - 675 recycling cap - 0 look-alikes of benchmark - 0 look-alikes of wild test - 0 wild_test look-alikes - 0 held for review = 10512; 10512 in the splits; 751 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: d41a481  manifest_sha256: 08d058850b31  (both saved in results/class_weights.json)
+Split version: 43f0e7f  manifest_sha256: 08d058850b31  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
