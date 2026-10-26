@@ -34,6 +34,7 @@ opencv-python==5.0.0.93
 packaging==26.3
 pandas==3.0.6
 pillow==13.0.0
+pillow-heif==1.8.1
 platformdirs==4.13.5
 protobuf==7.36.2
 pyparsing==3.3.3
