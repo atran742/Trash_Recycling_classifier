@@ -35,7 +35,7 @@ not committed).
 | `pip install -r requirements.txt` | Installs kaggle, pyyaml, pillow, pillow-heif, imagehash, numpy, matplotlib, scikit-learn and opencv-python. | under 1 minute |
 | `python src/data/download.py` | Downloads `garbage12_enhanced` (about 557 MB unzipped) into `data/raw/`, then the two wild datasets: TACO (the official annotations file, pinned to one commit, and its 1,500 photos, about 2.5 GB) and RealWaste (657 MB zip from UCI). Skips what is already there. Fetches `garbage_v2` only if there are fewer than 500 battery images. | 10 to 30 minutes, mostly TACO |
 | `python src/data/crop_taco.py` | Cuts one image per TACO object whose category maps to a class in `configs/label_map.yaml` (box + 10% padding, at least 64 px a side) into `data/raw/taco_crops/<class>/<category>/`, and prints counts per category and class. | about 2 minutes |
-| `python src/data/build_splits.py` | Applies `configs/label_map.yaml`, drops broken files, exact duplicates and near duplicates, splits the Kaggle set 70/15/15 into `data/train`, `data/validation` and `data/test` (the frozen benchmark, checked byte for byte), splits every other source 70/15/15 on its own into train, validation and `data/wild_test`, checks the counts add up, and writes the CSV manifests and class weights. | about 10 minutes |
+| `python src/data/build_splits.py` | Applies `configs/label_map.yaml`, drops broken files, exact duplicates and near duplicates, splits the Kaggle set 70/15/15 into `data/train`, `data/validation` and `data/test` (the frozen benchmark, checked byte for byte), keeps every locked TACO and RealWaste image in its frozen split (train, validation or `data/wild_test`, also checked byte for byte), puts every other image 70/15 into train and validation only, checks the counts add up, and writes the CSV manifests and class weights. | about 10 minutes |
 
 ## What you should see
 
@@ -94,7 +94,7 @@ printed at the end of `build_splits.py` and saved in `results/class_weights.json
 `split_version` is the last commit that changed `src/data/build_splits.py` or
 `configs/`, so docs, results and helper-script commits do not change it. `manifest_sha256` fingerprints
 the split lists themselves, so it also changes when images are added to
-`data/raw/`. Two models only compare fairly if both match. Splits from before the
+`data/raw/`. Train and validation compare fairly only if both match. Test scores always compare, because both test sets are frozen. Splits from before the
 data-cleanup branch (8,403 images, older duplicate rule) are stale: rebuild them
 before training.
 
@@ -110,7 +110,7 @@ shows up, look at it in `results/leakage_review.png`. If it is a true copy, add 
 | File | In git? | What it is |
 |---|---|---|
 | `data/train/`, `data/validation/`, `data/test/`, `data/wild_test/` | No | The image folders, one sub-folder per class. Works with `torchvision.datasets.ImageFolder`. `data/test/` is the frozen benchmark; `data/wild_test/` holds only non-Kaggle images. |
-| `data/splits/train.csv`, `validation.csv`, `test.csv`, `wild_test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. `test.csv` must stay byte-identical (the build stops otherwise). |
+| `data/splits/train.csv`, `validation.csv`, `test.csv`, `wild_test.csv` | Yes | Manifests with columns `path,label`. Paths are relative to the repo root and point at the copied images. They are small and hold no images, so everyone trains on the exact same split. `test.csv` and `wild_test.csv` must stay byte-identical to their frozen copies in `configs/frozen/` (the build stops otherwise). |
 | `results/class_weights.json` | Yes | `split_version` (the last commit that changed `build_splits.py` or `configs/`), `manifest_sha256` (fingerprint of the split CSVs), class order, train counts, percent of train per class, and two weight sets computed from the train split only: inverse frequency and square-root inverse frequency. |
 | `results/removed_duplicates.csv` | Yes | Every dropped file with `file,kept_copy,reason,distance,dhash_distance`. `distance` is the pHash distance. Reasons are `exact_duplicate`, `near_duplicate`, `known_duplicate` (listed in `known_duplicates` in `configs/label_map.yaml`) or `corrupted`. |
 | `results/conflicts_to_review.csv` | Yes | Label conflicts: look-alike images with different labels, as `group,file,label,matches,distance,dhash_distance`. These are **not deleted** but kept out of every split until a person checks them. Header only when there are none. |

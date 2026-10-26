@@ -37,7 +37,7 @@ From [docs/dataset_inventory.md](docs/dataset_inventory.md), 4 classes, Kaggle p
 | trash | 1,341 | 289 | 108 | 178 | 1,916 |
 | **Total** | **7,370** | **1,574** | **1,270** | **298** | **10,512** |
 
-Recycling is 59% of the training data. A "model" that always answers recycling gets 59% validation accuracy but only **0.19 macro F1**, so we report macro F1, not accuracy. Class weights for training are in `results/class_weights.json`. Every build prints a stamp (`Split version` and `manifest_sha256`); two runs only compare fairly if the stamps match.
+Recycling is 59% of the training data. A "model" that always answers recycling gets 59% validation accuracy but only **0.19 macro F1**, so we report macro F1, not accuracy. Class weights for training are in `results/class_weights.json`. Every build prints a stamp (`Split version` and `manifest_sha256`); train and validation compare fairly only if the stamps match, while test scores always compare because both test sets are frozen.
 
 ## Status by plan week
 

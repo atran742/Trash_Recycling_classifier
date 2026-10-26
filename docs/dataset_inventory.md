@@ -215,7 +215,7 @@ look-alikes judged above, and 0 true copies.
 ## Train / validation / test splits (seed 42, 70/15/15)
 
 Output of `python src/data/build_splits.py` on 2026-10-18, after duplicate removal and the 17 known duplicates.
-The Kaggle set is split on its own (`base_datasets:` in `configs/label_map.yaml`), so adding Amy's or personal photos never moves a Kaggle image to another split. These are the Kaggle (base) splits; since 2026-10-24 every other source is split on its own into train, validation and wild_test (see "Wild datasets" below), and the Kaggle test split is the frozen benchmark.
+The Kaggle set is split on its own (`base_datasets:` in `configs/label_map.yaml`), so adding Amy's or personal photos never moves a Kaggle image to another split. These are the Kaggle (base) splits. Since 2026-10-24 the Kaggle test split is the frozen benchmark; TACO and RealWaste were split on their own into train, validation and wild_test, and since 2026-10-26 that split is locked. Every other source goes only to train and validation (see "Wild datasets" and "Frozen test sets" below).
 Weights come from the train split only. Inverse frequency is
 `total_train / (num_classes * class_count)`. Square-root inverse frequency takes
 the square root of that and divides by the mean, so the weights average 1.
@@ -457,8 +457,8 @@ No cap on compost or trash. Hazardous is untouched.
 The five categories moved to trash on Oct 25 added 609 trash images (590 before, 1,199 now). The
 wild split shuffles all new groups together, so adding them also reshuffled the RealWaste blocks:
 219 of the 411 RealWaste images changed split, although the compost totals per split barely moved
-(train 292 to 291, validation 59 to 60, wild test 60). Compare wild test scores only between builds
-with the same `manifest_sha256`.
+(train 292 to 291, validation 59 to 60, wild test 60). Since 2026-10-26 this cannot happen again:
+the split of every TACO and RealWaste image is locked and the wild test is frozen.
 
 Duplicates: 0 new images were copies of a Kaggle image, 0 were copies of each other, 0 groups
 looked like a benchmark image, and 0 wild test images looked like a train or benchmark image

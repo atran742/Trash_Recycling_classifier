@@ -98,10 +98,11 @@ except ImportError:
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RAW_DIR = REPO_ROOT / "data" / "raw"
 CONFIG_PATH = REPO_ROOT / "configs" / "label_map.yaml"
-# The base (Kaggle) split. Its "test" is the frozen benchmark (label_map.yaml `benchmark:`).
+# The base (Kaggle) split. Its "test" is the frozen benchmark (label_map.yaml `frozen:`).
 SPLIT_NAMES = ["train", "validation", "test"]
-# Images from every other source are split on their own into train / validation /
-# wild_test, so nothing new ever enters the benchmark test set.
+# Non-Kaggle images: the TACO and RealWaste images of the frozen build keep their locked
+# split (train, validation or wild_test, configs/frozen/wild_split_lock.csv); every other
+# image goes only to train or validation, so nothing new enters either test set.
 WILD_TEST = "wild_test"
 ALL_SPLITS = SPLIT_NAMES + [WILD_TEST]
 SPLIT_DIRS = {name: REPO_ROOT / "data" / name for name in ALL_SPLITS}
@@ -804,8 +805,12 @@ def load_split_lock(config):
     that split on every build; any other non-Kaggle image goes to train or validation.
     """
     path = (config.get("frozen") or {}).get("wild_split_lock")
-    if not path or not (REPO_ROOT / path).exists():
+    if not path:
         return {}
+    if not (REPO_ROOT / path).exists():
+        raise SystemExit(f"{path} (frozen.wild_split_lock in configs/label_map.yaml) is missing. Without it every "
+                         f"wild image would be re-split and the frozen wild test would change. Restore it with "
+                         f"git checkout {path}.")
     with open(REPO_ROOT / path, newline="") as f:
         return {row["source"]: (row["label"], row["split"]) for row in csv.DictReader(f)}
 
@@ -904,11 +909,11 @@ def split_wild_images(new_items, splits_by_class, config, removed_rows):
          group_pattern, e.g. all TACO crops of one photo), and runs of consecutively
          numbered files (the dataset's group_block, e.g. RealWaste files 0-19, 20-39, ...
          of one category, because it photographed each item several times in a row).
-      2. Unlocked images in a group with locked images follow them: to train if one is in
-         train, else validation; if one is in wild_test they are dropped ("lookalike_of_wild_test").
-         An unlocked group that looks like a benchmark test image is dropped
-         ("lookalike_of_benchmark"); one that looks like a base train image goes to train,
-         one that only looks like base validation images goes to validation.
+      2. Unlocked images in a group with locked images follow them: dropped if one is in
+         wild_test ("lookalike_of_wild_test"), else to train if one is in train, else validation.
+         An unlocked image that looks like a benchmark test image is dropped
+         ("lookalike_of_benchmark"). Otherwise an unlocked group that looks like a base train
+         image goes to train, one that only looks like base validation images to validation.
       3. Every other unlocked group is shuffled with the seed and handed out per class (by
          its most common label) to train or validation, toward the 70 / 15 ratio.
       4. Final check: every wild_test image is compared with ALL train images (base and
@@ -1005,9 +1010,11 @@ def split_wild_images(new_items, splits_by_class, config, removed_rows):
                 drop(i, "lookalike_of_benchmark", "look-alikes of benchmark", b_item,
                      closest[2] if i == closest[0] else None, closest[3] if i == closest[0] else None)
                 where[i] = None
-        elif "train" in lsplits or "train" in hits:
+        elif lsplits:  # follow the locked group members, so one group stays in one split
+            where.update({i: ("train" if "train" in lsplits else "validation") for i in unlocked})
+        elif "train" in hits:
             where.update({i: "train" for i in unlocked})
-        elif lsplits or hits:
+        elif hits:
             where.update({i: "validation" for i in unlocked})
 
     # 3. Unlocked groups not placed yet: seeded shuffle, then fill each class toward

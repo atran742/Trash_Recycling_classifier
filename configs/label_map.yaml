@@ -40,11 +40,12 @@ near_duplicates:
   max_dhash: 2     # tightened 4 -> 3 -> 2 after spot checks; cross-label review found 0 true copies (docs/dataset_inventory.md)
 
 # The BASE datasets are split first, on their own, exactly as if no other
-# source existed. Their test split is the FROZEN BENCHMARK (see `benchmark:`).
-# Every other dataset (taco_crops, realwaste, amy_images, team_photos,
-# personal_battery) is split separately into train / validation / wild_test
-# (see `wild_split:`), so adding new photos never moves a base image and never
-# adds anything to the benchmark test set.
+# source existed. Their test split is the FROZEN BENCHMARK (see `frozen:`).
+# TACO and RealWaste images of the frozen build keep their locked split (train,
+# validation or wild_test); every other image (amy_images, team_photos,
+# personal_battery, any new dataset) goes ONLY to train or validation (see
+# `wild_split:`). Adding new photos never moves a base or locked image and never
+# adds anything to either test set.
 base_datasets: [garbage12_enhanced]
 
 # Frozen test sets (Oct 26, stamp def16b3, manifest_sha256 08d058850b31).
