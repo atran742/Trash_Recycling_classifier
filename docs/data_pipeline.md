@@ -40,36 +40,23 @@ not committed).
 ## What you should see
 
 With `num_classes: 4`, the last command prints (abridged; the first lines map each
-folder and the recycling cap lists every TACO category):
+folder, and the recycling cap lists every TACO category with 0 of its unlocked images kept,
+because the 400 locked recycling images fill the cap):
 
 ```text
 Files skipped: 6 not an image, 0 outside a class folder, 0 unsupported format, 0 corrupted
   not an image: data/raw/personal_battery/README.md, data/raw/team_photos/README.md, data/raw/team_photos/trash/.gitkeep (+3 more)
 Checking duplicates: pHash <= 3 and dHash <= 2...
 
-Removed 2 exact duplicates and 57 near duplicates, and 0 new images that copy a base image. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted and 0 unsupported files. 11204 images go on to the split (8519 base, 2685 new).
+Removed 2 exact duplicates and 57 near duplicates, and 0 new images that copy a base or locked image. Held 0 images in 0 label-conflict groups for review (results/conflicts_to_review.csv). Dropped 0 corrupted and 0 unsupported files. 11204 images go on to the split (8519 base, 2685 new).
 Dropped 17 known duplicates listed in configs/label_map.yaml (the copy outside train is dropped; see results/removed_duplicates.csv).
-Recycling cap: 1075 new recycling images from realwaste, taco_crops, kept 400 (cap 400, seed 42):
-  taco_crops/recycling/clear-plastic-bottle       269 ->   39
-  taco_crops/recycling/corrugated-carton           64 ->   38
-  taco_crops/recycling/disposable-food-container    37 ->   37
-  taco_crops/recycling/disposable-plastic-cup     102 ->   38
-  taco_crops/recycling/drink-can                  214 ->   38
-  taco_crops/recycling/drink-carton                43 ->   38
-  taco_crops/recycling/food-can                    34 ->   34
-  taco_crops/recycling/glass-bottle               100 ->   38
-  taco_crops/recycling/glass-jar                    6 ->    6
-  taco_crops/recycling/magazine-paper              12 ->   12
-  taco_crops/recycling/other-plastic-bottle        49 ->   38
-  taco_crops/recycling/other-plastic-cup            2 ->    2
-  taco_crops/recycling/plastic-bottle-cap         139 ->   38
-  taco_crops/recycling/toilet-tube                  4 ->    4
+Recycling cap: 1075 new recycling images from realwaste, taco_crops, kept 400 (cap 400, seed 42; 400 locked images kept first, 0 of 675 unlocked):
 
-Wild split (2010 new images, 933 groups, 324 with more than one image; seed 42): 0 dropped as look-alikes of benchmark test images, 0 wild_test images dropped as look-alikes of train/benchmark images.
-  source        class        train  validation  wild_test  total
-  realwaste     compost        291          60         60    411
-  taco_crops    recycling      280          60         60    400
-  taco_crops    trash          838         183        178   1199
+Wild split (2010 new images: 2010 locked, 0 unlocked; 933 groups, 324 with more than one image; seed 42): 0 dropped as look-alikes of benchmark test images, 0 as look-alikes of wild test images, 0 wild_test images dropped as look-alikes of train/benchmark images.
+  source        class                train  validation  wild_test  total
+  realwaste     compost    locked      291          60         60    411
+  taco_crops    recycling  locked      280          60         60    400
+  taco_crops    trash      locked      838         183        178   1199
 
 class          train  validation    test  wild_test   total
 -----------------------------------------------------------
@@ -90,13 +77,14 @@ Train split share and class weights (results/class_weights.json):
 
 Baseline 'always guess recycling' on validation (1574 images): accuracy 58.77%, macro F1 0.1851
 
-Benchmark check passed: data/splits/test.csv is byte-identical to the frozen benchmark (sha256 44805ae865a0).
+Frozen check passed: data/splits/test.csv is byte-identical to configs/frozen/test.csv (sha256 44805ae865a0).
+Frozen check passed: data/splits/wild_test.csv is byte-identical to configs/frozen/wild_test.csv (sha256 ee224c6731f3).
 Camera test check passed: no data/raw/camera_test/ photo is in any split.
 Overlap check passed: no exact or near duplicate appears in more than one split.
 
-Count check: 11263 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 0 copies of base images - 17 known duplicates - 675 recycling cap - 0 look-alikes of benchmark - 0 wild_test look-alikes - 0 held for review = 10512; 10512 in the splits; 751 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
+Count check: 11263 found - 0 corrupted - 0 unsupported format - 2 exact duplicates - 57 near duplicates - 0 copies of base or locked images - 17 known duplicates - 675 recycling cap - 0 look-alikes of benchmark - 0 look-alikes of wild test - 0 wild_test look-alikes - 0 held for review = 10512; 10512 in the splits; 751 rows in results/removed_duplicates.csv; 0 rows in results/conflicts_to_review.csv.
 Count check passed.
-Split version: def16b3  manifest_sha256: 08d058850b31  (both saved in results/class_weights.json)
+Split version: d41a481  manifest_sha256: 08d058850b31  (both saved in results/class_weights.json)
 ```
 
 The result is the same on every machine because the seed is fixed at 42.
