@@ -27,7 +27,7 @@ This downloads the Kaggle images and the two wild datasets (TACO litter photos, 
 
 ## The data right now
 
-From [docs/dataset_inventory.md](docs/dataset_inventory.md), 4 classes, Kaggle plus TACO and RealWaste, split 70 / 15 / 15 with seed 42. Test is the frozen Kaggle benchmark; wild test holds only TACO and RealWaste images.
+From [docs/dataset_inventory.md](docs/dataset_inventory.md), 4 classes, Kaggle plus TACO and RealWaste, split 70 / 15 / 15 with seed 42. Test (the Kaggle benchmark) and wild test (TACO and RealWaste) are both frozen: copies in `configs/frozen/`, and the build stops if either changes. New photos go only to train and validation.
 
 | Class | Train | Validation | Test (benchmark) | Wild test | Total |
 |---|---:|---:|---:|---:|---:|

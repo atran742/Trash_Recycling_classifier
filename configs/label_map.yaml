@@ -47,26 +47,38 @@ near_duplicates:
 # adds anything to the benchmark test set.
 base_datasets: [garbage12_enhanced]
 
-# Frozen benchmark: data/splits/test.csv must stay byte-identical so every model
-# is scored on the same 1,270 images (Oct 24). build_splits.py stops if it changes.
-# Only change this hash on a deliberate team decision to retire the benchmark.
-benchmark:
+# Frozen test sets (Oct 26, stamp def16b3, manifest_sha256 08d058850b31).
+# data/splits/test.csv (the 1,270-image Kaggle benchmark, frozen Oct 24) and
+# data/splits/wild_test.csv (298 TACO / RealWaste images) must stay byte-identical
+# to the copies below, so every model is scored on the same images forever.
+# build_splits.py stops if either differs. The lock keeps every non-Kaggle image of
+# that build in its split (train, validation or wild_test). Written by
+# src/data/freeze_wild_split.py; re-freeze only on a team decision.
+frozen:
+  test_csv: configs/frozen/test.csv
   test_csv_sha256: 44805ae865a07e6315bf44e9b240c406a320d9fa0ad063a2282de354aad9dd42
+  wild_test_csv: configs/frozen/wild_test.csv
+  wild_test_csv_sha256: ee224c6731f34a198c92dd1ce0fa2d95331e8b1dcdcf1e1179799b2d58642b5c
+  wild_split_lock: configs/frozen/wild_split_lock.csv
 
 # How non-base images are split (build_splits.py, split_wild_images()):
+#   - an image listed in frozen/wild_split_lock.csv keeps its locked split;
+#   - every other image (new sources: amy_images, team_photos, any new dataset)
+#     goes ONLY to train or validation, never to a test set;
 #   - images from one source photo (group_pattern below) and look-alikes
-#     (keep_together rule) always stay in ONE split;
-#   - a group that looks like a benchmark test image is dropped; one that looks
+#     (keep_together rule) always stay in ONE split; a new image grouped with a
+#     locked image follows it, unless that image is in wild_test (then it is dropped);
+#   - a new group that looks like a benchmark test image is dropped; one that looks
 #     like a base train / validation image follows it;
-#   - the rest: 70 / 15 / 15 per class into train / validation / wild_test, seed 42;
-#   - finally every wild_test image is checked against all train and benchmark
-#     images with the keep_together rule and dropped if it looks like one.
+#   - the rest: 70 / 15 per class into train / validation (82% / 18%), seed 42.
 wild_split:
-  ratios: {train: 0.70, validation: 0.15, wild_test: 0.15}
+  ratios: {train: 0.70, validation: 0.15}
   seed: 42
   # Recycling was 68% of train before the wild datasets: new recycling images from these sources
   # are capped at this many in total, spread evenly over their categories
   # (random with the seed inside each category). No cap on other classes.
+  # Locked images count first and are always kept; all 400 are locked today,
+  # so new recycling images from these sources are all dropped by the cap.
   recycling_cap: 400
   cap_datasets: [taco_crops, realwaste]
 

@@ -247,7 +247,8 @@ splits. Running 4, then 3, then 4 again gave byte-identical 4-class outputs.
 Two open datasets add messy, real-world photos next to the clean Kaggle images:
 TACO (litter photographed where it lies) and RealWaste (items picked from a
 landfill, photographed on concrete). They never enter the benchmark test set; they
-are split on their own into train, validation and `data/splits/wild_test.csv`.
+are split on their own into train, validation and `data/splits/wild_test.csv`, and
+since 2026-10-26 that split is frozen (see "Frozen test sets" below).
 
 ### San Diego source used for the mapping
 
@@ -474,14 +475,22 @@ Train class shares, before and after:
 | trash | 503 | 8.44% | 916 | 13.19% | 1,341 | **18.20%** |
 | **Total** | **5,961** | | **6,946** | | **7,370** | |
 
-### Frozen benchmark
+### Frozen test sets
 
-`data/splits/test.csv` is frozen as the benchmark: the 1,270 Kaggle test images of 2026-10-24,
-sha256 `44805ae865a07e6315bf44e9b240c406a320d9fa0ad063a2282de354aad9dd42`
-(`benchmark:` in `label_map.yaml`). `build_splits.py` stops if it changes by one byte. Every Kaggle
-image keeps its split; new sources can never remove, move or join a Kaggle image (a new copy of a
-Kaggle image is dropped, or held for review if its label differs, and the Kaggle image stays).
-The swap rule for models is in `docs/evaluation.md`.
+| Frozen file | Copy | sha256 | Frozen on |
+|---|---|---|---|
+| `data/splits/test.csv` (benchmark, 1,270 Kaggle images) | `configs/frozen/test.csv` | `44805ae865a07e6315bf44e9b240c406a320d9fa0ad063a2282de354aad9dd42` | 2026-10-24 |
+| `data/splits/wild_test.csv` (298 TACO and RealWaste images) | `configs/frozen/wild_test.csv` | `ee224c6731f34a198c92dd1ce0fa2d95331e8b1dcdcf1e1179799b2d58642b5c` | 2026-10-26, stamp def16b3 |
+
+Both hashes sit under `frozen:` in `label_map.yaml`, and `build_splits.py` stops if either
+manifest differs from its copy by one byte. Every Kaggle image keeps its split, and so does
+every TACO and RealWaste image of the def16b3 build: `configs/frozen/wild_split_lock.csv`
+lists all 2,010 of them (1,409 train, 303 validation, 298 wild test) with their label and
+split. New sources can never remove, move or join a Kaggle or locked image (a new copy of
+one is dropped, or held for review if its label differs, and the original stays), and every
+image not in the lock goes only to train or validation. The lock and copies were written by
+`src/data/freeze_wild_split.py`; re-freezing is a team decision. The swap rule for models is
+in `docs/evaluation.md`.
 
 ## Class imbalance to watch
 

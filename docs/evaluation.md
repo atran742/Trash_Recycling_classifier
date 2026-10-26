@@ -31,12 +31,16 @@ python src/eval/evaluate.py --tune results/val_predictions.csv --report results/
 | `export_predictions.py` | Runs the model over every validation, benchmark test and wild test image and records the true label, the predicted label and the model's confidence. | `results/val_predictions.csv`, `results/test_predictions.csv`, `results/wild_test_predictions.csv` |
 | `evaluate.py` | Prints accuracy, macro F1 and per-class scores, sweeps cutoffs on the validation file, picks the lowest cutoff reaching 90% accuracy on answered items (`--target` to change), and applies it once to the benchmark test file and, with `--wild`, to the wild test file. `--balanced` adds scores with equal counts per class (see below). Ends with one summary line: benchmark macro F1 and wild test macro F1. | `results/confusion_matrix.png`, `results/confusion_matrix_wild.png`, `results/threshold_sweep.csv`, `results/threshold_sweep.png` |
 
-## Two test sets: the benchmark and the wild test
+## Three test sets: two frozen, one held out
 
 | Test set | File | What is in it | Changes? |
 |---|---|---|---|
-| **Benchmark** | `data/splits/test.csv` | The 1,270 Kaggle test images of Oct 24, 2026 | **Never.** `build_splits.py` stops if a single byte changes (`benchmark:` in `configs/label_map.yaml`). |
-| **Wild test** | `data/splits/wild_test.csv` | 15% of the new real-world sources (TACO crops, RealWaste, and later team or Amy photos), split on their own | Grows when new photos are added; its share of each source never touches the benchmark. |
+| **Benchmark** | `data/splits/test.csv` | The 1,270 Kaggle test images of Oct 24, 2026 | **Never.** Frozen copy in `configs/frozen/test.csv`; `build_splits.py` stops if a single byte differs. |
+| **Wild test** | `data/splits/wild_test.csv` | 298 TACO and RealWaste images (60 compost, 60 recycling, 178 trash), frozen Oct 26 at stamp def16b3 | **Never.** Frozen copy in `configs/frozen/wild_test.csv`; `build_splits.py` stops if a single byte differs. New photos go only to train and validation. |
+| **Camera test** | `data/raw/camera_test/<class>/` | Demo-room photos from the webcam or Pi camera, never split or trained on | Grows as the team adds photos; scored with `score_camera_test.py` (below). |
+
+Both frozen test sets stay the same on every build, so scores from any two builds compare
+directly, even when train and validation grow.
 
 The benchmark keeps every score comparable with every earlier one. The wild
 test asks the harder question: how does the model do on messy photos that look
@@ -48,21 +52,28 @@ counts against the item's true class.
 
 ## The swap rule: when a new model replaces the current one
 
-Score both models with the commands above on the same split (same stamp line).
-The new model replaces `models/waste_classifier.pth` only if **both** hold:
+Score both models on the two frozen test sets (the commands above) and on the camera
+test (`score_camera_test.py`, same photos for both models). The new model replaces
+`models/waste_classifier.pth` only if **all three** hold:
 
 1. **Benchmark macro F1 drops by no more than 0.01.** New benchmark macro F1 >= current benchmark macro F1 - 0.01.
 2. **Wild test macro F1 goes up.** New wild test macro F1 > current wild test macro F1.
+3. **Camera test macro F1 does not go down.** New camera test macro F1 >= current camera test macro F1.
+   Until `data/raw/camera_test/` holds demo-room photos this cannot be checked: say so in the PR,
+   and score both models on the camera test as soon as photos exist.
 
-Baseline to beat (Amy's first model, `models/waste_classifier.pth`, on the build stamped
-`manifest_sha256: 08d058850b31`): **benchmark macro F1 0.785, wild test macro F1 0.289**
-(recall: compost 0.00, recycling 0.23, trash 0.58; it calls every RealWaste food photo trash).
-The Oct 24 build had a smaller wild test (209 images, macro F1 0.270); the two numbers are not comparable.
+Baseline to beat (Amy's first model, `models/waste_classifier.pth`, on the frozen test sets):
+**benchmark macro F1 0.785, wild test macro F1 0.289** (recall: compost 0.00, recycling 0.23,
+trash 0.58; it calls every RealWaste food photo trash). Camera test: not scored yet (no photos).
+The Oct 24 build had a different, smaller wild test (209 images, macro F1 0.270); that number
+is not comparable.
 
 Example: a new model with 0.778 on the benchmark and 0.45 on the wild test replaces it
 (0.778 >= 0.775, and 0.45 > 0.289). A new model with 0.770 and 0.60 does not
-(0.770 < 0.775), however much better it is on the wild test. The rule protects what
-already works while the wild data is added.
+(0.770 < 0.775), however much better it is on the wild test. Either model also needs a
+camera test score at least as high as the current one. The rule protects what already
+works while the wild data is added, and the camera test keeps the wild test honest: a model
+can learn each wild source's background instead of the item (see the note above).
 
 Note: validation now also holds wild images, so the "I'm not sure" cutoff is tuned on
 both kinds. For Amy's first model, validation accuracy is 0.746 and no cutoff reaches the

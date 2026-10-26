@@ -246,8 +246,8 @@ After the build, run `python src/data/check_leakage.py` and open
 - **A copy of a Kaggle photo with the same label** is removed, and the Kaggle photo is kept.
 - **A copy with a different label** holds her photo out of every split and lists it in `results/conflicts_to_review.csv` for a person to check. The Kaggle photo stays where it is.
 - **Adding her photos never moves, removes or joins a Kaggle image.** `base_datasets:` in `configs/label_map.yaml` is split first, on its own, exactly as before, and its test split is the frozen benchmark: none of her photos ever goes into `data/splits/test.csv`.
-- **Her photos are split on their own**, 70/15/15 with seed 42, into train, validation and `wild_test`, like TACO and RealWaste.
-- **Look-alike photos stay in one split.** Her photos that look alike (pHash ≤ 6 and dHash ≤ 8, the leakage check's rule) go to the same split. A group that looks like a Kaggle train photo goes to train, one that only looks like Kaggle validation photos goes to validation, and one that looks like a benchmark test photo is dropped (`lookalike_of_benchmark` in `results/removed_duplicates.csv`). Burst shots of one object taken with a bigger camera shift than that can still land in different splits. Finally every `wild_test` photo is checked against all train and benchmark photos with the same rule, and a look-alike is dropped.
+- **Her photos go only into train and validation** (70/15, seed 42). Since Oct 26 both test sets are frozen, so no new photo ever enters `test.csv` or `wild_test.csv`; to score on photos like hers, use `data/raw/camera_test/`.
+- **Look-alike photos stay in one split.** Her photos that look alike (pHash ≤ 6 and dHash ≤ 8, the leakage check's rule) go to the same split. A group that looks like a Kaggle train photo goes to train, one that only looks like Kaggle validation photos goes to validation, and one that looks like a benchmark test photo or a frozen wild test photo is dropped (`lookalike_of_benchmark` or `lookalike_of_wild_test` in `results/removed_duplicates.csv`). A copy of a frozen TACO or RealWaste image is dropped too (`copy_of_locked`). Burst shots of one object taken with a bigger camera shift than that can still land in different splits.
 
 ### What each error means
 
@@ -320,18 +320,27 @@ City of San Diego guide, the quality check and the licenses are in
 
 - **They never touch the benchmark.** `data/splits/test.csv` stays the 1,270 Kaggle
   test images of Oct 24, byte for byte; the build stops if it changes.
-- **They are split on their own**, 70/15/15 with seed 42, into train, validation and
-  `data/splits/wild_test.csv`. Crops of one TACO photo, RealWaste shots of one item
-  (blocks of 20 consecutive file numbers) and look-alikes stay in one split.
+- **Their split is frozen.** They were split once, 70/15/15 with seed 42, into train,
+  validation and `data/splits/wild_test.csv` (crops of one TACO photo, RealWaste shots of
+  one item and look-alikes in one split). On Oct 26 (stamp def16b3) every one of them was
+  locked to its split in `configs/frozen/wild_split_lock.csv`, and `wild_test.csv` was
+  frozen in `configs/frozen/wild_test.csv`; the build stops if it differs by one byte.
 - **A wild test image may not look like any train or benchmark image** (pHash <= 6
-  and dHash <= 8, the leakage-check rule); one that does is dropped.
+  and dHash <= 8, the leakage-check rule).
 - **Recycling is capped**: at most 400 new recycling images, spread evenly over the
   categories, because recycling is already most of train.
-- Both are `optional: true`: a machine without them warns and builds without them,
-  but then its train, validation and wild test differ from the committed manifests.
+- Both are `optional: true`, but the frozen wild test needs them: a machine without them
+  warns, and the build then stops at the frozen check. Run `download.py` and `crop_taco.py`.
 
-The same own-split rule now covers `amy_images`, `team_photos` and
-`personal_battery`: their test share goes to `wild_test`, never to the benchmark.
+**New sources go only into train and validation.** `amy_images`, `team_photos`,
+`personal_battery`, any new dataset, and any new file in an old one are not in the lock,
+so they are split 70/15 (about 82% / 18%) into train and validation and never into either
+test set. A new photo that copies or looks like a frozen test image is dropped. To score on
+demo-room photos, use `data/raw/camera_test/` instead.
+
+**Re-freezing** (only on a team decision, because every earlier score stops being
+comparable): build, run `python src/data/freeze_wild_split.py`, and put the two sha256 lines
+it prints under `frozen:` in `configs/label_map.yaml`.
 
 After a build, `python src/data/review_new_images.py` saves
 `results/new_images_<class>.png`, 30 random new images per class for a label check by eye.

@@ -30,21 +30,22 @@ What it does, in order:
        de-duplicated and shuffled 70 / 15 / 15 with seed 42 exactly as if nothing
        else existed. Their test split is the FROZEN BENCHMARK.
      - NEW sources (taco_crops, realwaste, amy_images, team_photos, personal_battery)
-       are first checked against every base image: a copy is dropped (or held, if
-       its label differs) and the base image stays. They never enter the benchmark.
+       are first checked against every base image and every LOCKED image
+       (configs/frozen/wild_split_lock.csv): a copy is dropped (or held, if its label
+       differs) and the base or locked image stays. They never enter the benchmark.
   5b. Drop the KNOWN DUPLICATES listed in label_map.yaml: copies a person confirmed by
      eye in the leakage check. The listed `file` is dropped, its `train_match` is kept.
      This happens AFTER the base split is decided, so no other image changes split.
   5c. New recycling images from the capped sources are limited to `recycling_cap`
-     (`wild_split:` in label_map.yaml), spread evenly over their categories.
-  5d. New images are split on their own 70 / 15 / 15 into train / validation /
-     wild_test (split_wild_images): crops of one photo and look-alikes stay in one
-     split, a look-alike of a benchmark image is dropped, and every wild_test image
-     is checked against all train and benchmark images (look-alikes dropped).
+     (`wild_split:` in label_map.yaml); locked images count first and are always kept.
+  5d. New images are placed by split_wild_images: locked images keep their frozen
+     split (train, validation or wild_test); every unlocked image goes ONLY to train
+     or validation (70 / 15). Crops of one photo and look-alikes stay in one split,
+     and an unlocked look-alike of a benchmark or wild test image is dropped.
   6. Copy files into data/train, data/validation, data/test, data/wild_test.
   7. Write CSV manifests: data/splits/train.csv, validation.csv, test.csv, wild_test.csv.
-  7b. Stop unless test.csv is byte-identical to the frozen benchmark, or if any
-     manifest path comes from the held-out data/raw/camera_test/.
+  7b. Stop unless test.csv and wild_test.csv are byte-identical to the frozen copies
+     in configs/frozen/, or if any manifest path comes from the held-out data/raw/camera_test/.
   8. Re-check the copied files: no exact or near duplicate may sit in two splits.
   9. Compute two sets of class weights from the TRAIN split only -> results/class_weights.json.
  10. Write every removed file to results/removed_duplicates.csv.
@@ -532,7 +533,7 @@ def remove_exact_duplicates(items, removed_rows, review_rows):
     return kept, n_dupes, held
 
 
-def drop_copies_of_base(new_items, base_items, removed_rows, review_rows, rules):
+def drop_copies_of_base(new_items, base_items, removed_rows, review_rows, rules, reason="copy_of_base"):
     """Keep new images away from the frozen base set: a copy of any base image is never used.
 
     Exact (same SHA-256) or near copies (the near_duplicates rule) of a base image:
@@ -568,7 +569,7 @@ def drop_copies_of_base(new_items, base_items, removed_rows, review_rows, rules)
             k = int(min(hits, key=lambda h: (int(p_dist[h]), int(d_dist[h]), int(h))))
         base = base_items[k]
         if base["label"] == item["label"]:
-            removed_rows.append({"file": rel(item["path"]), "kept_copy": rel(base["path"]), "reason": "copy_of_base",
+            removed_rows.append({"file": rel(item["path"]), "kept_copy": rel(base["path"]), "reason": reason,
                                  "distance": int(p_dist[k]), "dhash_distance": int(d_dist[k]),
                                  "pair": item["path"], "pair_with": base["path"]})
             n_copies += 1
@@ -576,7 +577,7 @@ def drop_copies_of_base(new_items, base_items, removed_rows, review_rows, rules)
             group_id = next((r["group"] for r in review_rows if r["file"] == rel(base["path"])), None) \
                 or next_group_id(review_rows)
             review_rows.append({"group": group_id, "file": rel(item["path"]), "label": item["label"],
-                                "matches": f"{rel(base['path'])} (base image, kept)",
+                                "matches": f"{rel(base['path'])} ({'base' if reason == 'copy_of_base' else 'locked'} image, kept)",
                                 "distance": int(p_dist[k]), "dhash_distance": int(d_dist[k])})
             held.append(item)
     return kept, n_copies, held
@@ -795,6 +796,45 @@ def source_of(item):
     return item["path"].relative_to(RAW_DIR).parts[0]
 
 
+def load_split_lock(config):
+    """{source path: (label, split)} from frozen/wild_split_lock.csv, or {} if there is none.
+
+    The lock (written by src/data/freeze_wild_split.py) pins every non-Kaggle image of
+    the frozen build to its split: train, validation or wild_test. Locked images keep
+    that split on every build; any other non-Kaggle image goes to train or validation.
+    """
+    path = (config.get("frozen") or {}).get("wild_split_lock")
+    if not path or not (REPO_ROOT / path).exists():
+        return {}
+    with open(REPO_ROOT / path, newline="") as f:
+        return {row["source"]: (row["label"], row["split"]) for row in csv.DictReader(f)}
+
+
+def mark_locked(items, lock):
+    """Set item["locked_split"] for every locked image; stop if its label changed since the freeze.
+
+    Also warns about locked images that are missing (dataset not downloaded, file deleted,
+    or category set to EXCLUDE). A missing wild_test image makes the frozen check fail.
+    """
+    found = set()
+    for item in items:
+        entry = lock.get(rel(item["path"]))
+        if entry is None:
+            continue
+        label, split = entry
+        if label != item["label"]:
+            raise SystemExit(f"{rel(item['path'])} is locked as {label} ({split}) but configs/label_map.yaml now "
+                             f"maps it to {item['label']}. A locked image cannot change class: that would change "
+                             f"the frozen test sets. Undo the mapping change, or re-freeze on a team decision.")
+        item["locked_split"] = split
+        found.add(rel(item["path"]))
+    missing = Counter((src.split("/")[2], lock[src][1]) for src in lock if src not in found)
+    if missing:
+        print("  WARNING: locked images not found on this machine (the frozen wild test cannot match without them): "
+              + ", ".join(f"{n} {source} {split}" for (source, split), n in sorted(missing.items()))
+              + ". Run python src/data/download.py and python src/data/crop_taco.py.")
+
+
 def category_of(item):
     """Source category for the recycling cap and the reports: dataset/class folder[/first sub-folder].
 
@@ -820,16 +860,20 @@ def apply_recycling_cap(items, wild_cfg, removed_rows):
         if pool:
             print(f"Recycling cap {cap}: {len(pool)} new recycling images from {sorted(capped_sources)}, all kept.")
         return items, 0
+    # Locked images (frozen split) are always kept and use up the cap first; only
+    # what is left is shared by the unlocked images.
+    locked = [it for it in pool if it.get("locked_split")]
+    pool = [it for it in pool if not it.get("locked_split")]
     by_cat = defaultdict(list)
     for it in pool:  # file order inside each category
         by_cat[category_of(it)].append(it)
-    quota, remaining = {}, cap
+    quota, remaining = {}, max(0, cap - len(locked))
     ordered = sorted(by_cat, key=lambda c: (len(by_cat[c]), c))  # smallest first
     for k, cat in enumerate(ordered):
         quota[cat] = min(len(by_cat[cat]), remaining // (len(ordered) - k))
         remaining -= quota[cat]
     rng = random.Random(wild_cfg["seed"])
-    keep = set()
+    keep = {id(it) for it in locked}
     for cat in sorted(by_cat):
         keep.update(id(it) for it in rng.sample(by_cat[cat], quota[cat]))
     dropped = 0
@@ -838,32 +882,38 @@ def apply_recycling_cap(items, wild_cfg, removed_rows):
             removed_rows.append({"file": rel(it["path"]), "kept_copy": "", "reason": "recycling_cap",
                                  "distance": "", "dhash_distance": ""})
             dropped += 1
-    print(f"Recycling cap: {len(pool)} new recycling images from {', '.join(sorted(capped_sources))}, "
-          f"kept {len(keep)} (cap {cap}, seed {wild_cfg['seed']}):")
+    print(f"Recycling cap: {len(pool) + len(locked)} new recycling images from {', '.join(sorted(capped_sources))}, "
+          f"kept {len(keep)} (cap {cap}, seed {wild_cfg['seed']}; {len(locked)} locked images kept first, "
+          f"{len(keep) - len(locked)} of {len(pool)} unlocked):")
     for cat in sorted(by_cat):
-        print(f"  {cat:<45} {len(by_cat[cat]):>5} -> {quota[cat]:>4}")
+        print(f"  {cat:<45} {len(by_cat[cat]):>5} unlocked -> {quota[cat]:>4}")
     return [it for it in items if not (it["label"] == "recycling" and source_of(it) in capped_sources)
             or id(it) in keep], dropped
 
 
 def split_wild_images(new_items, splits_by_class, config, removed_rows):
-    """Split images from every non-base source into train / validation / wild_test.
+    """Place images from every non-base source in train / validation / wild_test.
 
     The base split, including the benchmark test set, is fixed before this runs and
     is never changed here. Two images "look alike" if pHash <= keep_together_max_phash
     AND dHash <= keep_together_max_dhash (label_map.yaml; the same rule as check_leakage.py).
-      1. Groups that must stay in ONE split: look-alike new images (chains included,
+      0. LOCKED images (frozen/wild_split_lock.csv, item["locked_split"]) keep their split.
+         wild_test holds locked images only, so it never changes.
+      1. Groups that must stay in ONE split: look-alike images (chains included,
          A~B and B~C -> one group), images from the same source photo (the dataset's
          group_pattern, e.g. all TACO crops of one photo), and runs of consecutively
          numbered files (the dataset's group_block, e.g. RealWaste files 0-19, 20-39, ...
          of one category, because it photographed each item several times in a row).
-      2. A group that looks like any benchmark test image is dropped ("lookalike_of_benchmark").
-         One that looks like a base train image goes to train; one that only looks
-         like base validation images goes to validation.
-      3. Every other group is shuffled with the seed and handed out per class (by
-         its most common label) to the split furthest below its 70/15/15 share.
+      2. Unlocked images in a group with locked images follow them: to train if one is in
+         train, else validation; if one is in wild_test they are dropped ("lookalike_of_wild_test").
+         An unlocked group that looks like a benchmark test image is dropped
+         ("lookalike_of_benchmark"); one that looks like a base train image goes to train,
+         one that only looks like base validation images goes to validation.
+      3. Every other unlocked group is shuffled with the seed and handed out per class (by
+         its most common label) to train or validation, toward the 70 / 15 ratio.
       4. Final check: every wild_test image is compared with ALL train images (base and
          new) and the benchmark test images; a look-alike is dropped ("wild_test_lookalike").
+         With the lock in place this never fires; if it did, the frozen check would stop the build.
     Returns (splits_by_class with the new images added, {reason: number dropped}).
     """
     dropped = Counter()
@@ -875,6 +925,7 @@ def split_wild_images(new_items, splits_by_class, config, removed_rows):
     p_max, d_max = rules["keep_together_max_phash"], rules["keep_together_max_dhash"]
     together = lambda p, d: (p <= p_max) & (d <= d_max)
     names = ["train", "validation", WILD_TEST]
+    new_names = ["train", "validation"]  # where unlocked images may go
 
     base = [(split, item) for splits in splits_by_class.values()
             for split in SPLIT_NAMES for item in splits[split]]
@@ -919,55 +970,71 @@ def split_wild_images(new_items, splits_by_class, config, removed_rows):
     for i in range(len(new_items)):
         groups[find(i)].append(i)
 
-    # 2. Groups that look like a base image.
-    placed = {}
+    def drop(i, reason, counter_key, other=None, p=None, d=None):
+        removed_rows.append({"file": rel(new_items[i]["path"]), "kept_copy": rel(other["path"]) if other else "",
+                             "reason": reason, "distance": "" if p is None else p,
+                             "dhash_distance": "" if d is None else d})
+        dropped[counter_key] += 1
+
+    # 0 + 2. Locked images keep their split; unlocked ones follow locked group members or base look-alikes.
+    where = {}  # image index -> split, or None if dropped
     for gid, members in groups.items():
+        locked_here = {i: new_items[i]["locked_split"] for i in members if new_items[i].get("locked_split")}
+        where.update(locked_here)
+        unlocked = [i for i in members if i not in locked_here]
+        if not unlocked:
+            continue
+        lsplits = set(locked_here.values())
         hits, closest = [], None
-        for i in members:
+        for i in unlocked:
             p_dist, d_dist = hamming_distances(new_p[i], base_p), hamming_distances(new_d[i], base_d)
             idx = np.nonzero(together(p_dist, d_dist))[0]
             hits += list(base_split[idx])
             for j in idx:
                 if base_split[j] == "test" and closest is None:
                     closest = (i, int(j), int(p_dist[j]), int(d_dist[j]))
-        if "test" in hits:
-            placed[gid] = None  # dropped: it would leak into or next to the benchmark
-            for i in members:
-                b_item = base[closest[1]][1]
-                removed_rows.append({"file": rel(new_items[i]["path"]), "kept_copy": rel(b_item["path"]),
-                                     "reason": "lookalike_of_benchmark", "distance": closest[2] if i == closest[0] else "",
-                                     "dhash_distance": closest[3] if i == closest[0] else ""})
-                dropped["look-alikes of benchmark"] += 1
-        elif "train" in hits:
-            placed[gid] = "train"
-        elif hits:
-            placed[gid] = "validation"
+        if WILD_TEST in lsplits:
+            anchor = next(new_items[i] for i in locked_here if locked_here[i] == WILD_TEST)
+            for i in unlocked:
+                drop(i, "lookalike_of_wild_test", "look-alikes of wild test", anchor)
+            for i in unlocked:
+                where[i] = None
+        elif "test" in hits:
+            b_item = base[closest[1]][1]
+            for i in unlocked:
+                drop(i, "lookalike_of_benchmark", "look-alikes of benchmark", b_item,
+                     closest[2] if i == closest[0] else None, closest[3] if i == closest[0] else None)
+                where[i] = None
+        elif "train" in lsplits or "train" in hits:
+            where.update({i: "train" for i in unlocked})
+        elif lsplits or hits:
+            where.update({i: "validation" for i in unlocked})
 
-    # 3. The other groups: seeded shuffle, then fill each class toward 70/15/15.
-    free = [gid for gid in groups if gid not in placed]
+    # 3. Unlocked groups not placed yet: seeded shuffle, then fill each class toward
+    # the train / validation ratio. Only unlocked images are counted, so new sources
+    # split about 82 / 18 on their own.
+    free = [gid for gid, members in groups.items() if all(i not in where for i in members)]
     random.Random(seed).shuffle(free)
     label_of = lambda gid: Counter(new_items[i]["label"] for i in groups[gid]).most_common(1)[0][0]
-    class_total = Counter(new_items[i]["label"] for gid in groups if placed.get(gid, "") is not None
-                          for i in groups[gid])
-    count = defaultdict(Counter)  # class -> split -> new images so far
-    for gid, split in placed.items():
-        if split is not None:
-            for i in groups[gid]:
-                count[new_items[i]["label"]][split] += 1
+    unlocked_ids = [i for i in range(len(new_items)) if not new_items[i].get("locked_split")]
+    class_total = Counter(new_items[i]["label"] for i in unlocked_ids if where.get(i, "") is not None)
+    count = defaultdict(Counter)  # class -> split -> unlocked images so far
+    for i in unlocked_ids:
+        if where.get(i):
+            count[new_items[i]["label"]][where[i]] += 1
+    share = {name: ratios[name] / sum(ratios[n] for n in new_names) for name in new_names}
     for gid in free:
         cls = label_of(gid)
-        room = {name: ratios[name] * class_total[cls] - count[cls][name] for name in names}
-        placed[gid] = max(names, key=lambda name: room[name])  # ties -> train, validation, wild_test
+        room = {name: share[name] * class_total[cls] - count[cls][name] for name in new_names}
+        split = max(new_names, key=lambda name: room[name])  # ties -> train
         for i in groups[gid]:
-            count[new_items[i]["label"]][placed[gid]] += 1
+            where[i] = split
+            count[new_items[i]["label"]][split] += 1
 
     result = {cls: {name: list(splits.get(name, [])) for name in ALL_SPLITS} for cls, splits in splits_by_class.items()}
-    for gid, members in groups.items():
-        if placed[gid] is None:
-            continue
-        for i in members:
-            item = new_items[i]
-            result.setdefault(item["label"], {name: [] for name in ALL_SPLITS})[placed[gid]].append(item)
+    for i, item in enumerate(new_items):
+        if where[i] is not None:
+            result.setdefault(item["label"], {name: [] for name in ALL_SPLITS})[where[i]].append(item)
 
     # 4. Final check: no wild_test image may look like a train or benchmark image.
     reference = [item for splits in result.values() for item in splits["train"] + splits["test"]]
@@ -988,21 +1055,25 @@ def split_wild_images(new_items, splits_by_class, config, removed_rows):
             dropped["wild_test look-alikes"] += 1
         splits[WILD_TEST] = keep
 
-    # Report: new images per source, class and split.
+    # Report: new images per source, class and split, locked and unlocked.
     n_groups = sum(len(m) > 1 for m in groups.values())
-    print(f"\nWild split ({len(new_items)} new images, {len(groups)} groups, {n_groups} with more than one image; "
-          f"seed {seed}): {dropped['look-alikes of benchmark']} dropped as look-alikes of benchmark test images, "
+    n_locked = sum(1 for it in new_items if it.get("locked_split"))
+    print(f"\nWild split ({len(new_items)} new images: {n_locked} locked, {len(new_items) - n_locked} unlocked; "
+          f"{len(groups)} groups, {n_groups} with more than one image; seed {seed}): "
+          f"{dropped['look-alikes of benchmark']} dropped as look-alikes of benchmark test images, "
+          f"{dropped['look-alikes of wild test']} as look-alikes of wild test images, "
           f"{dropped['wild_test look-alikes']} wild_test images dropped as look-alikes of train/benchmark images.")
     table = Counter()
     for cls, splits in result.items():
         for name in names:
             for item in splits[name]:
                 if source_of(item) not in (config.get("base_datasets") or []):
-                    table[(source_of(item), cls, name)] += 1
-    print(f"  {'source':<14}{'class':<11}{'train':>7}{'validation':>12}{'wild_test':>11}{'total':>7}")
-    for source, cls in sorted({(s, c) for s, c, _ in table}):
-        row = [table[(source, cls, name)] for name in names]
-        print(f"  {source:<14}{cls:<11}{row[0]:>7}{row[1]:>12}{row[2]:>11}{sum(row):>7}")
+                    kind = "locked" if item.get("locked_split") else "new"
+                    table[(source_of(item), cls, kind, name)] += 1
+    print(f"  {'source':<14}{'class':<11}{'':<8}{'train':>7}{'validation':>12}{'wild_test':>11}{'total':>7}")
+    for source, cls, kind in sorted({(s, c, k) for s, c, k, _ in table}):
+        row = [table[(source, cls, kind, name)] for name in names]
+        print(f"  {source:<14}{cls:<11}{kind:<8}{row[0]:>7}{row[1]:>12}{row[2]:>11}{sum(row):>7}")
     return result, dropped
 
 
@@ -1178,29 +1249,41 @@ def check_no_camera_test(manifest_dir=MANIFEST_DIR):
     print(f"Camera test check passed: no data/raw/{CAMERA_TEST_NAME}/ photo is in any split.")
 
 
-def check_benchmark_frozen(config, active):
-    """Stop unless data/splits/test.csv is byte-identical to the frozen benchmark.
+def check_frozen_tests(config, active):
+    """Stop unless data/splits/test.csv and wild_test.csv are byte-identical to the frozen copies.
 
-    The benchmark is the base test split of Oct 24 (label_map.yaml `benchmark:`).
-    Keeping it identical is what makes every model's test score comparable.
-    A build with another class set (--num-classes 3) cannot match it, so it only warns.
+    The copies live in configs/frozen/ (written by src/data/freeze_wild_split.py) and
+    their sha256 is in label_map.yaml under `frozen:`, so an edit to a copy is caught too.
+    Keeping both test sets identical is what makes every model's scores comparable.
+    A build with another class set (--num-classes 3) cannot match them, so it only warns.
     """
-    expected = (config.get("benchmark") or {}).get("test_csv_sha256")
-    if not expected:
-        print("No frozen benchmark set in configs/label_map.yaml (benchmark: test_csv_sha256), not checked.")
+    frozen = config.get("frozen") or {}
+    if not frozen:
+        print("No frozen test sets in configs/label_map.yaml (frozen:), not checked.")
         return
-    actual = hashlib.sha256((MANIFEST_DIR / "test.csv").read_bytes()).hexdigest()
-    if actual == expected:
-        print(f"Benchmark check passed: data/splits/test.csv is byte-identical to the frozen benchmark "
-              f"(sha256 {expected[:12]}).")
-        return
-    if len(active["classes"]) != config["num_classes"] or active["exclude"]:
-        print(f"WARNING: data/splits/test.csv differs from the frozen 4-class benchmark because this build uses "
-              f"classes {active['classes']}. Scores from this build are not comparable to the benchmark.")
-        return
-    raise SystemExit(f"FAILED: data/splits/test.csv changed (sha256 {actual[:12]}, frozen benchmark {expected[:12]}).\n"
-                     f"The benchmark test set must not change: no image may be added to, moved out of or "
-                     f"renamed in it. Undo the change to the base datasets or the split settings and build again.")
+    other_classes = len(active["classes"]) != config["num_classes"] or active["exclude"]
+    for name, key in [("test.csv", "test_csv"), (f"{WILD_TEST}.csv", "wild_test_csv")]:
+        copy = REPO_ROOT / frozen[key]
+        expected = frozen[f"{key}_sha256"]
+        if hashlib.sha256(copy.read_bytes()).hexdigest() != expected:
+            raise SystemExit(f"FAILED: the frozen copy {frozen[key]} does not match its sha256 in "
+                             f"configs/label_map.yaml. The frozen copies must never be edited by hand.")
+        now = (MANIFEST_DIR / name).read_bytes()
+        if now == copy.read_bytes():
+            print(f"Frozen check passed: data/splits/{name} is byte-identical to {frozen[key]} (sha256 {expected[:12]}).")
+            continue
+        if other_classes:
+            print(f"WARNING: data/splits/{name} differs from the frozen 4-class copy because this build uses "
+                  f"classes {active['classes']}. Scores from this build are not comparable.")
+            continue
+        old_rows = set(copy.read_text().splitlines()[1:])
+        new_rows = set(now.decode().splitlines()[1:])
+        gone, added = sorted(old_rows - new_rows), sorted(new_rows - old_rows)
+        raise SystemExit(f"FAILED: data/splits/{name} differs from the frozen copy {frozen[key]}: "
+                         f"{len(gone)} rows missing (for example {gone[:2]}), {len(added)} rows added "
+                         f"(for example {added[:2]}).\nThe frozen test sets must not change. Missing rows usually "
+                         f"mean a dataset is not downloaded or cropped on this machine (run download.py and "
+                         f"crop_taco.py); otherwise undo the change to the data or the config.")
 
 
 def check_counts(n_found, out_counts, n_final, n_removed_rows, n_review_rows):
@@ -1356,6 +1439,11 @@ def find_duplicates(config, active):
     is_base = lambda item: item["path"].relative_to(RAW_DIR).parts[0] in base_names
     base_items = [item for item in items if is_base(item)]
     new_items = [item for item in items if not is_base(item)]
+    # Locked images (frozen split) behave like the base: they were already checked for
+    # duplicates when they were frozen, and a new image can never remove or move one.
+    mark_locked(new_items, load_split_lock(config))
+    locked_items = [item for item in new_items if item.get("locked_split")]
+    unlocked_items = [item for item in new_items if not item.get("locked_split")]
 
     print(f"Checking duplicates: pHash <= {rules['max_phash']} and dHash <= {rules['max_dhash']}...")
     # Stage A: the base on its own (this is what keeps its split identical).
@@ -1364,19 +1452,32 @@ def find_duplicates(config, active):
                                                                already_held=held_a)
     n_held = len(held_a) + len(near_held_a)
 
-    # Stage B: new images. First against EVERY base image (kept or held in stage A):
-    # a copy is dropped, or held if its label differs, and the base image always stays.
-    # Then the new images among themselves with the normal rules.
+    # Stage B: unlocked new images. First against EVERY base image (kept or held in
+    # stage A), then against every locked image: a copy is dropped, or held if its label
+    # differs, and the base or locked image always stays. Then the unlocked images among
+    # themselves with the normal rules. Locked images pass through unchanged.
     new_kept, n_copies_of_base = [], 0
-    if new_items:
-        new_kept, n_copies_of_base, held_b0 = drop_copies_of_base(new_items, base_kept + held_a + near_held_a,
-                                                                  removed_rows, review_rows, rules)
-        new_kept, n_exact_b, held_b = remove_exact_duplicates(new_kept, removed_rows, review_rows)
-        new_kept, n_near_b, _, near_held_b = remove_near_duplicates(new_kept, removed_rows, review_rows, rules,
-                                                                    already_held=held_b)
+    if unlocked_items:
+        kept, n_copies_of_base, held_b0 = drop_copies_of_base(unlocked_items, base_kept + held_a + near_held_a,
+                                                              removed_rows, review_rows, rules)
+        kept, n_copies_of_locked, held_b1 = drop_copies_of_base(kept, locked_items, removed_rows, review_rows,
+                                                                rules, reason="copy_of_locked")
+        kept, n_exact_b, held_b = remove_exact_duplicates(kept, removed_rows, review_rows)
+        kept, n_near_b, _, near_held_b = remove_near_duplicates(kept, removed_rows, review_rows, rules,
+                                                                already_held=held_b)
         n_exact += n_exact_b
         n_near += n_near_b
-        n_held += len(held_b0) + len(held_b) + len(near_held_b)
+        n_copies_of_base += n_copies_of_locked
+        n_held += len(held_b0) + len(held_b1) + len(held_b) + len(near_held_b)
+        still = {id(item) for item in kept}
+    else:
+        still = set()
+    # Locked and surviving unlocked images, in file order. The wild split needs every
+    # image's fingerprints, and locked images are not hashed above when nothing is unlocked.
+    new_kept = [item for item in new_items if item.get("locked_split") or id(item) in still]
+    for item in new_kept:
+        if "phash" not in item:
+            item["phash"], item["dhash"] = image_hashes(item["path"], item.get("upright", False))
 
     n_groups = len({row["group"] for row in review_rows})
     out_counts = {
@@ -1384,15 +1485,16 @@ def find_duplicates(config, active):
         "unsupported format": skipped["unsupported format"],
         "exact duplicates": n_exact,
         "near duplicates": n_near,
-        "copies of base images": n_copies_of_base,
+        "copies of base or locked images": n_copies_of_base,
         "known duplicates": 0,  # filled in by main() after the split
         "recycling cap": 0,                # filled in by main()
         "look-alikes of benchmark": 0,     # filled in by main()
+        "look-alikes of wild test": 0,     # filled in by main()
         "wild_test look-alikes": 0,        # filled in by main()
         "held for review": n_held,
     }
     print(f"\nRemoved {n_exact} exact duplicates and {n_near} near duplicates, and {n_copies_of_base} new images "
-          f"that copy a base image. Held {n_held} images in {n_groups} label-conflict groups for review "
+          f"that copy a base or locked image. Held {n_held} images in {n_groups} label-conflict groups for review "
           f"({rel(CONFLICTS_CSV)}). Dropped {skipped['corrupted']} corrupted and {skipped['unsupported format']} "
           f"unsupported files. {len(base_kept) + len(new_kept)} images go on to the split "
           f"({len(base_kept)} base, {len(new_kept)} new).")
@@ -1427,11 +1529,13 @@ def main():
     print(f"Dropped {n_known} known duplicates listed in {rel(CONFIG_PATH)} "
           f"(the copy outside train is dropped; see {rel(REMOVED_CSV)}).")
     # The base split, benchmark test included, is final from here on.
-    # New sources: recycling cap, then their own split into train / validation / wild_test.
+    # New sources: recycling cap (locked images first), then locked images keep their
+    # split and unlocked ones go to train or validation.
     new_items, n_capped = apply_recycling_cap(found["new_kept"], config["wild_split"], removed_rows)
     out_counts["recycling cap"] = n_capped
     splits_by_class, wild_dropped = split_wild_images(new_items, splits_by_class, config, removed_rows)
     out_counts["look-alikes of benchmark"] = wild_dropped["look-alikes of benchmark"]
+    out_counts["look-alikes of wild test"] = wild_dropped["look-alikes of wild test"]
     out_counts["wild_test look-alikes"] = wild_dropped["wild_test look-alikes"]
     splits_by_class = dict(sorted(splits_by_class.items()))
     # Every active class must still have images, or the class order and the
@@ -1459,7 +1563,7 @@ def main():
         json.dump(weights, f, indent=2)
         f.write("\n")
     print()
-    check_benchmark_frozen(config, active)
+    check_frozen_tests(config, active)
     check_no_camera_test()
     check_no_overlap(config["near_duplicates"])
 
