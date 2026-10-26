@@ -322,7 +322,7 @@ either side (most cigarettes: 543 of 667). The mapping lives in `configs/label_m
 | Food waste | 8 | EXCLUDE | was compost; dropped at the quality check: 2 of 5 showed food inside a can or a plastic bag |
 | Garbage bag | 31 | EXCLUDE | black: "Plastic Bags, Wrappers and Film", but dropped at the quality check (Oct 25): 4 of 30 show leaves and plants, a cardboard box or a plastic bin instead |
 | Glass cup | 6 | EXCLUDE | was trash; dropped at the quality check: 2 of 6 look like plastic cups (blue) |
-| Meal carton | 30 | EXCLUDE | was trash; dropped at the quality check: 4 of 30 were a paper cup, a drink carton, a plastic piece and a corrugated sleeve |
+| Meal carton | 30 | EXCLUDE | was trash; dropped at the Oct 24 quality check with 4 of 30 wrong (paper cup, drink carton, plastic piece, corrugated sleeve). Since Oct 25 paper cups are trash, so it is 3 of 30 (10%, not more): kept EXCLUDE pending a team decision |
 | Metal bottle cap | 80 | EXCLUDE | not in the guide (only cans are listed for metal) |
 | Metal lid | 10 | EXCLUDE | not in the guide (only cans are listed for metal) |
 | Normal paper | 82 | EXCLUDE | was recycling; dropped at the quality check: 4 of 30 look like tissues or napkins (tissues are trash, napkins green) |
@@ -385,7 +385,7 @@ count in its `label_map.yaml` comment):
 | Other carton | TACO | 6 of 15 | cigarette packs (foil-lined) |
 | Plastic lid | TACO | 7 of 45 | lid shown on a paper coffee cup |
 | Normal paper | TACO | 4 of 30 | tissues or napkins |
-| Meal carton | TACO | 4 of 30 | paper cup, drink carton, plastic piece, corrugated sleeve |
+| Meal carton | TACO | 4 of 30 (3 since Oct 25) | paper cup, drink carton, plastic piece, corrugated sleeve; paper cups are trash since Oct 25, so it now sits at 10% and is EXCLUDE pending a team decision |
 | Food waste | TACO | 2 of 5 | food inside a can or a plastic bag |
 | Glass cup | TACO | 2 of 6 | plastic cups |
 | Tupperware | TACO | 2 of 4 | plastic film or bags |
@@ -454,8 +454,10 @@ No cap on compost or trash. Hazardous is untouched.
 | **Total** | | **1,409** | **303** | **298** | **2,010** |
 
 The five categories moved to trash on Oct 25 added 609 trash images (590 before, 1,199 now). The
-wild split shuffles all new groups together, so adding them also moved one RealWaste block of 20
-from train to validation; compare wild test scores only between builds with the same `manifest_sha256`.
+wild split shuffles all new groups together, so adding them also reshuffled the RealWaste blocks:
+219 of the 411 RealWaste images changed split, although the compost totals per split barely moved
+(train 292 to 291, validation 59 to 60, wild test 60). Compare wild test scores only between builds
+with the same `manifest_sha256`.
 
 Duplicates: 0 new images were copies of a Kaggle image, 0 were copies of each other, 0 groups
 looked like a benchmark image, and 0 wild test images looked like a train or benchmark image

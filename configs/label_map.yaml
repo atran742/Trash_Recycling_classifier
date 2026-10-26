@@ -64,7 +64,7 @@ benchmark:
 wild_split:
   ratios: {train: 0.70, validation: 0.15, wild_test: 0.15}
   seed: 42
-  # Recycling is already 68% of train: new recycling images from these sources
+  # Recycling was 68% of train before the wild datasets: new recycling images from these sources
   # are capped at this many in total, spread evenly over their categories
   # (random with the seed inside each category). No cap on other classes.
   recycling_cap: 400
@@ -242,7 +242,7 @@ datasets:
       Egg carton: EXCLUDE               # not in the guide; made of paper, foam or plastic
       Drink carton: recycling           # blue: "Paper Cartons"
       Corrugated carton: recycling      # blue: "Cardboard"
-      Meal carton: EXCLUDE              # was trash; dropped at the quality check: 4 of 30 were a paper cup, a drink carton, a plastic piece and a corrugated sleeve
+      Meal carton: EXCLUDE              # was trash; dropped at the Oct 24 quality check with 4 of 30 wrong (paper cup, drink carton, plastic piece, corrugated sleeve). Since Oct 25 paper cups are trash, so it is 3 of 30 (10%, not more): kept EXCLUDE pending a team decision
       Pizza box: EXCLUDE                # team list; not in the guide (city web page: soiled part trash, clean part blue)
       Paper cup: trash                  # black: "Paper Plates, Cups and Takeout Boxes" (Spanish: "Platos, vasos, y contenedores de comida desechables hechos de papel"); team decision Oct 25
       Disposable plastic cup: recycling # blue: Spanish text lists plastic cups ("tazas ... de plastico") with bottles and containers

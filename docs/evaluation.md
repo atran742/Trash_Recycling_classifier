@@ -112,7 +112,7 @@ cutoff still comes from validation. This is the number closest to the demo.
 ## Reading the result
 
 - **Macro F1 on the benchmark test file** is the headline number. Accuracy is
-  inflated by the recycling class (62% of train, 68% of the benchmark). **Wild test macro F1** is the
+  inflated by the recycling class (59% of train, 68% of the benchmark). **Wild test macro F1** is the
   second number; together they decide the swap rule above.
 - **The chosen cutoff** comes from validation only. The test numbers "with
   cutoff applied" are what the Pi demo would show: how many items get an
