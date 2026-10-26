@@ -1,0 +1,3 @@
+# Byte-exact files: the build checks their sha256, so git must never rewrite their line endings.
+configs/frozen/*.csv -text
+data/splits/*.csv -text

@@ -1,5 +1,5 @@
 {
-  "split_version": "403a2d4",
+  "split_version": "b40b08a",
   "num_classes": 4,
   "class_order": [
     "compost",
@@ -8,49 +8,49 @@
     "trash"
   ],
   "train_counts": {
-    "compost": 718,
+    "compost": 1009,
     "hazardous": 681,
-    "recycling": 4059,
-    "trash": 503
+    "recycling": 4339,
+    "trash": 1341
   },
-  "train_total": 5961,
+  "train_total": 7370,
   "train_percent": {
-    "compost": 12.04,
-    "hazardous": 11.42,
-    "recycling": 68.09,
-    "trash": 8.44
+    "compost": 13.69,
+    "hazardous": 9.24,
+    "recycling": 58.87,
+    "trash": 18.2
   },
   "weights": {
     "inverse_frequency": {
       "formula": "total_train / (num_classes * class_train_count)",
       "by_class": {
-        "compost": 2.0756,
-        "hazardous": 2.1883,
-        "recycling": 0.3671,
-        "trash": 2.9627
+        "compost": 1.8261,
+        "hazardous": 2.7056,
+        "recycling": 0.4246,
+        "trash": 1.374
       },
       "in_class_order": [
-        2.0756,
-        2.1883,
-        0.3671,
-        2.9627
+        1.8261,
+        2.7056,
+        0.4246,
+        1.374
       ]
     },
     "sqrt_inverse_frequency": {
       "formula": "sqrt(total_train / (num_classes * class_train_count)), divided by the mean so the weights average to 1",
       "by_class": {
-        "compost": 1.0983,
-        "hazardous": 1.1277,
-        "recycling": 0.4619,
-        "trash": 1.3121
+        "compost": 1.1214,
+        "hazardous": 1.365,
+        "recycling": 0.5408,
+        "trash": 0.9728
       },
       "in_class_order": [
-        1.0983,
-        1.1277,
-        0.4619,
-        1.3121
+        1.1214,
+        1.365,
+        0.5408,
+        0.9728
       ]
     }
   },
-  "manifest_sha256": "4d578382b730"
+  "manifest_sha256": "08d058850b31"
 }

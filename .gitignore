@@ -39,7 +39,8 @@ temp_interactive_push.bat
 
 # ---- Data pipeline (added by data-pipeline branch) ----
 # Never commit images or datasets. Everything under data/ is ignored,
-# EXCEPT the personal battery README and the split CSV manifests (see below).
+# EXCEPT the READMEs and empty class folders of our photo folders, and the split
+# CSV manifests (see below).
 # (Written as data/* plus "!" exceptions instead of plain "data/", because git
 # cannot re-include a file once its whole parent folder is ignored.)
 data/*
@@ -48,6 +49,20 @@ data/raw/*
 !data/raw/personal_battery/
 data/raw/personal_battery/*
 !data/raw/personal_battery/README.md
+# Team photos and the held-out camera test set: the README and the four empty
+# class folders (.gitkeep) are tracked, every image inside stays local.
+!data/raw/team_photos/
+data/raw/team_photos/*
+!data/raw/team_photos/README.md
+!data/raw/team_photos/*/
+data/raw/team_photos/*/*
+!data/raw/team_photos/*/.gitkeep
+!data/raw/camera_test/
+data/raw/camera_test/*
+!data/raw/camera_test/README.md
+!data/raw/camera_test/*/
+data/raw/camera_test/*/*
+!data/raw/camera_test/*/.gitkeep
 # Split manifests (path,label CSVs, relative paths, well under 2 MB) are tracked
 # so everyone trains on the same split. Only the .csv files, nothing else.
 !data/splits/
@@ -62,6 +77,21 @@ data/splits/*
 *.bmp
 *.webp
 *.heic
+*.heif
+*.avif
+*.tif
+*.tiff
+*.dng
+*.mov
+*.mp4
+# Upper-case versions (iPhones write IMG_0001.HEIC, IMG_0001.JPG).
+*.HEIC
+*.HEIF
+*.JPG
+*.JPEG
+*.PNG
+*.MOV
+*.DNG
 
 # Downloaded archives (download.py unzips and deletes these, but just in case).
 *.zip
@@ -69,10 +99,20 @@ data/splits/*
 # Project virtualenv (already covered by .venv/ at the top; repeated so it is obvious).
 .venv
 
-# Model weights live in models/ but never in git. *.pt, *.pth, *.ckpt, *.h5,
-# *.keras, *.onnx and *.tflite are already ignored everywhere near the top.
-models/*.pth
+# The trained model models/waste_classifier.pth IS tracked (Amy's commit). Other
+# weight formats (*.ckpt, *.h5, *.keras, *.onnx, *.tflite) are ignored near the top.
 
 # Charts and contact sheets made by plot_counts.py and review_near_dups.py.
 # Already covered by *.png above; listed so it is obvious they stay local.
 results/*.png
+
+# Test photos from raspberry_pi/camera_test.py (images never go in git).
+raspberry_pi/test_photos/
+
+# Output of src/eval/evaluate.py. It depends on which predictions CSV was scored
+# (the fake sample gives fake numbers), so it stays local like the charts.
+results/threshold_sweep.csv
+
+# Prediction CSVs from src/eval/export_predictions.py: they belong to one
+# model file, so they are shared in the PR or Discord, not committed.
+results/*_predictions.csv
