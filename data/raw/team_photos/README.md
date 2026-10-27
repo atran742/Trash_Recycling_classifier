@@ -33,6 +33,8 @@ item is under San Diego rules? Leave it out rather than guess.
 
 ```
 <item>_<nnn>.jpg        for example  chipbag_001.jpg, sodacan_012.jpg, banana_003.HEIC
+                        (python src/data/capture_photos.py --dest team_photos names them
+                        <class>_<date>_<time>.jpg, which works too)
 ```
 
 Lowercase item name, underscore, three-digit counter. `.jpg`, `.png` or

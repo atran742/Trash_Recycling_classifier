@@ -25,8 +25,9 @@ data/raw/camera_test/
 └── hazardous/
 ```
 
-The folder name is the label. Same naming as the team photos:
-`<item>_<nnn>.jpg`, for example `sodacan_001.jpg`. `raspberry_pi/camera_test.py`
+The folder name is the label. Name photos `<item>_<nnn>.jpg`, for example `sodacan_001.jpg`.
+`python src/data/capture_photos.py --dest camera_test` saves webcam photos here for you,
+named `<class>_<date>_<time>.jpg` (for example `trash_20261027_163005.jpg`). `raspberry_pi/camera_test.py`
 saves a photo from the Pi camera that you can move here.
 
 ## How to take them
