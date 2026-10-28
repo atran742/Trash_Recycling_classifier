@@ -34,13 +34,21 @@ item is under San Diego rules? Leave it out rather than guess.
 ```
 <item>_<nnn>.jpg        for example  chipbag_001.jpg, sodacan_012.jpg, banana_003.HEIC
                         (python src/data/capture_photos.py --dest team_photos names them
-                        <class>_<date>_<time>.jpg, which works too)
+                        <class>_<date>_<time>.jpg, or <class>_item<NN>_f<frame>.jpg
+                        for a recording, which works too)
 ```
 
 Lowercase item name, underscore, three-digit counter. `.jpg`, `.png` or
 iPhone `.HEIC` all work (HEIC is converted when the split is built). No
 spaces. The pipeline renames copies to `team_photos__<class>__<file>` so two
 people can both have a `chipbag_001.jpg` without a clash.
+
+Recording frames (`trash_item03_f2.jpg`) are numbered per computer: rename items
+before two people's folders are put together, so two `item01`s do not clash.
+Known gap: `build_splits.py` keeps look-alike frames of one recording in one split,
+but frames from clearly different angles of the same object can still land in both
+train and validation (team_photos has no `group_pattern` in `configs/label_map.yaml`
+yet; adding one changes the split stamp, so it is a team decision).
 
 ## Photo rules
 

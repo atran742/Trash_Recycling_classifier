@@ -10,17 +10,27 @@ with the preprocessing and model loading of export_predictions.py, so the number
 match the two-command evaluation in docs/evaluation.md.
 
 It prints one table (macro F1 and per-class recall, for each model on each test set)
-and then the swap rule from docs/evaluation.md with a verdict:
+and then the swap rule from docs/evaluation.md with a verdict. The camera test is
+reported 2 ways:
+    per frame  every photo counts once
+    per item   the frames of one recording (capture_photos.py video mode, files named like
+               trash_item03_f2.jpg) are one item; every other photo is an item of its own.
+               An item counts as correct when MORE than half of its frames are right; its
+               predicted label is the label more than half of its frames got (with no such
+               label, "no majority", which is wrong for every class).
+Rule 3 compares the per-frame camera test macro F1, as before (so a 5-frame recording
+weighs 5 times as much as one single photo); the item count decides whether there are
+enough camera_test photos to judge it.
     SWAP     all three rules pass: the new model may replace the current one
     KEEP     at least one rule fails: keep the current model (also when rule 1 or 2
              fails before the camera test can be judged: the new model cannot win then)
     BLOCKED  rules 1 and 2 pass, but rule 3 cannot be judged yet: camera_test has fewer
-             than 10 photos in some class, or some camera_test photos are near copies
+             than 4 items in some class, or some camera_test photos are near copies
              of train images (the near-copy check of score_camera_test.py)
 Scores use every item with no "I'm not sure" cutoff (the "all items" numbers of evaluate.py).
 Macro F1 averages only the classes present in a test set (the wild test has no hazardous).
 
-It also saves results/camera_test_mistakes.png: every camera_test photo that either
+It also saves results/camera_test_mistakes.png: every camera_test photo (frame) that either
 model got wrong, with both predictions under it (git-ignored, share it in the PR).
 
 Run from the repo root:
@@ -32,7 +42,7 @@ Options:
 
 import argparse
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -48,13 +58,16 @@ from evaluate import macro_f1  # noqa: E402
 from export_predictions import (ARCHITECTURES, class_order, load_model, match_model_classes,  # noqa: E402
                                 predict_split, preprocessing_for, read_manifest)
 from score_camera_test import collect_camera_photos, near_copy_check  # noqa: E402
+from recording_names import ITEM_NAME  # noqa: E402  (the recording file names, e.g. trash_item03_f2.jpg)
 
-MIN_CAMERA_PER_CLASS = 10   # fewer camera_test photos than this in any class = BLOCKED
+MIN_CAMERA_ITEMS_PER_CLASS = 4  # fewer camera_test items than this in any class = BLOCKED
+NO_MAJORITY = "no majority"     # an item's prediction when no label got more than half of its frames
 BENCHMARK_TOLERANCE = 0.01  # rule 1: the new benchmark macro F1 may drop by at most this much
 ROUNDING = 1e-9             # computers store 0.785 - 0.01 a hair off; this keeps an exact tie a pass
 PHOTO_SUFFIXES = IMAGE_EXTENSIONS | CONVERT_TO_JPEG  # "|" joins two sets: .jpg, .png, ... plus iPhone .heic
 SHEET_PATH = RESULTS_DIR / "camera_test_mistakes.png"
 THUMB, CAPTION_H, COLS = 200, 50, 6
+WIDTH = 77                  # width of the printed table
 
 
 def camera_photo_count():
@@ -67,13 +80,51 @@ def camera_photo_count():
                and p.suffix.lower() in PHOTO_SUFFIXES)
 
 
+def item_key(row):
+    """Which item a camera_test photo belongs to.
+
+    Frames of one recording (trash_item03_f1.jpg ... _f5.jpg in one class folder) share the
+    key "trash item03"; any other photo is an item of its own, keyed by its path.
+    """
+    found = ITEM_NAME.fullmatch(Path(row["path"]).name)
+    if found:
+        return f"{row['label']} item{int(found['item']):02d}"
+    return row["path"]
+
+
+def item_labels(rows, predictions):
+    """(true labels, predicted labels) with one entry per item instead of one per frame.
+
+    The item's prediction is the label MORE than half of its frames got, so an item is
+    right exactly when most of its frames are right (2 of 4 right is not most).
+    """
+    frames = defaultdict(list)  # item -> [(true label, predicted label) of each frame]
+    for r, p in zip(rows, predictions):
+        frames[item_key(r)].append((r["label"], p["predicted_label"]))
+    true, pred = [], []
+    for pairs in frames.values():
+        top_label, votes = Counter(predicted for _, predicted in pairs).most_common(1)[0]
+        true.append(pairs[0][0])
+        pred.append(top_label if votes > len(pairs) / 2 else NO_MAJORITY)
+    return true, pred
+
+
+def items_per_class(rows):
+    """How many different items each class has in camera_test (a Counter: class -> items)."""
+    one_row_per_item = {item_key(r): r for r in rows}  # a dict keeps one row per key: the 5 frames become 1
+    return Counter(r["label"] for r in one_row_per_item.values())
+
+
 def score(rows, predictions):
+    """Macro F1 and recall per class of one test set, one entry per photo."""
+    return score_labels([r["label"] for r in rows], [p["predicted_label"] for p in predictions])
+
+
+def score_labels(true, pred):
     """Macro F1 (over the classes present) and recall per class, from the true and predicted labels."""
-    true = [r["label"] for r in rows]
-    pred = [p["predicted_label"] for p in predictions]
     present = sorted(set(true))
     recall = {c: sum(t == c and p == c for t, p in zip(true, pred)) / true.count(c) for c in present}
-    return {"macro_f1": macro_f1(true, pred, present), "recall": recall, "n": len(rows)}
+    return {"macro_f1": macro_f1(true, pred, present), "recall": recall, "n": len(true)}
 
 
 def run_model(path, arch, device, test_sets):
@@ -91,16 +142,19 @@ def run_model(path, arch, device, test_sets):
     return out
 
 
-def print_table(test_sets, scores, classes):
-    """One table: each test set, macro F1 then recall per class, current vs new."""
-    print(f"\n{'test set':<26}{'score':<20}{'current':>9}{'new':>9}{'change':>9}")
-    print("-" * 73)
-    for name, (rows, _) in test_sets.items():
-        title = f"{name} ({len(rows)})"
-        if not rows:
-            print(f"{title:<26}{'(no photos)':<20}{'-':>9}{'-':>9}{'-':>9}")
+def print_table(sections, scores, classes):
+    """One table: each test set, macro F1 then recall per class, current vs new.
+
+    sections = [(title, key in scores, how many images or items)], in print order.
+    """
+    print(f"\n{'test set':<30}{'score':<20}{'current':>9}{'new':>9}{'change':>9}")
+    print("-" * WIDTH)
+    for name, key, n in sections:
+        title = f"{name} ({n})"
+        if not n:
+            print(f"{title:<30}{'(no photos)':<20}{'-':>9}{'-':>9}{'-':>9}")
             continue
-        cur, new = scores["current"][name], scores["new"][name]
+        cur, new = scores["current"][key], scores["new"][key]
         lines = [("macro F1", cur["macro_f1"], new["macro_f1"])]
         for c in classes:
             if c in cur["recall"]:
@@ -111,16 +165,18 @@ def print_table(test_sets, scores, classes):
             first = title if i == 0 else ""
             if a is None:
                 class_name = label.removeprefix("recall ")
-                print(f"{first:<26}{label:<20}{'n/a':>9}{'n/a':>9}{'':>9}   (no {class_name} items)")
+                print(f"{first:<30}{label:<20}{'n/a':>9}{'n/a':>9}{'':>9}   (no {class_name} items)")
             else:
-                print(f"{first:<26}{label:<20}{a:>9.3f}{b:>9.3f}{b - a:>+9.3f}")
-        print("-" * 73)
+                print(f"{first:<30}{label:<20}{a:>9.3f}{b:>9.3f}{b - a:>+9.3f}")
+        print("-" * WIDTH)
 
 
-def swap_verdict(scores, camera_counts, classes, leaked=0, leak_checked=True):
+def swap_verdict(scores, camera_items, classes, leaked=0, leak_checked=True):
     """Apply the three rules of docs/evaluation.md. Returns (verdict, list of lines to print).
 
-    leaked = how many camera_test photos are near copies of train images.
+    camera_items = how many camera_test ITEMS each class has (a recording is one item,
+    however many frames it saved). leaked = how many camera_test photos are near copies
+    of train images.
     """
     cur, new = scores["current"], scores["new"]
     lines = []
@@ -133,13 +189,15 @@ def swap_verdict(scores, camera_counts, classes, leaked=0, leak_checked=True):
     lines.append(f"2. Wild test macro F1 goes up: {w_new:.4f} {'>' if rule2 else '<='} {w_cur:.4f}  "
                  f"-> {'PASS' if rule2 else 'FAIL'}")
 
-    # Classes with too few camera_test photos (.get(c, 0) gives 0 for a class with no photos).
-    short = {c: camera_counts.get(c, 0) for c in classes if camera_counts.get(c, 0) < MIN_CAMERA_PER_CLASS}
+    # Classes with too few camera_test items (.get(c, 0) gives 0 for a class with no photos).
+    short = {c: camera_items.get(c, 0) for c in classes if camera_items.get(c, 0) < MIN_CAMERA_ITEMS_PER_CLASS}
     if short or leaked:
         why = []
         if short:
-            why.append(f"fewer than {MIN_CAMERA_PER_CLASS} photos in: " + ", ".join(f"{c} ({n})" for c, n in short.items())
-                       + ". Add photos with: python src/data/capture_photos.py --dest camera_test")
+            why.append(f"fewer than {MIN_CAMERA_ITEMS_PER_CLASS} items in: "
+                       + ", ".join(f"{c} ({n})" for c, n in short.items())
+                       + ". Add items with: python src/data/capture_photos.py --dest camera_test "
+                         "(Shift+number records one item)")
         if leaked:
             why.append(f"{leaked} camera_test photo(s) are near copies of train images (see the warnings above)")
         lines.append("3. Camera test macro F1 does not go down: NOT JUDGED, " + "; ".join(why))
@@ -147,7 +205,7 @@ def swap_verdict(scores, camera_counts, classes, leaked=0, leak_checked=True):
         return ("BLOCKED" if rule1 and rule2 else "KEEP"), lines
     c_cur, c_new = cur["camera test"]["macro_f1"], new["camera test"]["macro_f1"]
     rule3 = c_new >= c_cur
-    lines.append(f"3. Camera test macro F1 does not go down: {c_new:.4f} {'>=' if rule3 else '<'} {c_cur:.4f}  "
+    lines.append(f"3. Camera test macro F1 (per frame) does not go down: {c_new:.4f} {'>=' if rule3 else '<'} {c_cur:.4f}  "
                  f"-> {'PASS' if rule3 else 'FAIL'}")
     if not leak_checked:
         lines.append("   Note: the near-copy check against train did NOT run, so rule 3 assumes "
@@ -177,7 +235,9 @@ def save_mistake_sheet(rows, predictions):
             img = ImageOps.exif_transpose(img).convert("RGB")  # upright, as the models saw it
             img.thumbnail((THUMB - 6, THUMB - 6))
             sheet.paste(img, (x + 3, y + 3))
-        draw.text((x + 4, y + THUMB + 1), f"true: {r['label']}  #{k + 1}", fill="black")
+        found = ITEM_NAME.fullmatch(Path(r["path"]).name)
+        tag = f"item{int(found['item']):02d} f{found['frame']}" if found else f"#{k + 1}"
+        draw.text((x + 4, y + THUMB + 1), f"true: {r['label']}  {tag}", fill="black")
         for i, (who, p) in enumerate([("current", pc), ("new", pn)]):
             color = "green" if p["predicted_label"] == r["label"] else "red"
             draw.text((x + 4, y + THUMB + 16 + 15 * i), f"{who}: {p['predicted_label']} {float(p['confidence']):.2f}",
@@ -233,15 +293,25 @@ def main():
     }
 
     predictions, scores = {}, {}
+    camera_items = items_per_class(camera_rows)  # items per class (a recording counts once)
+    if camera_rows:
+        print(f"Camera test items: {sum(camera_items.values())} from {len(camera_rows)} photos  "
+              + ", ".join(f"{c} {camera_items.get(c, 0)}" for c in classes))
     for who, path in [("current", args.current), ("new", args.new)]:
         print(f"\nScoring the {who} model {path} on {device}:")
         predictions[who] = run_model(path, args.arch, device, test_sets)
         scores[who] = {name: score(test_sets[name][0], preds) for name, preds in predictions[who].items()}
+        if camera_rows:  # the same camera predictions again, one entry per item
+            item_true, item_pred = item_labels(camera_rows, predictions[who]["camera test"])
+            scores[who]["camera test per item"] = score_labels(item_true, item_pred)
 
-    print_table(test_sets, scores, classes)
+    print_table([("benchmark", "benchmark", len(test_sets["benchmark"][0])),
+                 ("wild test", "wild test", len(test_sets["wild test"][0])),
+                 ("camera test, per frame", "camera test", len(camera_rows)),
+                 ("camera test, per item", "camera test per item", sum(camera_items.values()))],
+                scores, classes)
 
-    camera_counts = Counter(r["label"] for r in camera_rows)  # photos per class
-    verdict, lines = swap_verdict(scores, camera_counts, classes, leaked, leak_checked)
+    verdict, lines = swap_verdict(scores, camera_items, classes, leaked, leak_checked)
     print("\nSwap rule (docs/evaluation.md):")
     for line in lines:
         print("  " + line)
