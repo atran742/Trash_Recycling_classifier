@@ -27,15 +27,22 @@ data/raw/camera_test/
 
 The folder name is the label. Name photos `<item>_<nnn>.jpg`, for example `sodacan_001.jpg`.
 `python src/data/capture_photos.py --dest camera_test` saves webcam photos here for you,
-named `<class>_<date>_<time>.jpg` (for example `trash_20261027_163005.jpg`). `raspberry_pi/camera_test.py`
+named `<class>_<date>_<time>.jpg` (for example `trash_20261027_163005.jpg`). Shift+1/2/3/4 records
+one item for 10 seconds and saves a frame every 2 seconds, named `<class>_item<NN>_f<frame>.jpg`
+(for example `trash_item03_f2.jpg`); `compare_models.py` scores those frames as one item. `raspberry_pi/camera_test.py`
 saves a photo from the Pi camera that you can move here.
 
 ## How to take them
 
 1. Use the same camera, distance and lighting the demo will use. Put the item
    where the demo box will be (the center of the frame).
-2. One item per photo, plain background, a few angles per item.
-3. Aim for 10 or more photos per class. Twenty per class gives a steadier number.
+2. One item per photo, plain background, a few angles per item. For several angles of one
+   object, record it (Shift+number) rather than taking single photos: every single photo
+   counts as an item of its own, and one recording is one item. Item numbers count only the
+   photos on one computer: take the camera_test recordings on one computer, or rename items
+   before two people's folders are put together.
+3. `compare_models.py` needs at least 4 items per class (one recording or one single photo is one
+   item). Aim for 10 or more items per class. Twenty per class gives a steadier number.
 
 ## Scoring (2 commands from the repo root)
 
