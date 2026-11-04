@@ -25,6 +25,19 @@ python src/data/check_leakage.py
 
 This downloads the Kaggle images and the two wild datasets (TACO litter photos, RealWaste landfill photos), cuts the TACO objects into single images, removes duplicates, builds `data/train`, `data/validation`, `data/test` (the frozen benchmark) and `data/wild_test`, and checks that no near-copy of a training image sits in validation or either test set. Images never go into git. After training, pick the "I'm not sure" cutoff on validation and report on the benchmark and the wild test with `python src/eval/evaluate.py --tune results/val_predictions.csv --report results/test_predictions.csv --wild results/wild_test_predictions.csv` (the two `docs/sample_*_predictions.csv` files are fake examples to try it on).
 
+Take labeled photos with the webcam (keys 1 compost, 2 hazardous, 3 recycling, 4 trash, q quit). Hold Shift with the number to record one item for 10 seconds instead: a frame is saved every 2 seconds, named like `trash_item03_f2.jpg`, and the frames of one recording count as one item. `--dest` has no default: `camera_test` is for demo-room photos that are never trained on, `team_photos` is for our own photos that join training. A team photo that looks the same as a camera_test photo is refused.
+
+```bash
+python src/data/capture_photos.py --dest camera_test
+python src/data/capture_photos.py --dest team_photos
+```
+
+Compare the current model with a new one on the benchmark, the wild test and the camera test, and apply the swap rule. It prints SWAP, KEEP or BLOCKED and saves `results/camera_test_mistakes.png`. KEEP when rule 1 or 2 fails. BLOCKED when rules 1 and 2 pass but the camera test cannot be judged yet: fewer than 4 items in any class (a recording is one item, a single photo is one item), or a camera_test photo that is a near copy of a train image. The camera test is shown per frame and per item (an item is right when most of its frames are right); rule 3 uses the per-frame score.
+
+```bash
+python src/eval/compare_models.py models/waste_classifier.pth models/candidate.pth
+```
+
 ## The data right now
 
 From [docs/dataset_inventory.md](docs/dataset_inventory.md), 4 classes, Kaggle plus TACO and RealWaste, split 70 / 15 / 15 with seed 42. Test (the Kaggle benchmark) and wild test (TACO and RealWaste) are both frozen: copies in `configs/frozen/`, and the build stops if either changes. New photos go only to train and validation.

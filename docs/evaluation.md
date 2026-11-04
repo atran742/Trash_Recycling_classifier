@@ -62,6 +62,15 @@ test (`score_camera_test.py`, same photos for both models). The new model replac
    Until `data/raw/camera_test/` holds demo-room photos this cannot be checked: say so in the PR,
    and score both models on the camera test as soon as photos exist.
 
+`python src/eval/compare_models.py <current model> <new model>` scores both models on all three
+test sets and prints this verdict: SWAP, KEEP (rule 1 or 2 fails, or rule 3 fails), or BLOCKED (rules 1
+and 2 pass, but `data/raw/camera_test/` has fewer than 4 items in any class, or a camera_test photo is a
+near copy of a train image). An item is one recording of `capture_photos.py` video mode (its frames are
+named like `trash_item03_f2.jpg`) or one single photo. The camera test is reported per frame and per item
+(an item is right when more than half of its frames are right); rule 3 compares the per-frame macro F1,
+so a 5-frame recording weighs 5 times as much as one single photo. Every single photo counts as an item of
+its own, so 4 angles of one object as single photos would count as 4 items: record one object instead.
+
 Baseline to beat (Amy's first model, `models/waste_classifier.pth`, on the frozen test sets):
 **benchmark macro F1 0.785, wild test macro F1 0.289** (recall: compost 0.00, recycling 0.23,
 trash 0.58; it calls every RealWaste food photo trash). Camera test: not scored yet (no photos).
